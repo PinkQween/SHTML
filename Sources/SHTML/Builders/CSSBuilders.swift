@@ -14,6 +14,14 @@ public enum CSSBuilder {
     public static func buildExpression(_ expression: CSSProperty) -> CSSProperty {
         expression
     }
+    
+    public static func buildExpression(_ expression: [CSSProperty]) -> [CSSProperty] {
+        expression
+    }
+    
+    public static func buildArray(_ components: [[CSSProperty]]) -> [CSSProperty] {
+        components.flatMap { $0 }
+    }
 }
 
 @resultBuilder

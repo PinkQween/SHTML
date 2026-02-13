@@ -6,11 +6,40 @@
 //
 
 // MARK: - Layout & Spacing
+public func margin(
+    _ edges: Edge.Set = .all,
+    _ value: any CSSLengthConvertible
+) -> [CSSProperty] {
+    let v = value.cssLength
 
-public func margin(_ value: any CSSLengthConvertible) -> CSSProperty {
-    CSSProperty("margin", value.cssLength)
+    // Only safe shorthand case
+    if edges == .all {
+        return [.init("margin", v)]
+    }
+
+    var props: [CSSProperty] = []
+
+    if edges.contains(.top) {
+        props.append(.init("margin-top", v))
+    }
+    if edges.contains(.bottom) {
+        props.append(.init("margin-bottom", v))
+    }
+    if edges.contains(.leading) {
+        props.append(.init("margin-left", v))
+    }
+    if edges.contains(.trailing) {
+        props.append(.init("margin-right", v))
+    }
+
+    return props
 }
 
+public func margin(
+    _ value: any CSSLengthConvertible
+) -> [CSSProperty] {
+    margin(.all, value)
+}
 public func marginTop(_ value: any CSSLengthConvertible) -> CSSProperty {
     CSSProperty("margin-top", value.cssLength)
 }
@@ -30,35 +59,35 @@ public func marginLeft(_ value: any CSSLengthConvertible) -> CSSProperty {
 public func padding(
     _ edges: Edge.Set = .all,
     _ value: any CSSLengthConvertible
-) -> CSSProperty {
+) -> [CSSProperty] {
     let v = value.cssLength
 
     // Only safe shorthand case
     if edges == .all {
-        return .init("padding", v)
+        return [.init("padding", v)]
     }
 
-    var parts: [String] = []
+    var props: [CSSProperty] = []
 
     if edges.contains(.top) {
-        parts.append("padding-top: \(v);")
+        props.append(.init("padding-top", v))
     }
     if edges.contains(.bottom) {
-        parts.append("padding-bottom: \(v);")
+        props.append(.init("padding-bottom", v))
     }
     if edges.contains(.leading) {
-        parts.append("padding-left: \(v);")
+        props.append(.init("padding-left", v))
     }
     if edges.contains(.trailing) {
-        parts.append("padding-right: \(v);")
+        props.append(.init("padding-right", v))
     }
 
-    return .init("style", parts.joined(separator: " "))
+    return props
 }
 
 public func padding(
     _ value: any CSSLengthConvertible
-) -> CSSProperty {
+) -> [CSSProperty] {
     padding(.all, value)
 }
 
