@@ -155,7 +155,30 @@ site.generate()
     fs::write(sources_dir.join("main.swift"), main_swift)?;
 
     // Write .gitignore
-    let gitignore = ".DS_Store\n/.build\n/Packages\npublic/index.html\n";
+    let gitignore = r#"# Build artifacts
+.build/
+.swiftpm/
+*.xcodeproj
+*.xcworkspace
+
+# Dependencies
+Packages/
+Package.resolved
+
+# Generated files
+public/index.html
+public/Assets/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+"#;
     fs::write(project_dir.join(".gitignore"), gitignore)?;
 
     if project_name == "." {

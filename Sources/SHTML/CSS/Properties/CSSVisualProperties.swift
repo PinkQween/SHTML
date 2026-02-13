@@ -147,6 +147,10 @@ public func scrollbarWidth(_ value: ScrollbarWidth) -> CSSProperty {
     CSSProperty("scrollbar-width", value.rawValue)
 }
 
+public func scrollbarWidth(_ value: any CSSLengthConvertible) -> CSSProperty {
+    CSSProperty("scrollbar-width", value.cssLength)
+}
+
 public func scrollbarColor(_ thumbColor: Color, _ trackColor: Color) -> CSSProperty {
     CSSProperty("scrollbar-color", "\(thumbColor.css) \(trackColor.css)")
 }
