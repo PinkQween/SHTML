@@ -445,7 +445,11 @@ fn handle_request(req: &Request) -> Response {
             resp.headers.insert("Cache-Control".into(), "no-cache".into());
             resp
         }
-        _ => serve_generated_html(),
+        _ => {
+            // Try to serve static file from public directory
+            let file_path = format!("public{}", req.path);
+            serve_static_file(&file_path)
+        }
     }
 }
 
@@ -1214,3 +1218,75 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> 
     Ok(())
 }
 
+
+fn serve_static_file(path: &str) -> Response {
+    // Security: prevent directory traversal
+    if path.contains("..") {
+        return Response::new(404).text("Not Found");
+    }
+    
+    match fs::read(path) {
+        Ok(contents) => {
+            let mut resp = Response::new(200);
+            resp.body = contents;
+            
+            // Set content type based on extension
+            let content_type = if path.ends_with(".html") {
+                "text/html; charset=utf-8"
+            } else if path.ends_with(".css") {
+                "text/css; charset=utf-8"
+            } else if path.ends_with(".js") {
+                "application/javascript; charset=utf-8"
+            } else if path.ends_with(".json") {
+                "application/json; charset=utf-8"
+            } else if path.ends_with(".png") {
+                "image/png"
+            } else if path.ends_with(".jpg") || path.ends_with(".jpeg") {
+                "image/jpeg"
+            } else if path.ends_with(".gif") {
+                "image/gif"
+            } else if path.ends_with(".svg") {
+                "image/svg+xml"
+            } else if path.ends_with(".webp") {
+                "image/webp"
+            } else if path.ends_with(".woff") {
+                "font/woff"
+            } else if path.ends_with(".woff2") {
+                "font/woff2"
+            } else if path.ends_with(".ttf") {
+                "font/ttf"
+            } else if path.ends_with(".otf") {
+                "font/otf"
+            } else {
+                "application/octet-stream"
+            };
+            
+            resp.headers.insert("Content-Type".to_string(), content_type.to_string());
+            resp
+        }
+        Err(_) => {
+            // File not found - return 404
+            Response::new(404).html(r#"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>404 - Not Found</title>
+    <style>
+        body { font-family: system-ui; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #1a1a1a; color: #fff; }
+        .container { text-align: center; }
+        h1 { font-size: 72px; margin: 0; }
+        p { font-size: 24px; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>404</h1>
+        <p>File Not Found</p>
+    </div>
+</body>
+</html>
+"#)
+        }
+    }
+}
