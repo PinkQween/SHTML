@@ -49,6 +49,7 @@ struct MyPage: HTML {
 ### Guides
 
 - <doc:CSSGuide>
+- <doc:CSSReference>
 - <doc:JavaScriptGuide>
 - <doc:ShapesGuide>
 
