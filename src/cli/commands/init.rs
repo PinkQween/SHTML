@@ -120,7 +120,7 @@ let package = Package(
         .executable(name: "{target}", targets: ["{target}"])
     ],
     dependencies: [
-        .package(url: "https://github.com/pinkqween/SHTML.git", from: "0.1.1")
+        .package(url: "https://github.com/pinkqween/SHTML.git", branch: "main")
     ],
     targets: [
         .executableTarget(name: "{target}", dependencies: ["SHTML"])
