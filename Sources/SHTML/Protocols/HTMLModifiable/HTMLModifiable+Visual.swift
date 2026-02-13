@@ -1,0 +1,55 @@
+// Visual effects modifiers
+// Includes opacity, transform, transition, border radius, shadows, cursor, animation
+
+public extension HTMLModifiable {
+    // Visual effects
+    func opacity(_ value: Double) -> Self {
+        appendingStyle("opacity: \(value)")
+    }
+    
+    func cornerRadius(_ radius: String) -> Self {
+        appendingStyle("border-radius: \(radius)")
+    }
+    
+    func cornerRadius(_ radius: CSSLength) -> Self {
+        appendingStyle("border-radius: \(radius.css)")
+    }
+    
+    func borderRadius(_ radius: String) -> Self {
+        appendingStyle("border-radius: \(radius)")
+    }
+    
+    func borderRadius(_ radius: CSSLength) -> Self {
+        appendingStyle("border-radius: \(radius.css)")
+    }
+    
+    func transition(_ value: String) -> Self {
+        appendingStyle("transition: \(value)")
+    }
+    
+    func transition(_ value: Transition) -> Self {
+        appendingStyle("transition: \(value.css)")
+    }
+    
+    func shadow(x: String = "0", y: String = "10px", blur: String = "30px", color: String = "rgba(0,0,0,0.2)") -> Self {
+        appendingStyle("box-shadow: \(x) \(y) \(blur) \(color)")
+    }
+    
+    func cursor(_ value: String) -> Self {
+        appendingStyle("cursor: \(value)")
+    }
+    
+    func cursor(_ value: Cursor) -> Self {
+        appendingStyle("cursor: \(value.rawValue)")
+    }
+    
+    // Transform
+    func transform(_ value: String) -> Self {
+        appendingStyle("transform: \(value)")
+    }
+    
+    // Animation
+    func animation(_ value: String) -> Self {
+        appendingStyle("animation: \(value)")
+    }
+}
