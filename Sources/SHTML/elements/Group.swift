@@ -1,22 +1,14 @@
-//
-//  body.swift
-//  SHTML
-//
-//  Created by Hanna Skairipa on 2/12/26.
-//
-
-public struct Body: HTMLPrimitive {
+// Group - Container for multiple HTML elements (like SwiftUI's Group)
+public struct Group: HTMLPrimitive {
     public typealias Body = Never
     
     private let content: () -> [any HTML]
-
+    
     public init(@HTMLBuilder _ content: @escaping () -> [any HTML]) {
         self.content = content
     }
-
+    
     public func render() -> String {
-        "<body>\(HTMLRendering.renderChildren(content))</body>"
+        content().map { $0.render() }.joined()
     }
 }
-
-public typealias body = Body

@@ -1,0 +1,143 @@
+use std::{
+    fs,
+    io::{self, Write},
+    path::{Path, PathBuf},
+};
+
+pub fn run(name: Option<String>) -> io::Result<()> {
+    // Get project name (arg or prompt)
+    let project_name = match name {
+        Some(s) => s.trim().to_string(),
+        None => {
+            print!("Project name: ");
+            io::stdout().flush()?; // ensure prompt shows before input
+
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)?;
+            input.trim().to_string()
+        }
+    };
+
+    // Validate project name
+    if project_name.is_empty() {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidInput,
+            "Project name cannot be empty",
+        ));
+    }
+
+    // Allow "." as "current dir", but disallow other weird path-like names
+    if project_name != "." {
+        if project_name == ".."
+            || project_name.contains(std::path::MAIN_SEPARATOR)
+            || project_name.contains('/')
+            || project_name.contains('\\')
+        {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "Project name must be a single directory name (no path separators, no '..')",
+            ));
+        }
+    }
+
+    // Decide target directory
+    let project_dir: PathBuf = if project_name == "." {
+        PathBuf::from(".")
+    } else {
+        PathBuf::from(&project_name)
+    };
+
+    // If creating a new folder, it must not already exist
+    if project_name != "." && project_dir.exists() {
+        return Err(io::Error::new(
+            io::ErrorKind::AlreadyExists,
+            format!("Directory '{}' already exists", project_name),
+        ));
+    }
+
+    // If using current dir, try to avoid overwriting an existing project
+    if project_name == "." {
+        let pkg = project_dir.join("Package.swift");
+        if pkg.exists() {
+            return Err(io::Error::new(
+                io::ErrorKind::AlreadyExists,
+                "Package.swift already exists in the current directory",
+            ));
+        }
+    }
+
+    // Swift module/target folder name: use the directory name when project_name == "."
+    let swift_target_name = if project_name == "." {
+        project_dir
+            .file_name()
+            .and_then(|s| s.to_str())
+            .filter(|s| !s.trim().is_empty())
+            .unwrap_or("MySite")
+            .to_string()
+    } else {
+        project_name.clone()
+    };
+
+    // Create directories
+    let sources_dir = project_dir.join("Sources").join(&swift_target_name);
+    fs::create_dir_all(&sources_dir)?;
+    fs::create_dir_all(project_dir.join("public"))?;
+
+    // Write Package.swift
+    let package_swift = format!(
+        r#"// swift-tools-version: 5.9
+import PackageDescription
+
+let package = Package(
+    name: "{name}",
+    platforms: [.macOS(.v13)],
+    products: [
+        .executable(name: "{target}", targets: ["{target}"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/pinkqween/SHTML.git", from: "0.0.1")
+    ],
+    targets: [
+        .executableTarget(name: "{target}", dependencies: ["SHTML"])
+    ]
+)
+"#,
+        name = swift_target_name,
+        target = swift_target_name,
+    );
+    fs::write(project_dir.join("Package.swift"), package_swift)?;
+
+    // Write main.swift
+    let main_swift = r#"import SHTML
+
+@main
+struct MyWebsite: Website {
+    var body: some HTML {
+        Html({
+            Head({
+                meta().charset("UTF-8")
+                Title("SHTML Site")
+            })
+            Body({
+                h1 { "Hello SHTML!" }
+            })
+        })
+    }
+}
+"#;
+    fs::write(sources_dir.join("main.swift"), main_swift)?;
+
+    // Write .gitignore
+    let gitignore = ".DS_Store\n/.build\n/Packages\npublic/index.html\n";
+    fs::write(project_dir.join(".gitignore"), gitignore)?;
+
+    if project_name == "." {
+        println!("\n✅ Created in current directory");
+        println!("\nNext:\n  shtml dev");
+    } else {
+        println!("\n✅ Created {}", project_name);
+        println!("\nNext:\n  cd {}\n  shtml dev", project_name);
+    }
+
+    Ok(())
+}

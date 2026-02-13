@@ -1,4 +1,4 @@
-public struct H2: HTMLPrimitive, HTMLContentModifiable {
+public struct H3: HTMLPrimitive, HTMLContentModifiable {
     public typealias Body = Never
     
     public var attributes: [String: String]
@@ -17,8 +17,8 @@ public struct H2: HTMLPrimitive, HTMLContentModifiable {
     public func render() -> String {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().map { $0.render() }.joined()
-        return "<h2\(attrs)>\(children)</h2>"
+        return "<h3\(attrs)>\(children)</h3>"
     }
 }
 
-public typealias h2 = H2
+public typealias h3 = H3

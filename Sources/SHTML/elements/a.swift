@@ -5,9 +5,16 @@
 //  Created by Hanna Skairipa on 2/12/26.
 //
 
-public struct A: HTML {
-    private var attributes: [String: String]
+public struct A: HTMLPrimitive, HTMLContentModifiable {
+    public typealias Body = Never
+    
+    public var attributes: [String: String]
     private let content: () -> [any HTML]
+
+    public init(attributes: [String: String] = [:], content: @escaping () -> [any HTML]) {
+        self.attributes = attributes
+        self.content = content
+    }
 
     public init(href: String = "#", @HTMLBuilder _ content: @escaping () -> [any HTML]) {
         self.attributes = ["href": href]

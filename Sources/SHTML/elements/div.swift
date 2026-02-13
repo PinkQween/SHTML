@@ -1,11 +1,13 @@
-public struct H2: HTMLPrimitive, HTMLContentModifiable {
+public struct Div: HTMLPrimitive, HTMLContentModifiable {
     public typealias Body = Never
     
     public var attributes: [String: String]
     private let content: () -> [any HTML]
 
-    public init(@HTMLBuilder _ content: @escaping () -> [any HTML]) {
-        self.attributes = [:]
+    public init(id: String? = nil, @HTMLBuilder _ content: @escaping () -> [any HTML] = { [] }) {
+        var attrs: [String: String] = [:]
+        if let id = id { attrs["id"] = id }
+        self.attributes = attrs
         self.content = content
     }
     
@@ -17,8 +19,8 @@ public struct H2: HTMLPrimitive, HTMLContentModifiable {
     public func render() -> String {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().map { $0.render() }.joined()
-        return "<h2\(attrs)>\(children)</h2>"
+        return "<div\(attrs)>\(children)</div>"
     }
 }
 
-public typealias h2 = H2
+public typealias div = Div

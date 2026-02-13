@@ -1,0 +1,12 @@
+[package]
+name = "shtml"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "shtml"
+path = "src/cli/main.rs"
+
+[dependencies]
+notify = "6.1"
+clap = { version = "4.5", features = ["derive"] }

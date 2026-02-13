@@ -1,3 +1,10 @@
+//
+//  JS.swift
+//  SHTML
+//
+//  Created by Hanna Skairipa on 2/12/26.
+//
+
 public enum JS {
     public static func log(_ message: String) {
         #if arch(wasm32)

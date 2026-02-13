@@ -1,10 +1,10 @@
-public struct H2: HTMLPrimitive, HTMLContentModifiable {
+public struct Span: HTMLPrimitive, HTMLContentModifiable {
     public typealias Body = Never
     
     public var attributes: [String: String]
     private let content: () -> [any HTML]
 
-    public init(@HTMLBuilder _ content: @escaping () -> [any HTML]) {
+    public init(@HTMLBuilder _ content: @escaping () -> [any HTML] = { [] }) {
         self.attributes = [:]
         self.content = content
     }
@@ -17,8 +17,8 @@ public struct H2: HTMLPrimitive, HTMLContentModifiable {
     public func render() -> String {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().map { $0.render() }.joined()
-        return "<h2\(attrs)>\(children)</h2>"
+        return "<span\(attrs)>\(children)</span>"
     }
 }
 
-public typealias h2 = H2
+public typealias span = Span

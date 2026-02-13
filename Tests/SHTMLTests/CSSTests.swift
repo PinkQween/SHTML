@@ -1,0 +1,199 @@
+import XCTest
+@testable import SHTML
+
+/// Tests for the CSS generation system
+final class CSSTests: XCTestCase {
+    
+    // MARK: - CSS Rule Tests
+    
+    func testSimpleCSSRule() {
+        let rule = CSSRule("body") {
+            margin("0")
+            padding("0")
+        }
+        
+        let result = rule.render()
+        XCTAssertTrue(result.contains("body {"))
+        XCTAssertTrue(result.contains("margin: 0;"))
+        XCTAssertTrue(result.contains("padding: 0;"))
+        XCTAssertTrue(result.contains("}"))
+    }
+    
+    func testCSSRuleWithMultipleProperties() {
+        let rule = CSSRule(".container") {
+            display("flex")
+            flexDirection("column")
+            alignItems("center")
+            gap("20px")
+        }
+        
+        let result = rule.render()
+        XCTAssertTrue(result.contains(".container {"))
+        XCTAssertTrue(result.contains("display: flex;"))
+        XCTAssertTrue(result.contains("flex-direction: column;"))
+        XCTAssertTrue(result.contains("align-items: center;"))
+        XCTAssertTrue(result.contains("gap: 20px;"))
+    }
+    
+    // MARK: - CSS Property Tests
+    
+    func testCSSProperty() {
+        let prop = CSSProperty("color", "#333")
+        XCTAssertEqual(prop.render(), "color: #333;")
+    }
+    
+    // MARK: - CSS Helper Functions
+    
+    func testMarginHelper() {
+        let prop = margin("10px")
+        XCTAssertEqual(prop.render(), "margin: 10px;")
+    }
+    
+    func testPaddingHelper() {
+        let prop = padding("20px 10px")
+        XCTAssertEqual(prop.render(), "padding: 20px 10px;")
+    }
+    
+    func testBackgroundHelper() {
+        let prop = background("#f0f0f0")
+        XCTAssertEqual(prop.render(), "background: #f0f0f0;")
+    }
+    
+    func testColorHelper() {
+        let prop = color("#333")
+        XCTAssertEqual(prop.render(), "color: #333;")
+    }
+    
+    func testFontSizeHelper() {
+        let prop = fontSize("16px")
+        XCTAssertEqual(prop.render(), "font-size: 16px;")
+    }
+    
+    func testFontFamilyHelper() {
+        let prop = fontFamily("Arial, sans-serif")
+        XCTAssertEqual(prop.render(), "font-family: Arial, sans-serif;")
+    }
+    
+    // MARK: - CSS Keyframes Tests
+    
+    func testCSSKeyframes() {
+        let keyframes = CSSKeyframes("fadeIn") {
+            CSSKeyframe("from") {
+                opacity("0")
+            }
+            CSSKeyframe("to") {
+                opacity("1")
+            }
+        }
+        
+        let result = keyframes.render()
+        XCTAssertTrue(result.contains("@keyframes fadeIn {"))
+        XCTAssertTrue(result.contains("from {"))
+        XCTAssertTrue(result.contains("opacity: 0;"))
+        XCTAssertTrue(result.contains("to {"))
+        XCTAssertTrue(result.contains("opacity: 1;"))
+    }
+    
+    func testKeyframeWithPercentage() {
+        let keyframe = CSSKeyframe("50%") {
+            transform("scale(1.2)")
+        }
+        
+        let result = keyframe.render()
+        XCTAssertTrue(result.contains("50% {"))
+        XCTAssertTrue(result.contains("transform: scale(1.2);"))
+    }
+    
+    // MARK: - Style Element Tests
+    
+    func testStyleElement() {
+        let style = Style {
+            CSSRule("body") {
+                margin("0")
+                padding("0")
+            }
+        }
+        
+        let result = style.render()
+        XCTAssertTrue(result.contains("<style>"))
+        XCTAssertTrue(result.contains("body {"))
+        XCTAssertTrue(result.contains("margin: 0;"))
+        XCTAssertTrue(result.contains("</style>"))
+    }
+    
+    func testCompleteStylesheet() {
+        let style = Style {
+            CSSRule("*") {
+                margin("0")
+                padding("0")
+                boxSizing("border-box")
+            }
+            
+            CSSRule("body") {
+                fontFamily("-apple-system, sans-serif")
+                background("linear-gradient(135deg, #667eea, #764ba2)")
+            }
+            
+            CSSKeyframes("fadeIn") {
+                CSSKeyframe("from") {
+                    opacity("0")
+                    transform("translateY(10px)")
+                }
+                CSSKeyframe("to") {
+                    opacity("1")
+                    transform("translateY(0)")
+                }
+            }
+        }
+        
+        let result = style.render()
+        XCTAssertTrue(result.contains("* {"))
+        XCTAssertTrue(result.contains("body {"))
+        XCTAssertTrue(result.contains("@keyframes fadeIn {"))
+        XCTAssertTrue(result.contains("box-sizing: border-box;"))
+    }
+    
+    // MARK: - Complex CSS Properties
+    
+    func testBoxShadow() {
+        let prop = boxShadow("0 4px 6px rgba(0,0,0,0.1)")
+        XCTAssertEqual(prop.render(), "box-shadow: 0 4px 6px rgba(0,0,0,0.1);")
+    }
+    
+    func testTransform() {
+        let prop = transform("rotate(45deg)")
+        XCTAssertEqual(prop.render(), "transform: rotate(45deg);")
+    }
+    
+    func testAnimation() {
+        let prop = animation("fadeIn 0.3s ease-in-out")
+        XCTAssertEqual(prop.render(), "animation: fadeIn 0.3s ease-in-out;")
+    }
+    
+    func testTransition() {
+        let prop = transition("all 0.3s ease")
+        XCTAssertEqual(prop.render(), "transition: all 0.3s ease;")
+    }
+    
+    // MARK: - Layout Properties
+    
+    func testDisplay() {
+        let prop = display("flex")
+        XCTAssertEqual(prop.render(), "display: flex;")
+    }
+    
+    func testFlexDirection() {
+        let prop = flexDirection("column")
+        XCTAssertEqual(prop.render(), "flex-direction: column;")
+    }
+    
+    func testJustifyContent() {
+        let prop = justifyContent("space-between")
+        XCTAssertEqual(prop.render(), "justify-content: space-between;")
+    }
+    
+    func testAlignItems() {
+        let prop = alignItems("center")
+        XCTAssertEqual(prop.render(), "align-items: center;")
+    }
+}

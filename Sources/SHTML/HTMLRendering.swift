@@ -1,9 +1,16 @@
-enum HTMLRendering {
-    static func renderChildren(_ content: () -> [any HTML]) -> String {
+//
+//  HTMLRendering.swift
+//  SHTML
+//
+//  Created by Hanna Skairipa on 2/12/26.
+//
+
+public enum HTMLRendering {
+    public static func renderChildren(_ content: () -> [any HTML]) -> String {
         content().map { $0.render() }.joined()
     }
 
-    static func renderAttributes(_ attributes: [String: String]) -> String {
+    public static func renderAttributes(_ attributes: [String: String]) -> String {
         guard !attributes.isEmpty else { return "" }
 
         let rendered = attributes
@@ -13,7 +20,7 @@ enum HTMLRendering {
         return " \(rendered)"
     }
 
-    static func escape(_ value: String) -> String {
+    public static func escape(_ value: String) -> String {
         var escaped = String()
         escaped.reserveCapacity(value.count)
 

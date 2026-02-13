@@ -1,19 +1,23 @@
-//
-//  h1.swift
-//  SHTML
-//
-//  Created by Hanna Skairipa on 2/12/26.
-//
-
-public struct H1: HTML {
+public struct H1: HTMLPrimitive, HTMLContentModifiable {
+    public typealias Body = Never
+    
+    public var attributes: [String: String]
     private let content: () -> [any HTML]
 
     public init(@HTMLBuilder _ content: @escaping () -> [any HTML]) {
+        self.attributes = [:]
+        self.content = content
+    }
+    
+    public init(attributes: [String: String], content: @escaping () -> [any HTML]) {
+        self.attributes = attributes
         self.content = content
     }
 
     public func render() -> String {
-        "<h1>\(HTMLRendering.renderChildren(content))</h1>"
+        let attrs = HTMLRendering.renderAttributes(attributes)
+        let children = content().map { $0.render() }.joined()
+        return "<h1\(attrs)>\(children)</h1>"
     }
 }
 
