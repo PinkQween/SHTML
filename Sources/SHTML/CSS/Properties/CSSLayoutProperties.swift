@@ -38,7 +38,7 @@ public func margin(
 public func margin(
     _ value: any CSSLengthConvertible
 ) -> CSS {
-    padding(.all, value)
+    margin(.all, value)
 }
 
 public func marginTop(_ value: any CSSLengthConvertible) -> CSSProperty {
