@@ -85,6 +85,108 @@ public struct JSExpr: JavaScript {
     }
 }
 
+// Common style properties for safer typed style assignments.
+public enum JSStyleProperty: String, Sendable {
+    case background
+    case backgroundColor = "backgroundColor"
+    case color
+    case display
+    case width
+    case height
+    case minWidth = "minWidth"
+    case minHeight = "minHeight"
+    case maxWidth = "maxWidth"
+    case maxHeight = "maxHeight"
+    case margin
+    case marginTop = "marginTop"
+    case marginRight = "marginRight"
+    case marginBottom = "marginBottom"
+    case marginLeft = "marginLeft"
+    case padding
+    case paddingTop = "paddingTop"
+    case paddingRight = "paddingRight"
+    case paddingBottom = "paddingBottom"
+    case paddingLeft = "paddingLeft"
+    case borderRadius = "borderRadius"
+    case opacity
+    case overflow
+    case overflowX = "overflowX"
+    case overflowY = "overflowY"
+    case transform
+    case transition
+    case position
+    case top
+    case right
+    case bottom
+    case left
+    case cursor
+    case zIndex = "zIndex"
+}
+
+public protocol JSStyleValueConvertible {
+    var jsStyleValue: String { get }
+}
+
+extension Color: JSStyleValueConvertible {
+    public var jsStyleValue: String { css }
+}
+
+extension CSSLength: JSStyleValueConvertible {
+    public var jsStyleValue: String { css }
+}
+
+extension CSSValue: JSStyleValueConvertible {
+    public var jsStyleValue: String { css }
+}
+
+extension Display: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension Overflow: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension Position: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension Cursor: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension ScrollBehavior: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension ScrollbarWidth: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension ScrollbarGutter: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension BoxSizing: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension ObjectFit: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension UserDrag: JSStyleValueConvertible {
+    public var jsStyleValue: String { rawValue }
+}
+
+extension TimingFunction: JSStyleValueConvertible {
+    public var jsStyleValue: String { css }
+}
+
+extension Transition: JSStyleValueConvertible {
+    public var jsStyleValue: String { css }
+}
+
 // Root JS objects
 @MainActor public let console = JSExpr("console")
 @MainActor public let document = JSExpr("document")
@@ -343,6 +445,44 @@ public struct JSArrow: JavaScript {
 
 // Event listeners
 public extension JSExpr {
+    // Typed style helpers
+    func styleValue(_ property: JSStyleProperty) -> JSExpr {
+        JSExpr("\(render()).style.\(property.rawValue)")
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ value: any ExpressibleAsJSArg) -> JSStatement {
+        styleValue(property).set(value)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ color: Color) -> JSStatement {
+        styleValue(property).set(color)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ value: any JSStyleValueConvertible) -> JSStatement {
+        styleValue(property).set(value.jsStyleValue)
+    }
+
+    // Concrete overloads for enum member inference: .setStyle(.display, .flex)
+    func setStyle(_ property: JSStyleProperty, _ value: Display) -> JSStatement {
+        setStyle(property, value.jsStyleValue)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ value: Overflow) -> JSStatement {
+        setStyle(property, value.jsStyleValue)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ value: Position) -> JSStatement {
+        setStyle(property, value.jsStyleValue)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ value: Cursor) -> JSStatement {
+        setStyle(property, value.jsStyleValue)
+    }
+
+    func removeStyle(_ property: JSStyleProperty) -> JSStatement {
+        styleValue(property).set("")
+    }
+
     // DOM query helpers
     func getElementById(_ id: String) -> JSExpr {
         self.getElementById(.string(id))

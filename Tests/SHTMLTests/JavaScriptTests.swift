@@ -84,6 +84,58 @@ final class JavaScriptTests: XCTestCase {
         )
     }
 
+    func testTypedSetStyleHelper() {
+        let statement = JS.document
+            .getElementById("id")
+            .setStyle(.background, .red)
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.background = 'red';"
+        )
+    }
+
+    func testTypedSetStyleWithStringValue() {
+        let statement = JS.document
+            .getElementById("id")
+            .setStyle(.display, "flex")
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.display = 'flex';"
+        )
+    }
+
+    func testTypedSetStyleWithDisplayEnum() {
+        let statement = JS.document
+            .getElementById("id")
+            .setStyle(.display, .flex)
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.display = 'flex';"
+        )
+    }
+
+    func testRemoveStyleHelper() {
+        let statement = JS.document
+            .getElementById("id")
+            .removeStyle(.background)
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.background = '';"
+        )
+    }
+
+    func testLegacyJSSetStyleTypedProperty() {
+        let statement = JSSetStyle(
+            element: "document.getElementById('id')",
+            property: .background,
+            color: .red
+        )
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.background = 'red';"
+        )
+    }
+
     func testStandardGlobalAliases() {
         XCTAssertEqual(JS.globalThis.render(), "globalThis")
         XCTAssertEqual(JS.navigator.render(), "navigator")

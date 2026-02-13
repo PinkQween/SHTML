@@ -37,15 +37,25 @@ public struct JSSetTextContent: JavaScript {
 public struct JSSetStyle: JavaScript {
     private let element: String
     private let property: String
-    private let value: String
+    private let value: JSArg
     
     public init(element: String, property: String, value: String) {
         self.element = element
         self.property = property
-        self.value = value
+        self.value = .raw(value)
+    }
+
+    public init(element: String, property: JSStyleProperty, value: any ExpressibleAsJSArg) {
+        self.element = element
+        self.property = property.rawValue
+        self.value = value.jsArg
+    }
+
+    public init(element: String, property: JSStyleProperty, color: Color) {
+        self.init(element: element, property: property, value: color)
     }
     
     public func render() -> String {
-        "\(element).style.\(property) = \(value);"
+        "\(element).style.\(property) = \(value.toJS());"
     }
 }
