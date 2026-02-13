@@ -23,12 +23,6 @@ public struct Img: HTMLPrimitive {
         copy.attributes["height"] = value
         return copy
     }
-    
-    public func `class`(_ value: String) -> Self {
-        var copy = self
-        copy.attributes["class"] = value
-        return copy
-    }
 }
 
 public typealias img = Img

@@ -14,12 +14,6 @@ public struct Nav: HTMLPrimitive {
         let children = content().map { $0.render() }.joined()
         return "<nav\(attrs)>\(children)</nav>"
     }
-    
-    public func `class`(_ value: String) -> Self {
-        var copy = self
-        copy.attributes["class"] = value
-        return copy
-    }
 }
 
 public typealias nav = Nav

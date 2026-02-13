@@ -42,6 +42,12 @@ public extension HTMLModifiable {
         return copy
     }
     
+    func `class`(_ selector: CSSSelector) -> Self {
+        var copy = self
+        copy.attributes["class"] = selector.className
+        return copy
+    }
+    
     func style(_ value: String) -> Self {
         var copy = self
         copy.attributes["style"] = value
