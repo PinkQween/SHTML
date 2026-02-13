@@ -428,7 +428,7 @@ public func cursor(_ value: Cursor) -> CSSProperty {
 }
 
 public func visibility(_ value: Visibility) -> CSSProperty {
-    CSSProperty("visibility", value)
+    CSSProperty("visibility", value.rawValue)
 }
 
 // MARK: - Transforms & Transitions
