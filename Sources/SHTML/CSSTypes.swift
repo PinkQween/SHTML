@@ -62,3 +62,41 @@ public enum AlignItems: String {
     case baseline
     case stretch
 }
+
+// Type-safe cursor values
+public enum Cursor: String {
+    case auto
+    case `default`
+    case pointer
+    case wait
+    case text
+    case move
+    case notAllowed = "not-allowed"
+    case help
+    case grab
+    case grabbing
+    case crosshair
+    case zoomIn = "zoom-in"
+    case zoomOut = "zoom-out"
+}
+
+// Type-safe timing functions
+public enum TimingFunction {
+    case linear
+    case ease
+    case easeIn
+    case easeOut
+    case easeInOut
+    case custom(String)
+    
+    public var css: String {
+        switch self {
+        case .linear: return "linear"
+        case .ease: return "ease"
+        case .easeIn: return "ease-in"
+        case .easeOut: return "ease-out"
+        case .easeInOut: return "ease-in-out"
+        case .custom(let value): return value
+        }
+    }
+}

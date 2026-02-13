@@ -9,6 +9,48 @@ public protocol CSS {
     func render() -> String
 }
 
+// CSS Selector - type-safe selector representation
+public struct CSSSelector: ExpressibleByStringLiteral {
+    let value: String
+    
+    public init(_ value: String) {
+        self.value = value
+    }
+    
+    public init(stringLiteral value: String) {
+        self.value = value
+    }
+    
+    // Pseudo-class support
+    public var hover: CSSSelector {
+        CSSSelector("\(value):hover")
+    }
+    
+    public var active: CSSSelector {
+        CSSSelector("\(value):active")
+    }
+    
+    public var focus: CSSSelector {
+        CSSSelector("\(value):focus")
+    }
+    
+    public var disabled: CSSSelector {
+        CSSSelector("\(value):disabled")
+    }
+    
+    public var firstChild: CSSSelector {
+        CSSSelector("\(value):first-child")
+    }
+    
+    public var lastChild: CSSSelector {
+        CSSSelector("\(value):last-child")
+    }
+    
+    public var nthChild: CSSSelector {
+        CSSSelector("\(value):nth-child")
+    }
+}
+
 // CSS Rule - represents a selector with properties
 public struct CSSRule: CSS {
     let selector: String
@@ -16,6 +58,11 @@ public struct CSSRule: CSS {
     
     public init(_ selector: String, @CSSBuilder _ properties: () -> [CSSProperty]) {
         self.selector = selector
+        self.properties = properties()
+    }
+    
+    public init(_ selector: CSSSelector, @CSSBuilder _ properties: () -> [CSSProperty]) {
+        self.selector = selector.value
         self.properties = properties()
     }
     

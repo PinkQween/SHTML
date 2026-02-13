@@ -302,6 +302,22 @@ public extension HTMLModifiable {
         appendingStyle("border-radius: \(radius)")
     }
     
+    func cornerRadius(_ radius: CSSLength) -> Self {
+        appendingStyle("border-radius: \(radius.css)")
+    }
+    
+    func borderRadius(_ radius: String) -> Self {
+        appendingStyle("border-radius: \(radius)")
+    }
+    
+    func borderRadius(_ radius: CSSLength) -> Self {
+        appendingStyle("border-radius: \(radius.css)")
+    }
+    
+    func transition(_ value: String) -> Self {
+        appendingStyle("transition: \(value)")
+    }
+    
     func shadow(x: String = "0", y: String = "10px", blur: String = "30px", color: String = "rgba(0,0,0,0.2)") -> Self {
         appendingStyle("box-shadow: \(x) \(y) \(blur) \(color)")
     }
@@ -310,8 +326,16 @@ public extension HTMLModifiable {
         appendingStyle("border: \(width) \(style) \(color)")
     }
     
+    func border(width: String, style: String = "solid", color: Color) -> Self {
+        appendingStyle("border: \(width) \(style) \(color.css)")
+    }
+    
     func borderLeft(width: String, color: String) -> Self {
         appendingStyle("border-left: \(width) solid \(color)")
+    }
+    
+    func borderLeft(width: String, color: Color) -> Self {
+        appendingStyle("border-left: \(width) solid \(color.css)")
     }
     
     // Flexbox
@@ -460,6 +484,14 @@ public extension HTMLModifiable {
         appendingStyle("z-index: \(value)")
     }
     
+    func cursor(_ value: String) -> Self {
+        appendingStyle("cursor: \(value)")
+    }
+    
+    func cursor(_ value: Cursor) -> Self {
+        appendingStyle("cursor: \(value.rawValue)")
+    }
+    
     // Position
     func position(_ value: String) -> Self {
         appendingStyle("position: \(value)")
@@ -509,11 +541,6 @@ public extension HTMLModifiable {
     // Transform
     func transform(_ value: String) -> Self {
         appendingStyle("transform: \(value)")
-    }
-    
-    // Transition
-    func transition(_ value: String = "all 0.3s") -> Self {
-        appendingStyle("transition: \(value)")
     }
     
     // Animation
