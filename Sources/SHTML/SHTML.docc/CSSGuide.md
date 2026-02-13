@@ -1,20 +1,20 @@
 # CSS Guide
 
-A practical guide to using CSS in SHTML - from basic to advanced.
+A practical guide to using CSS in SHTML - from basic to advanced, with type-safe CSS lengths.
 
 ## Quick Start
 
 ### Method 1: Inline Styles with Modifiers (Easiest)
 
-Just chain modifiers on any element:
+Just chain modifiers on any element using type-safe CSS lengths:
 
 ```swift
 Div {
     h1 { "Hello" }
 }
-.padding("20px")
+.padding(20.px)
 .background("#007AFF")
-.cornerRadius("12px")
+.cornerRadius(12.px)
 ```
 
 ✅ **Use this when:** Styling individual elements, quick prototypes, or one-off styles.
@@ -44,6 +44,58 @@ html {
 ```
 
 ✅ **Use this when:** You need reusable styles, complex selectors, or pseudo-classes.
+
+## Type-Safe CSS Lengths
+
+SHTML provides type-safe CSS lengths with automatic unit conversion:
+
+```swift
+// All CSS units supported:
+100.px          // pixels
+2.rem           // root em
+1.5.em          // em
+50.percent      // %
+100.vh          // viewport height
+100.vw          // viewport width
+
+// Use them anywhere:
+Div { "Content" }
+    .padding(20.px)
+    .margin(10.px)
+    .frame(width: 300.px, height: 200.px)
+
+SVG(width: 100.vw, height: 100.vh) {
+    Rect(width: 200.px, height: 150.px)
+        .cornerRadius(12.px)
+}
+
+// Still works with strings for backward compatibility:
+.padding("20px")
+.frame(width: "300px", height: "200px")
+```
+
+### Available CSS Units
+
+```swift
+// Length units
+100.px          // Pixels
+2.rem           // Root em (relative to root font size)
+1.5.em          // Em (relative to parent font size)
+
+// Percentage
+50.percent      // Percentage (%)
+
+// Viewport units
+100.vh          // Viewport height
+100.vw          // Viewport width
+50.vmin         // Minimum of vh or vw
+50.vmax         // Maximum of vh or vw
+
+// Other units (coming soon)
+// 12.pt        // Points
+// 1.cm         // Centimeters
+// 10.mm        // Millimeters
+```
 
 ## Complete Examples
 

@@ -5,7 +5,7 @@
 //  Created by Hanna Skairipa on 2/12/26.
 //
 
-extension Double {
+public extension Double {
     var px: CSSLength { CSSLength(self, .px) }
     var rem: CSSLength { CSSLength(self, .rem) }
     var em: CSSLength { CSSLength(self, .em) }
@@ -14,7 +14,7 @@ extension Double {
     var vw: CSSLength { CSSLength(self, .vw) }
 }
 
-extension Int {
+public extension Int {
     var px: CSSLength { CSSLength(Double(self), .px) }
     var rem: CSSLength { CSSLength(Double(self), .rem) }
     var em: CSSLength { CSSLength(Double(self), .em) }
