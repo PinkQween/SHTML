@@ -456,6 +456,10 @@ public extension HTMLModifiable {
         appendingStyle("min-height: \(value.css)")
     }
     
+    func zIndex(_ value: Int) -> Self {
+        appendingStyle("z-index: \(value)")
+    }
+    
     // Position
     func position(_ value: String) -> Self {
         appendingStyle("position: \(value)")
