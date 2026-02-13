@@ -248,3 +248,114 @@ public extension HTMLModifiable {
         return copy
     }
 }
+
+// Typed JavaScript event overloads
+public extension HTMLModifiable {
+    func onclick(_ value: any JavaScript) -> Self {
+        onclick(value.render())
+    }
+
+    func onclick(@JSBuilder _ value: () -> [any JavaScript]) -> Self {
+        onclick(JSRendering.renderStatements(value))
+    }
+
+    func onchange(_ value: any JavaScript) -> Self {
+        onchange(value.render())
+    }
+
+    func onchange(@JSBuilder _ value: () -> [any JavaScript]) -> Self {
+        onchange(JSRendering.renderStatements(value))
+    }
+
+    func onsubmit(_ value: any JavaScript) -> Self {
+        onsubmit(value.render())
+    }
+
+    func onsubmit(@JSBuilder _ value: () -> [any JavaScript]) -> Self {
+        onsubmit(JSRendering.renderStatements(value))
+    }
+
+    func onkeydown(_ value: any JavaScript) -> Self {
+        onkeydown(value.render())
+    }
+
+    func onkeyup(_ value: any JavaScript) -> Self {
+        onkeyup(value.render())
+    }
+
+    func onfocus(_ value: any JavaScript) -> Self {
+        onfocus(value.render())
+    }
+
+    func onblur(_ value: any JavaScript) -> Self {
+        onblur(value.render())
+    }
+
+    func onmouseover(_ value: any JavaScript) -> Self {
+        onmouseover(value.render())
+    }
+
+    func onmouseout(_ value: any JavaScript) -> Self {
+        onmouseout(value.render())
+    }
+
+    func onmouseenter(_ value: any JavaScript) -> Self {
+        onmouseenter(value.render())
+    }
+
+    func onmouseleave(_ value: any JavaScript) -> Self {
+        onmouseleave(value.render())
+    }
+
+    func onmousedown(_ value: any JavaScript) -> Self {
+        onmousedown(value.render())
+    }
+
+    func onmouseup(_ value: any JavaScript) -> Self {
+        onmouseup(value.render())
+    }
+
+    func ontouchstart(_ value: any JavaScript) -> Self {
+        ontouchstart(value.render())
+    }
+
+    func ontouchend(_ value: any JavaScript) -> Self {
+        ontouchend(value.render())
+    }
+
+    func ontouchcancel(_ value: any JavaScript) -> Self {
+        ontouchcancel(value.render())
+    }
+
+    func ondblclick(_ value: any JavaScript) -> Self {
+        ondblclick(value.render())
+    }
+
+    func ondragstart(_ value: any JavaScript) -> Self {
+        ondragstart(value.render())
+    }
+
+    func ondrag(_ value: any JavaScript) -> Self {
+        ondrag(value.render())
+    }
+
+    func ondragend(_ value: any JavaScript) -> Self {
+        ondragend(value.render())
+    }
+
+    func ondragenter(_ value: any JavaScript) -> Self {
+        ondragenter(value.render())
+    }
+
+    func ondragover(_ value: any JavaScript) -> Self {
+        ondragover(value.render())
+    }
+
+    func ondragleave(_ value: any JavaScript) -> Self {
+        ondragleave(value.render())
+    }
+
+    func ondrop(_ value: any JavaScript) -> Self {
+        ondrop(value.render())
+    }
+}

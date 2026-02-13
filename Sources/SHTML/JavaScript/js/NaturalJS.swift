@@ -29,6 +29,12 @@ public struct JSExpr: JavaScript {
         let argList = args.map { $0.toJS() }.joined(separator: ", ")
         return JSExpr("\(code)(\(argList))")
     }
+
+    // Method calls with type-safe Swift values.
+    public func call(_ args: any ExpressibleAsJSArg...) -> JSExpr {
+        let jsArgs = args.map { $0.jsArg.toJS() }.joined(separator: ", ")
+        return JSExpr("\(code)(\(jsArgs))")
+    }
     
     // Assignment: element.assign("textContent", "Hi")
     public func assign(_ property: String, _ value: JSArg) -> JSStatement {
@@ -38,6 +44,11 @@ public struct JSExpr: JavaScript {
     // Assignment with typed JS expression/values
     public func assign(_ property: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
         assign(property, value.jsArg)
+    }
+
+    // Direct expression assignment: JS.this.scrollTop.set(...)
+    public func set(_ value: any ExpressibleAsJSArg) -> JSStatement {
+        JSStatement("\(code) = \(value.jsArg.toJS())")
     }
     
     // Array/object indexing: arr[0], obj["key"]
@@ -64,18 +75,18 @@ public struct JSExpr: JavaScript {
 }
 
 // Root JS objects
-@MainActor
-public let console = JSExpr("console")
-@MainActor
-public let document = JSExpr("document")
-@MainActor
-public let window = JSExpr("window")
-@MainActor
-public let localStorage = JSExpr("localStorage")
-@MainActor
-public let sessionStorage = JSExpr("sessionStorage")
+@MainActor public let console = JSExpr("console")
+@MainActor public let document = JSExpr("document")
+@MainActor public let window = JSExpr("window")
+@MainActor public let localStorage = JSExpr("localStorage")
+@MainActor public let sessionStorage = JSExpr("sessionStorage")
 
 public extension JS {
+    static var console: JSExpr { JSExpr("console") }
+    static var document: JSExpr { JSExpr("document") }
+    static var window: JSExpr { JSExpr("window") }
+    static var localStorage: JSExpr { JSExpr("localStorage") }
+    static var sessionStorage: JSExpr { JSExpr("sessionStorage") }
     static var `this`: JSExpr { JSExpr("this") }
     static var event: JSExpr { JSExpr("event") }
 }
@@ -128,6 +139,22 @@ extension JSExpr: ExpressibleAsJSArg {
 
 public protocol ExpressibleAsJSArg {
     var jsArg: JSArg { get }
+}
+
+public func + (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
+    lhs.plus(rhs)
+}
+
+public func - (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
+    lhs.minus(rhs)
+}
+
+public func * (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
+    lhs.multiplied(by: rhs)
+}
+
+public func / (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
+    lhs.divided(by: rhs)
 }
 
 // JS Statement (adds semicolon)

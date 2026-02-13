@@ -51,6 +51,21 @@ final class JavaScriptTests: XCTestCase {
             "this.scrollTop = (this.scrollTop - event.movementY);"
         )
     }
+
+    func testSetOnExpression() {
+        let statement = JS.this.scrollTop.set(
+            JS.this.scrollTop - JS.event.movementY
+        )
+        XCTAssertEqual(
+            statement.render(),
+            "this.scrollTop = (this.scrollTop - event.movementY);"
+        )
+    }
+
+    func testCallWithSwiftValues() {
+        let expr = JS.console.log.call("drag y", JS.event.clientY)
+        XCTAssertEqual(expr.render(), "console.log('drag y', event.clientY)")
+    }
     
     // MARK: - Helper Function Tests
     

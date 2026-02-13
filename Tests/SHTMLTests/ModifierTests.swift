@@ -184,6 +184,12 @@ final class ModifierTests: XCTestCase {
         XCTAssertTrue(div.render().contains("onclick=\"handleTap()\""))
     }
 
+    func testOnClickWithTypedJavaScript() {
+        let div = Div { "Tap" }.onclick(JS.console.log.call("clicked", JS.event.clientY))
+        let result = div.render()
+        XCTAssertTrue(result.contains("onclick=\"console.log(&#39;clicked&#39;, event.clientY)\""))
+    }
+
     func testOnTapGestureDoubleTap() {
         let div = Div { "Tap" }.onTapGesture(count: 2, perform: "handleDoubleTap()")
         XCTAssertTrue(div.render().contains("ondblclick=\"handleDoubleTap()\""))
