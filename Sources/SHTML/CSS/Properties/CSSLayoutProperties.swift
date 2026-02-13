@@ -9,12 +9,12 @@
 public func margin(
     _ edges: Edge.Set = .all,
     _ value: any CSSLengthConvertible
-) -> [CSSProperty] {
+) -> CSS {
     let v = value.cssLength
 
     // Only safe shorthand case
     if edges == .all {
-        return [.init("margin", v)]
+        return CSSProperty("margin", v)
     }
 
     var props: [CSSProperty] = []
@@ -32,14 +32,15 @@ public func margin(
         props.append(.init("margin-right", v))
     }
 
-    return props
+    return CSSPropertyGroup(props)
 }
 
 public func margin(
     _ value: any CSSLengthConvertible
-) -> [CSSProperty] {
-    margin(.all, value)
+) -> CSS {
+    padding(.all, value)
 }
+
 public func marginTop(_ value: any CSSLengthConvertible) -> CSSProperty {
     CSSProperty("margin-top", value.cssLength)
 }
