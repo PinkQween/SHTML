@@ -63,10 +63,6 @@ public func borderBottomRightRadius(_ value: any CSSLengthConvertible) -> CSSPro
 
 // MARK: - Box Model
 
-public func boxSizing(_ value: String) -> CSSProperty {
-    CSSProperty("box-sizing", value)
-}
-
 public func outline(_ value: String) -> CSSProperty {
     CSSProperty("outline", value)
 }

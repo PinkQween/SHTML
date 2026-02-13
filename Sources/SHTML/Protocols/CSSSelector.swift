@@ -76,6 +76,7 @@ public struct CSSSelector: ExpressibleByStringLiteral, Sendable {
     // MARK: - HTML Tag Selectors
     
     // Document & Metadata
+    public static let all = CSSSelector("*")
     public static let html = CSSSelector("html")
     public static let head = CSSSelector("head")
     public static let title = CSSSelector("title")
@@ -177,4 +178,25 @@ public struct CSSSelector: ExpressibleByStringLiteral, Sendable {
     public static let embed = CSSSelector("embed")
     public static let object = CSSSelector("object")
     public static let param = CSSSelector("param")
+    
+    // MARK: - Pseudo-elements
+    
+    // Common pseudo-elements
+    public static let before = CSSSelector("::before")
+    public static let after = CSSSelector("::after")
+    public static let firstLine = CSSSelector("::first-line")
+    public static let firstLetter = CSSSelector("::first-letter")
+    public static let selection = CSSSelector("::selection")
+    public static let placeholder = CSSSelector("::placeholder")
+    public static let marker = CSSSelector("::marker")
+    public static let backdrop = CSSSelector("::backdrop")
+    
+    // Webkit scrollbar pseudo-elements
+    public static let webkitScrollbar = CSSSelector("::-webkit-scrollbar")
+    public static let webkitScrollbarButton = CSSSelector("::-webkit-scrollbar-button")
+    public static let webkitScrollbarTrack = CSSSelector("::-webkit-scrollbar-track")
+    public static let webkitScrollbarTrackPiece = CSSSelector("::-webkit-scrollbar-track-piece")
+    public static let webkitScrollbarThumb = CSSSelector("::-webkit-scrollbar-thumb")
+    public static let webkitScrollbarCorner = CSSSelector("::-webkit-scrollbar-corner")
+    public static let webkitResizer = CSSSelector("::-webkit-resizer")
 }
