@@ -191,6 +191,14 @@ fn build_swift_package() -> bool {
             println!("  📊 {}", size_str);
         }
         
+        // Copy Assets to public if they exist
+        if Path::new("Assets").exists() {
+            let _ = fs::remove_dir_all("public/Assets");
+            if let Err(e) = copy_dir_all("Assets", "public/Assets") {
+                eprintln!("  ⚠️  Warning: Failed to copy assets: {}", e);
+            }
+        }
+        
         println!("\n╔═══════════════════════════════════════════╗");
         println!("║  ✅ Build Complete!                       ║");
         println!("╚═══════════════════════════════════════════╝\n");
