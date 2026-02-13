@@ -964,7 +964,8 @@ pub fn start_server_with_tui(
     
     thread::sleep(Duration::from_millis(100));
     
-    let listener = TcpListener::bind(format!("127.0.0.1:{}", port))?;
+    // Bind to 0.0.0.0 to accept connections from all network interfaces (including mobile devices)
+    let listener = TcpListener::bind(format!("0.0.0.0:{}", port))?;
     listener.set_nonblocking(false)?;
     
     {

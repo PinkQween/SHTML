@@ -13,6 +13,7 @@ public enum Color: Sendable {
     case hsl(Int, Int, Int)
     case hsla(Int, Int, Int, Double)
     case named(String)
+    case variable(String)  // CSS custom property
     
     public var css: String {
         switch self {
@@ -28,6 +29,8 @@ public enum Color: Sendable {
             return "hsla(\(h), \(s)%, \(l)%, \(a))"
         case .named(let name):
             return name
+        case .variable(let name):
+            return "var(\(name))"
         }
     }
     
