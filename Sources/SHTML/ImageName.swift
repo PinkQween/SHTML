@@ -20,8 +20,3 @@ public struct ImageName: ExpressibleByStringLiteral, Sendable {
 extension ImageName {
     public static let lily: ImageName = "lily"
 }
-
-// Convenience global function for creating images
-public func Image(_ imageName: ImageName, alt: String = "") -> Img {
-    Img(src: imageName.path, alt: alt)
-}
