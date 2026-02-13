@@ -267,13 +267,7 @@ public func configureAssets(@AssetBuilder _ builder: () -> [AssetRegistration]) 
 
 // MARK: - Convenience Functions
 
-public func Image(_ name: String) -> AssetRegistration {
-    .image(name, path: nil)
-}
-
-public func Image(_ name: String, path: String) -> AssetRegistration {
-    .image(name, path: path)
-}
+// Image() moved to ImageName.swift for type-safe asset references
 
 public func Font(_ name: String, format: FontAsset.FontFormat = .woff2) -> AssetRegistration {
     .font(name, format: format, path: nil)
