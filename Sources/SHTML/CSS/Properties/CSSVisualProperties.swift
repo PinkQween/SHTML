@@ -112,6 +112,10 @@ public func userDrag(_ value: UserDrag) -> CSSProperty {
     CSSProperty("user-drag", value.rawValue)
 }
 
+public func webkitUserDrag(_ value: UserDrag) -> CSSProperty {
+    CSSProperty("-webkit-user-drag", value.rawValue)
+}
+
 public func objectPosition(_ value: String) -> CSSProperty {
     CSSProperty("object-position", value)
 }
