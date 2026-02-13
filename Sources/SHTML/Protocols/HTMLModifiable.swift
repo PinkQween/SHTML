@@ -347,5 +347,45 @@ public extension HTMLModifiable {
     func animation(_ value: String) -> Self {
         appendingStyle("animation: \(value)")
     }
+    
+    // Overlay - creates a positioned overlay element
+    func overlay(@HTMLBuilder _ content: @escaping () -> [any HTML]) -> Div {
+        Div {
+            [self] + content()
+        }
+        .style("position: relative")
+    }
+    
+    func overlay(alignment: String = "center", @HTMLBuilder _ content: @escaping () -> [any HTML]) -> Div {
+        let alignStyles: String
+        switch alignment {
+        case "top":
+            alignStyles = "top: 0; left: 50%; transform: translateX(-50%)"
+        case "bottom":
+            alignStyles = "bottom: 0; left: 50%; transform: translateX(-50%)"
+        case "leading", "left":
+            alignStyles = "left: 0; top: 50%; transform: translateY(-50%)"
+        case "trailing", "right":
+            alignStyles = "right: 0; top: 50%; transform: translateY(-50%)"
+        case "topLeading":
+            alignStyles = "top: 0; left: 0"
+        case "topTrailing":
+            alignStyles = "top: 0; right: 0"
+        case "bottomLeading":
+            alignStyles = "bottom: 0; left: 0"
+        case "bottomTrailing":
+            alignStyles = "bottom: 0; right: 0"
+        default: // center
+            alignStyles = "top: 50%; left: 50%; transform: translate(-50%, -50%)"
+        }
+        
+        return Div {
+            [self] + [Div {
+                content()
+            }
+            .style("position: absolute; \(alignStyles)")]
+        }
+        .style("position: relative")
+    }
 }
 

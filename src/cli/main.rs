@@ -3,6 +3,7 @@ use std::process;
 
 mod server;
 mod commands;
+mod tui;
 
 #[derive(Parser)]
 #[command(name = "shtml")]

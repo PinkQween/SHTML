@@ -1,11 +1,16 @@
-public struct Form: HTMLPrimitive {
+public struct Form: HTMLPrimitive, HTMLContentModifiable {
     public typealias Body = Never
     
-    private var attributes: [String: String]
+    public var attributes: [String: String]
     private let content: () -> [any HTML]
 
     public init(@HTMLBuilder _ content: @escaping () -> [any HTML]) {
         self.attributes = ["method": "POST"]
+        self.content = content
+    }
+    
+    public init(attributes: [String: String], content: @escaping () -> [any HTML]) {
+        self.attributes = attributes
         self.content = content
     }
 
@@ -24,12 +29,6 @@ public struct Form: HTMLPrimitive {
     public func method(_ value: String) -> Self {
         var copy = self
         copy.attributes["method"] = value
-        return copy
-    }
-    
-    public func `class`(_ value: String) -> Self {
-        var copy = self
-        copy.attributes["class"] = value
         return copy
     }
 }
