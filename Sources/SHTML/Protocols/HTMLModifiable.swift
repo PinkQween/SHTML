@@ -163,39 +163,92 @@ public extension HTMLModifiable {
     }
     
     // Layout
+    /// Public-facing padding that doesn't expose internal types.
+    /// Accepts a raw CSS length string.
     func padding(_ value: String) -> Self {
         appendingStyle("padding: \(value)")
     }
-    
-    func padding(top: String? = nil, right: String? = nil, bottom: String? = nil, left: String? = nil) -> Self {
-        var result = self
-        if let top = top { result = result.appendingStyle("padding-top: \(top)") }
-        if let right = right { result = result.appendingStyle("padding-right: \(right)") }
-        if let bottom = bottom { result = result.appendingStyle("padding-bottom: \(bottom)") }
-        if let left = left { result = result.appendingStyle("padding-left: \(left)") }
-        return result
+
+    /// Public-facing padding that accepts a CSSLength without referencing internal Edge.Set defaults.
+    /// Callers specify the length and we apply it to all edges.
+    func padding(_ length: CSSLength) -> Self {
+        appendingStyle("padding: \(length.css)")
+    }
+
+    /// Internal helper that supports edge-specific padding using internal Edge.Set.
+    /// Kept internal to avoid leaking internal types in the public API.
+    internal func padding(_ edges: Edge.Set, _ length: CSSLength) -> Self {
+        return padding(edges, length.css)
+    }
+
+    /// Internal helper that applies edge-specific padding using a raw CSS value.
+    private func padding(_ edges: Edge.Set, _ value: String) -> Self {
+        switch edges {
+        case .all:
+            return appendingStyle("padding: \(value)")
+        case .horizontal:
+            return appendingStyle("padding-left: \(value); padding-right: \(value)")
+        case .vertical:
+            return appendingStyle("padding-top: \(value); padding-bottom: \(value)")
+        case .top:
+            return appendingStyle("padding-top: \(value)")
+        case .bottom:
+            return appendingStyle("padding-bottom: \(value)")
+        case .leading:
+            return appendingStyle("padding-left: \(value)")
+        case .trailing:
+            return appendingStyle("padding-right: \(value)")
+        default:
+            var styles: [String] = []
+            if edges.contains(.top) { styles.append("padding-top: \(value)") }
+            if edges.contains(.bottom) { styles.append("padding-bottom: \(value)") }
+            if edges.contains(.leading) { styles.append("padding-left: \(value)") }
+            if edges.contains(.trailing) { styles.append("padding-right: \(value)") }
+            return appendingStyle(styles.joined(separator: "; "))
+        }
     }
     
+    // Layout - Margin
+    /// Public-facing margin that accepts a raw CSS length string and applies to all edges.
     func margin(_ value: String) -> Self {
         appendingStyle("margin: \(value)")
     }
-    
-    func margin(top: String? = nil, right: String? = nil, bottom: String? = nil, left: String? = nil) -> Self {
-        var result = self
-        if let top = top { result = result.appendingStyle("margin-top: \(top)") }
-        if let right = right { result = result.appendingStyle("margin-right: \(right)") }
-        if let bottom = bottom { result = result.appendingStyle("margin-bottom: \(bottom)") }
-        if let left = left { result = result.appendingStyle("margin-left: \(left)") }
-        return result
+
+    /// Public-facing margin that accepts a CSSLength and applies to all edges.
+    func margin(_ length: CSSLength) -> Self {
+        appendingStyle("margin: \(length.css)")
     }
-    
-    func frame(width: String? = nil, height: String? = nil, maxWidth: String? = nil, minHeight: String? = nil) -> Self {
-        var result = self
-        if let width = width { result = result.appendingStyle("width: \(width)") }
-        if let height = height { result = result.appendingStyle("height: \(height)") }
-        if let maxWidth = maxWidth { result = result.appendingStyle("max-width: \(maxWidth)") }
-        if let minHeight = minHeight { result = result.appendingStyle("min-height: \(minHeight)") }
-        return result
+
+    /// Internal helper to support edge-specific margin using internal Edge.Set and CSSLength.
+    internal func margin(_ edges: Edge.Set, _ length: CSSLength) -> Self {
+        return margin(edges, length.css)
+    }
+
+    /// Internal helper that applies edge-specific margin using a raw CSS value.
+    private func margin(_ edges: Edge.Set, _ value: String) -> Self {
+        switch edges {
+        case .all:
+            return appendingStyle("margin: \(value)")
+        case .horizontal:
+            return appendingStyle("margin-left: \(value); margin-right: \(value)")
+        case .vertical:
+            return appendingStyle("margin-top: \(value); margin-bottom: \(value)")
+        case .top:
+            return appendingStyle("margin-top: \(value)")
+        case .bottom:
+            return appendingStyle("margin-bottom: \(value)")
+        case .leading:
+            return appendingStyle("margin-left: \(value)")
+        case .trailing:
+            return appendingStyle("margin-right: \(value)")
+        default:
+            var styles: [String] = []
+            if edges.contains(.top) { styles.append("margin-top: \(value)") }
+            if edges.contains(.bottom) { styles.append("margin-bottom: \(value)") }
+            if edges.contains(.leading) { styles.append("margin-left: \(value)") }
+            if edges.contains(.trailing) { styles.append("margin-right: \(value)") }
+            return appendingStyle(styles.joined(separator: "; "))
+        }
     }
     
     // Colors
@@ -295,3 +348,4 @@ public extension HTMLModifiable {
         appendingStyle("animation: \(value)")
     }
 }
+
