@@ -110,20 +110,21 @@ let package = Package(
     // Write main.swift
     let main_swift = r#"import SHTML
 
-@main
 struct MyWebsite: Website {
     var body: some HTML {
-        Html({
-            Head({
+        html {
+            head {
                 meta().charset("UTF-8")
-                Title("SHTML Site")
-            })
-            Body({
+                title("SHTML Site")
+            }
+            SHTML.body {
                 h1 { "Hello SHTML!" }
-            })
-        })
+            }
+        }
     }
 }
+
+let site = MyWebsite()
 "#;
     fs::write(sources_dir.join("main.swift"), main_swift)?;
 
