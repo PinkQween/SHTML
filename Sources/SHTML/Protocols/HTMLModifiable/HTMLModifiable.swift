@@ -70,6 +70,12 @@ public extension HTMLModifiable {
         return copy
     }
     
+    func draggable(_ value: Bool = true) -> Self {
+        var copy = self
+        copy.attributes["draggable"] = value ? "true" : "false"
+        return copy
+    }
+    
     func tabIndex(_ value: Int) -> Self {
         var copy = self
         copy.attributes["tabindex"] = "\(value)"
@@ -148,6 +154,49 @@ public extension HTMLModifiable {
     func onmouseout(_ value: String) -> Self {
         var copy = self
         copy.attributes["onmouseout"] = value
+        return copy
+    }
+    
+    // Drag and drop events
+    func ondragstart(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondragstart"] = value
+        return copy
+    }
+    
+    func ondrag(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondrag"] = value
+        return copy
+    }
+    
+    func ondragend(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondragend"] = value
+        return copy
+    }
+    
+    func ondragenter(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondragenter"] = value
+        return copy
+    }
+    
+    func ondragover(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondragover"] = value
+        return copy
+    }
+    
+    func ondragleave(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondragleave"] = value
+        return copy
+    }
+    
+    func ondrop(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondrop"] = value
         return copy
     }
 }
