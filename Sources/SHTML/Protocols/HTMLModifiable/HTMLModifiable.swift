@@ -108,6 +108,12 @@ public extension HTMLModifiable {
         copy.attributes["onclick"] = value
         return copy
     }
+
+    func ondblclick(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ondblclick"] = value
+        return copy
+    }
     
     func onchange(_ value: String) -> Self {
         var copy = self
@@ -150,10 +156,52 @@ public extension HTMLModifiable {
         copy.attributes["onmouseover"] = value
         return copy
     }
-    
+
+    func onmouseenter(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["onmouseenter"] = value
+        return copy
+    }
+
     func onmouseout(_ value: String) -> Self {
         var copy = self
         copy.attributes["onmouseout"] = value
+        return copy
+    }
+
+    func onmouseleave(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["onmouseleave"] = value
+        return copy
+    }
+
+    func onmousedown(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["onmousedown"] = value
+        return copy
+    }
+
+    func onmouseup(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["onmouseup"] = value
+        return copy
+    }
+
+    func ontouchstart(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ontouchstart"] = value
+        return copy
+    }
+
+    func ontouchend(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ontouchend"] = value
+        return copy
+    }
+
+    func ontouchcancel(_ value: String) -> Self {
+        var copy = self
+        copy.attributes["ontouchcancel"] = value
         return copy
     }
     

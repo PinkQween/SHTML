@@ -176,4 +176,42 @@ final class ModifierTests: XCTestCase {
         let div = Div { "Content" }.transition("opacity 0.5s ease")
         XCTAssertTrue(div.render().contains("transition: opacity 0.5s ease"))
     }
+
+    // MARK: - Gesture Modifiers
+
+    func testOnTapGestureSingleTap() {
+        let div = Div { "Tap" }.onTapGesture(perform: "handleTap()")
+        XCTAssertTrue(div.render().contains("onclick=\"handleTap()\""))
+    }
+
+    func testOnTapGestureDoubleTap() {
+        let div = Div { "Tap" }.onTapGesture(count: 2, perform: "handleDoubleTap()")
+        XCTAssertTrue(div.render().contains("ondblclick=\"handleDoubleTap()\""))
+    }
+
+    func testOnHoverGesture() {
+        let div = Div { "Hover" }.onHover(enter: "handleEnter()", leave: "handleLeave()")
+        let result = div.render()
+        XCTAssertTrue(result.contains("onmouseenter=\"handleEnter()\""))
+        XCTAssertTrue(result.contains("onmouseleave=\"handleLeave()\""))
+    }
+
+    func testOnDragGesture() {
+        let div = Div { "Drag" }.onDragGesture(onChanged: "handleDrag()", onEnded: "handleDragEnd()")
+        let result = div.render()
+        XCTAssertTrue(result.contains("draggable=\"true\""))
+        XCTAssertTrue(result.contains("ondrag=\"handleDrag()\""))
+        XCTAssertTrue(result.contains("ondragend=\"handleDragEnd()\""))
+    }
+
+    func testOnLongPressGesture() {
+        let div = Div { "Press" }.onLongPressGesture(minimumDuration: 1.2, perform: "handleLongPress()")
+        let result = div.render()
+        XCTAssertTrue(result.contains("onmousedown="))
+        XCTAssertTrue(result.contains("onmouseup="))
+        XCTAssertTrue(result.contains("ontouchstart="))
+        XCTAssertTrue(result.contains("ontouchend="))
+        XCTAssertTrue(result.contains("handleLongPress()"))
+        XCTAssertTrue(result.contains("1200"))
+    }
 }
