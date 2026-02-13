@@ -27,8 +27,33 @@ public func marginLeft(_ value: any CSSLengthConvertible) -> CSSProperty {
     CSSProperty("margin-left", value.cssLength)
 }
 
-public func padding(_ value: any CSSLengthConvertible) -> CSSProperty {
-    CSSProperty("padding", value.cssLength)
+public func padding(
+    _ edges: Edge.Set = .all,
+    _ value: any CSSLengthConvertible
+) -> CSSProperty {
+    let v = value.cssLength
+
+    // Only safe shorthand case
+    if edges == .all {
+        return .init("padding", v)
+    }
+
+    var parts: [String] = []
+
+    if edges.contains(.top) {
+        parts.append("padding-top: \(v);")
+    }
+    if edges.contains(.bottom) {
+        parts.append("padding-bottom: \(v);")
+    }
+    if edges.contains(.leading) {
+        parts.append("padding-left: \(v);")
+    }
+    if edges.contains(.trailing) {
+        parts.append("padding-right: \(v);")
+    }
+
+    return .init("style", parts.joined(separator: " "))
 }
 
 public func paddingTop(_ value: any CSSLengthConvertible) -> CSSProperty {
