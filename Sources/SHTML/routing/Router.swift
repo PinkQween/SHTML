@@ -37,6 +37,14 @@ public struct Router: HTML {
     private func renderScript() -> String {
         script {
             JSRaw("""
+            function safeDecode(value) {
+                try {
+                    return decodeURIComponent(value);
+                } catch (_) {
+                    return value;
+                }
+            }
+
             function parseQuery(search) {
                 const params = {};
                 const query = search.startsWith('?') ? search.slice(1) : search;
@@ -45,8 +53,8 @@ public struct Router: HTML {
                 query.split('&').forEach(pair => {
                     if (!pair) return;
                     const [rawKey, rawValue = ''] = pair.split('=');
-                    const key = decodeURIComponent(rawKey || '');
-                    const value = decodeURIComponent(rawValue || '');
+                    const key = safeDecode(rawKey || '');
+                    const value = safeDecode(rawValue || '');
                     if (!key) return;
                     
                     if (Object.prototype.hasOwnProperty.call(params, key)) {
@@ -104,7 +112,7 @@ public struct Router: HTML {
                         if (!key) {
                             return { matched: false, params: {} };
                         }
-                        params[key] = decodeURIComponent(pathSegment);
+                        params[key] = safeDecode(pathSegment);
                         continue;
                     }
                     
@@ -117,9 +125,23 @@ public struct Router: HTML {
             }
             
             function navigateToPath(target) {
-                const url = new URL(target, window.location.origin);
-                const path = url.pathname;
-                const query = parseQuery(url.search);
+                let path = '/';
+                let query = {};
+                
+                try {
+                    const url = new URL(target, window.location.origin);
+                    path = url.pathname;
+                    query = parseQuery(url.search);
+                } catch (_) {
+                    const raw = String(target || '/');
+                    const qIndex = raw.indexOf('?');
+                    if (qIndex >= 0) {
+                        path = raw.slice(0, qIndex) || '/';
+                        query = parseQuery(raw.slice(qIndex));
+                    } else {
+                        path = raw || '/';
+                    }
+                }
                 const routes = document.querySelectorAll('.router .route');
                 const fallback = document.querySelector('.router .route-fallback');
                 let matched = false;

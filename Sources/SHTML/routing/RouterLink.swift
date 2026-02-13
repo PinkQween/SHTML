@@ -19,9 +19,12 @@ public struct RouterLink: HTML, HTMLModifiable {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().map { $0.render() }.joined()
         let replaceParam = replace ? "true" : "false"
+        let escapedTo = to
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "'", with: "\\'")
         
         return """
-        <a href="\(to)" onclick="event.preventDefault(); window.navigate('\(to)', \(replaceParam));"\(attrs)>
+        <a href="\(to)" onclick="event.preventDefault(); if (window.navigate) { window.navigate('\(escapedTo)', \(replaceParam)); } else { window.location.href = '\(escapedTo)'; }"\(attrs)>
         \(children)
         </a>
         """
