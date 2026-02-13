@@ -1,4 +1,5 @@
 use std::{
+    env,
     fs,
     io::{self, Write},
     path::{Path, PathBuf},
@@ -68,12 +69,36 @@ pub fn run(name: Option<String>) -> io::Result<()> {
 
     // Swift module/target folder name: use the directory name when project_name == "."
     let swift_target_name = if project_name == "." {
-        project_dir
-            .file_name()
+        // Try to get the current working directory's last path component
+        let cwd = env::current_dir();
+        let name_from_cwd = cwd
+            .as_ref()
+            .ok()
+            .and_then(|p| p.file_name())
             .and_then(|s| s.to_str())
-            .filter(|s| !s.trim().is_empty())
-            .unwrap_or("MySite")
-            .to_string()
+            .map(|s| s.trim())
+            .filter(|s| !s.is_empty())
+            .map(|s| s.to_string());
+
+        // If that failed (e.g., weird path), try canonicalizing project_dir and get its last component
+        let name = name_from_cwd.or_else(|| {
+            project_dir
+                .canonicalize()
+                .ok()
+                .and_then(|p| p.file_name().map(|os| os.to_owned()))
+                .and_then(|os| os.to_str().map(|s| s.trim().to_string()))
+                .filter(|s| !s.is_empty())
+        });
+
+        match name {
+            Some(n) => n,
+            None => {
+                return Err(io::Error::new(
+                    io::ErrorKind::InvalidInput,
+                    "Could not determine a name from the current directory. Please pass a project name explicitly (e.g., `shtml init MySite`).",
+                ));
+            }
+        }
     } else {
         project_name.clone()
     };
@@ -142,3 +167,4 @@ let site = MyWebsite()
 
     Ok(())
 }
+
