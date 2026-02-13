@@ -101,6 +101,46 @@ public enum TimingFunction {
     }
 }
 
+// Type-safe transition
+public struct Transition {
+    public let property: String
+    public let duration: CSSLength
+    public let timingFunction: TimingFunction
+    public let delay: CSSLength?
+    
+    public init(property: String = "all", duration: CSSLength, timingFunction: TimingFunction = .easeInOut, delay: CSSLength? = nil) {
+        self.property = property
+        self.duration = duration
+        self.timingFunction = timingFunction
+        self.delay = delay
+    }
+    
+    public var css: String {
+        var result = "\(property) \(duration.css) \(timingFunction.css)"
+        if let delay = delay {
+            result += " \(delay.css)"
+        }
+        return result
+    }
+    
+    // Convenience constructors
+    public static func all(duration: CSSLength, timing: TimingFunction = .easeInOut, delay: CSSLength? = nil) -> Transition {
+        Transition(property: "all", duration: duration, timingFunction: timing, delay: delay)
+    }
+    
+    public static func opacity(duration: CSSLength, timing: TimingFunction = .easeInOut, delay: CSSLength? = nil) -> Transition {
+        Transition(property: "opacity", duration: duration, timingFunction: timing, delay: delay)
+    }
+    
+    public static func transform(duration: CSSLength, timing: TimingFunction = .easeInOut, delay: CSSLength? = nil) -> Transition {
+        Transition(property: "transform", duration: duration, timingFunction: timing, delay: delay)
+    }
+    
+    public static func background(duration: CSSLength, timing: TimingFunction = .easeInOut, delay: CSSLength? = nil) -> Transition {
+        Transition(property: "background", duration: duration, timingFunction: timing, delay: delay)
+    }
+}
+
 public enum Visibility: String {
     case visible
     case hidden

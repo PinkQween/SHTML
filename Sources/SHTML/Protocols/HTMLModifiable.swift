@@ -318,6 +318,10 @@ public extension HTMLModifiable {
         appendingStyle("transition: \(value)")
     }
     
+    func transition(_ value: Transition) -> Self {
+        appendingStyle("transition: \(value.css)")
+    }
+    
     func shadow(x: String = "0", y: String = "10px", blur: String = "30px", color: String = "rgba(0,0,0,0.2)") -> Self {
         appendingStyle("box-shadow: \(x) \(y) \(blur) \(color)")
     }

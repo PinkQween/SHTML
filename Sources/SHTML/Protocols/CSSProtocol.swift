@@ -49,6 +49,11 @@ public struct CSSSelector: ExpressibleByStringLiteral {
     public var nthChild: CSSSelector {
         CSSSelector("\(value):nth-child")
     }
+    
+    // Helper to get class name without dot
+    public var className: String {
+        value.replacingOccurrences(of: ".", with: "")
+    }
 }
 
 // CSS Rule - represents a selector with properties
