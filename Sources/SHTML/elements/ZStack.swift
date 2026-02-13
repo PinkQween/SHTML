@@ -30,7 +30,7 @@
 public struct ZStack: HTML, HTMLModifiable {
     public var attributes: [String: String]
     private let alignment: String
-    private let content: () -> [any HTML]
+    public let content: () -> [any HTML]
     
     /// Creates a ZStack with the specified alignment and content.
     ///

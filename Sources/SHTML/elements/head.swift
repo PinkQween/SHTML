@@ -1,6 +1,6 @@
 public struct Head: HTML {
     private var attributes: [String: String]
-    private let content: () -> [any HTML]
+    public let content: () -> [any HTML]
 
     public init(@HTMLBuilder _ content: @escaping () -> [any HTML]) {
         self.attributes = [:]

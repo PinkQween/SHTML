@@ -8,7 +8,7 @@
 public struct HStack: HTML, HTMLModifiable {
     public var attributes: [String: String]
     private let spacing: String?
-    private let content: () -> [any HTML]
+    public let content: () -> [any HTML]
     
     public init(alignment: AlignItems = .stretch, spacing: String? = nil, @HTMLBuilder _ content: @escaping () -> [any HTML]) {
         var attrs: [String: String] = [:]

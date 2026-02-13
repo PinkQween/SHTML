@@ -3,7 +3,7 @@ public struct Document: HTML {
     private let title: String
     private let styles: String?
     private let scripts: String?
-    private let content: () -> [any HTML]
+    public let content: () -> [any HTML]
     
     public init(
         title: String,

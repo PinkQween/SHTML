@@ -75,8 +75,10 @@ public struct CSSSelector: ExpressibleByStringLiteral, Sendable {
     
     // MARK: - HTML Tag Selectors
     
-    // Document & Metadata
+    // Universal selector
     public static let all = CSSSelector("*")
+    
+    // Document & Metadata
     public static let html = CSSSelector("html")
     public static let head = CSSSelector("head")
     public static let title = CSSSelector("title")

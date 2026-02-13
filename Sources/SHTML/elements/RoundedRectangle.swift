@@ -25,7 +25,7 @@
 ///     .frame(width: 200.px, height: 60.px)
 /// ```
 public struct RoundedRectangle: Shape, HTML {
-    public typealias Body = Never
+    public typealias Content = Never
     public let shape: ShapeType = .rectangle
     private var attributes: [String: String] = [:]
 

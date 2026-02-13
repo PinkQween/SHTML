@@ -18,7 +18,7 @@
 /// }
 /// ```
 public struct Path: Shape, HTML {
-    public typealias Body = Never
+    public typealias Content = Never
     public let shape: ShapeType = .path
     private let d: String
     private var attributes: [String: String] = [:]

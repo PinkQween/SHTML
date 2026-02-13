@@ -6,7 +6,7 @@
 //
 
 public struct Polygon: Shape, HTML {
-    public typealias Body = Never
+    public typealias Content = Never
     public let shape: ShapeType = .polygon
 
     /// The points that make up the polygon in local coordinates.

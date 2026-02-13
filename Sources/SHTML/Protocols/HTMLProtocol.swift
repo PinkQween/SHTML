@@ -7,14 +7,14 @@
 
 /// The base protocol for all HTML content.
 ///
-/// Conform to `HTML` to create custom HTML components. Use the `var body: some HTML` pattern
+/// Conform to `HTML` to create custom HTML components. Use the `var content: some HTML` pattern
 /// to compose smaller components into larger ones, similar to SwiftUI's `View` protocol.
 ///
 /// ## Example
 ///
 /// ```swift
 /// struct Card: HTML {
-///     var body: some HTML {
+///     var content: some HTML {
 ///         Div {
 ///             h2 { "Card Title" }
 ///             p { "Card content goes here" }
@@ -33,7 +33,7 @@
 ///
 /// ```swift
 /// struct MyElement: HTMLPrimitive {
-///     public typealias Body = Never
+///     public typealias Content = Never
 ///
 ///     public func render() -> String {
 ///         "<custom-element>Content</custom-element>"
@@ -45,7 +45,7 @@
 ///
 /// ### Creating Components
 ///
-/// - ``body``
+/// - ``content``
 /// - ``render()``
 ///
 /// ### Primitive Elements
@@ -56,7 +56,7 @@ public protocol HTML {
     ///
     /// For most components, this will be `some HTML`. For primitive elements
     /// that directly implement `render()`, this should be `Never`.
-    associatedtype Body
+    associatedtype Content
     
     /// The content and behavior of the HTML component.
     ///
@@ -64,14 +64,14 @@ public protocol HTML {
     /// other HTML elements together.
     ///
     /// ```swift
-    /// var body: some HTML {
+    /// var content: some HTML {
     ///     Div {
     ///         h1 { "Title" }
     ///         p { "Paragraph" }
     ///     }
     /// }
     /// ```
-    var body: Body { get }
+    var content: Content { get }
     
     /// Renders this HTML component to a string.
     ///
@@ -82,17 +82,17 @@ public protocol HTML {
     func render() -> String
 }
 
-// For primitive elements that don't have a body
-public extension HTML where Body == Never {
-    var body: Never {
-        fatalError("This should never be called")
+// For primitive elements that don't have nested content
+public extension HTML where Content == Never {
+    var content: Never {
+        fatalError("This element has no content")
     }
 }
 
-// Default render implementation for components with body (only when Body conforms to HTML)
-public extension HTML where Body: HTML {
+// Default render implementation for components with content (only when Content conforms to HTML)
+public extension HTML where Content: HTML {
     func render() -> String {
-        body.render()
+        content.render()
     }
 }
 
@@ -105,7 +105,7 @@ public extension HTML {
     }
 }
 
-/// Protocol for primitive HTML elements that don't have a body property.
+/// Protocol for primitive HTML elements that don't have nested content.
 ///
 /// Use `HTMLPrimitive` for base HTML elements like `<div>`, `<p>`, `<h1>`, etc.
 /// These elements implement `render()` directly and don't compose other elements.
@@ -114,7 +114,7 @@ public extension HTML {
 ///
 /// ```swift
 /// public struct CustomTag: HTMLPrimitive {
-///     public typealias Body = Never
+///     public typealias Content = Never
 ///     
 ///     private let content: String
 ///     
@@ -127,5 +127,6 @@ public extension HTML {
 ///     }
 /// }
 /// ```
-public protocol HTMLPrimitive: HTML where Body == Never {
+public protocol HTMLPrimitive: HTML where Content == Never {
 }
+

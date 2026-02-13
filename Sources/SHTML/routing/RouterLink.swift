@@ -2,7 +2,7 @@ public struct RouterLink: HTML, HTMLModifiable {
     public var attributes: [String: String]
     private let to: String
     private let replace: Bool
-    private let content: () -> [any HTML]
+    public let content: () -> [any HTML]
     
     public init(
         to: String,

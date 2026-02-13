@@ -1,6 +1,6 @@
 // ForEach - Loop over collections to generate HTML (like SwiftUI's ForEach)
 public struct ForEach<Data: Sequence>: HTMLPrimitive {
-    public typealias Body = Never
+    public typealias Content = Never
     
     private let data: Data
     private let content: (Data.Element) -> [any HTML]

@@ -1,5 +1,5 @@
 public struct Img: HTMLPrimitive, HTMLModifiable {
-    public typealias Body = Never
+    public typealias Content = Never
     
     public var attributes: [String: String]
     

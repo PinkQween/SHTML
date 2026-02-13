@@ -25,7 +25,7 @@
 ///     .fill(.green)
 /// ```
 public struct Ellipse: Shape, HTML {
-    public typealias Body = Never
+    public typealias Content = Never
     public let shape: ShapeType = .circle
     private var attributes: [String: String] = [:]
     

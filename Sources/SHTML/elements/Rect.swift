@@ -19,7 +19,7 @@
 ///     .fill("red")
 /// ```
 public struct Rect: Shape, HTML {
-    public typealias Body = Never
+    public typealias Content = Never
     public let shape: ShapeType = .rectangle
     private var attributes: [String: String] = [:]
 

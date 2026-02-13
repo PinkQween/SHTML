@@ -1,5 +1,5 @@
 public struct ScriptTag: HTMLPrimitive {
-    public typealias Body = Never
+    public typealias Content = Never
     
     private var attributes: [String: String]
     private let content: String

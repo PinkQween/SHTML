@@ -1,6 +1,6 @@
 // Group - Container for multiple HTML elements (like SwiftUI's Group)
 public struct Group: HTMLPrimitive {
-    public typealias Body = Never
+    public typealias Content = Never
     
     private let content: () -> [any HTML]
     

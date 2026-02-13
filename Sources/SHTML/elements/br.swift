@@ -6,7 +6,7 @@
 //
 
 public struct Br: HTMLPrimitive {
-    public typealias Body = Never
+    public typealias Content = Never
     
     public init() {}
 

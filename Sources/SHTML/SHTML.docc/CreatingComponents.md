@@ -28,7 +28,7 @@ Add properties to make your components dynamic:
 struct Greeting: HTML {
     let name: String
     
-    var body: some HTML {
+    var content: some HTML {
         h1 { "Hello, \(name)!" }
     }
 }
@@ -47,7 +47,7 @@ struct Card: HTML {
     let content: String
     let imageURL: String?
     
-    var body: some HTML {
+    var content: some HTML {
         Div {
             if let imageURL = imageURL {
                 img().src(imageURL)
@@ -81,7 +81,7 @@ struct ProfileCard: HTML {
     let name: String
     let bio: String
     
-    var body: some HTML {
+    var content: some HTML {
         VStack(spacing: "16px") {
             img().src("avatar.jpg")
                 .cornerRadius("50%")
@@ -108,7 +108,7 @@ struct IconButton: HTML {
     let icon: String
     let label: String
     
-    var body: some HTML {
+    var content: some HTML {
         HStack(spacing: "8px") {
             img().src(icon)
                 .frame(width: "20px", height: "20px")
@@ -128,7 +128,7 @@ Layer elements on top of each other:
 
 ```swift
 struct HeroSection: HTML {
-    var body: some HTML {
+    var content: some HTML {
         ZStack(alignment: "center") {
             // Background image/color
             Rect()
@@ -159,7 +159,7 @@ struct UserProfile: HTML {
     let user: User
     let isLoggedIn: Bool
     
-    var body: some HTML {
+    var content: some HTML {
         Div {
             if isLoggedIn {
                 VStack {
@@ -185,7 +185,7 @@ Use Swift's `for` loops to generate repeated content:
 struct TodoList: HTML {
     let items: [String]
     
-    var body: some HTML {
+    var content: some HTML {
         ul {
             for item in items {
                 li { item }
@@ -202,7 +202,7 @@ Use `Group` to return multiple root elements:
 
 ```swift
 struct Navigation: HTML {
-    var body: some HTML {
+    var content: some HTML {
         Group {
             nav {
                 HStack(spacing: "20px") {
@@ -229,7 +229,7 @@ struct PrimaryButton: HTML {
     let text: String
     let action: String
     
-    var body: some HTML {
+    var content: some HTML {
         button { text }
             .padding("12px 24px")
             .background("linear-gradient(135deg, #667eea 0%, #764ba2 100%)")
@@ -260,7 +260,7 @@ Here's a complete example combining multiple components:
 
 ```swift
 struct LandingPage: HTML {
-    var body: some HTML {
+    var content: some HTML {
         html {
             head {
                 Title("My App")
@@ -280,7 +280,7 @@ struct LandingPage: HTML {
 }
 
 struct Header: HTML {
-    var body: some HTML {
+    var content: some HTML {
         nav {
             HStack(spacing: "32px") {
                 h1 { "MyApp" }
