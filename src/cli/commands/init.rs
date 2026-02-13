@@ -120,7 +120,7 @@ let package = Package(
         .executable(name: "{target}", targets: ["{target}"])
     ],
     dependencies: [
-        .package(url: "https://github.com/pinkqween/SHTML.git", from: "0.0.1")
+        .package(url: "https://github.com/pinkqween/SHTML.git", from: "0.1.1")
     ],
     targets: [
         .executableTarget(name: "{target}", dependencies: ["SHTML"])
@@ -150,6 +150,7 @@ struct MyWebsite: Website {
 }
 
 let site = MyWebsite()
+site.generate()
 "#;
     fs::write(sources_dir.join("main.swift"), main_swift)?;
 
