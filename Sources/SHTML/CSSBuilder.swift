@@ -445,6 +445,10 @@ public func transition(_ value: String) -> CSSProperty {
     CSSProperty("transition", value)
 }
 
+public func transition(_ value: Transition) -> CSSProperty {
+    CSSProperty("transition", value.css)
+}
+
 public func transitionProperty(_ value: String) -> CSSProperty {
     CSSProperty("transition-property", value)
 }
@@ -453,12 +457,24 @@ public func transitionDuration(_ value: String) -> CSSProperty {
     CSSProperty("transition-duration", value)
 }
 
+public func transitionDuration(_ value: CSSLength) -> CSSProperty {
+    CSSProperty("transition-duration", value.css)
+}
+
 public func transitionTimingFunction(_ value: String) -> CSSProperty {
     CSSProperty("transition-timing-function", value)
 }
 
+public func transitionTimingFunction(_ value: TimingFunction) -> CSSProperty {
+    CSSProperty("transition-timing-function", value.css)
+}
+
 public func transitionDelay(_ value: String) -> CSSProperty {
     CSSProperty("transition-delay", value)
+}
+
+public func transitionDelay(_ value: CSSLength) -> CSSProperty {
+    CSSProperty("transition-delay", value.css)
 }
 
 // MARK: - Animations

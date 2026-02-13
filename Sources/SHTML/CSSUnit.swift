@@ -19,4 +19,6 @@ public enum CSSUnit: String, CaseIterable, Sendable {
     case mm
     case pt
     case pc
+    case ms
+    case s
 }

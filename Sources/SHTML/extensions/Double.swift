@@ -12,6 +12,8 @@ public extension Double {
     var percent: CSSLength { CSSLength(self, .percent) }
     var vh: CSSLength { CSSLength(self, .vh) }
     var vw: CSSLength { CSSLength(self, .vw) }
+    var ms: CSSLength { CSSLength(self, .ms) }
+    var s: CSSLength { CSSLength(self, .s) }
 }
 
 public extension Int {
@@ -21,4 +23,6 @@ public extension Int {
     var percent: CSSLength { CSSLength(Double(self), .percent) }
     var vh: CSSLength { CSSLength(Double(self), .vh) }
     var vw: CSSLength { CSSLength(Double(self), .vw) }
+    var ms: CSSLength { CSSLength(Double(self), .ms) }
+    var s: CSSLength { CSSLength(Double(self), .s) }
 }

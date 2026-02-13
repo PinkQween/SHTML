@@ -1,5 +1,10 @@
 // Type-safe color representation
 
+/// Compile-time validated hex color
+/// Example: `#hex("#ff0000")` or `#hex("abc")` or `#hex("0xaabbcc")`
+@freestanding(expression)
+public macro hex(_ color: String) -> Color = #externalMacro(module: "SHTMLMacros", type: "HexColorMacro")
+
 import Foundation
 public enum Color: Sendable {
     case hex(String)
