@@ -11,6 +11,7 @@ public struct Polygon: Shape, HTML {
 
     /// The points that make up the polygon in local coordinates.
     public var points: [(x: Double, y: Double)]
+    private var attributes: [String: String] = [:]
 
     public init(points: [(Double, Double)]) {
         self.points = points.map { (x: $0.0, y: $0.1) }
@@ -26,7 +27,8 @@ public struct Polygon: Shape, HTML {
     public func render() -> String {
         // Render as an SVG <polygon> element with space/comma-separated points
         let pts = points.map { "\($0.x),\($0.y)" }.joined(separator: " ")
-        return "<polygon points=\"\(pts)\" />"
+        let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
+        return "<polygon points=\"\(pts)\"\(attrs) />"
     }
 
     // MARK: - Shape Path
@@ -42,5 +44,24 @@ public struct Polygon: Shape, HTML {
         }
         p.closeSubpath()
         return p
+    }
+    
+    // Shape-specific modifiers
+    public func fill(_ color: String) -> Self {
+        var copy = self
+        copy.attributes["fill"] = color
+        return copy
+    }
+    
+    public func stroke(_ color: String) -> Self {
+        var copy = self
+        copy.attributes["stroke"] = color
+        return copy
+    }
+    
+    public func strokeWidth(_ width: String) -> Self {
+        var copy = self
+        copy.attributes["stroke-width"] = width
+        return copy
     }
 }

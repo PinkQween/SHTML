@@ -50,6 +50,7 @@ struct MyPage: HTML {
 
 - <doc:CSSGuide>
 - <doc:JavaScriptGuide>
+- <doc:ShapesGuide>
 
 ### HTML Generation
 
@@ -74,6 +75,14 @@ struct MyPage: HTML {
 - ``VStack``
 - ``HStack``
 - ``ZStack``
+
+### SVG Shapes
+
+- ``SVG``
+- ``Rect``
+- ``Circle``
+- ``Polygon``
+- ``Path``
 
 ### CSS System
 
