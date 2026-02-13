@@ -76,8 +76,8 @@ public let localStorage = JSExpr("localStorage")
 public let sessionStorage = JSExpr("sessionStorage")
 
 public extension JS {
-    @MainActor static var `this`: JSExpr { JSExpr("this") }
-    @MainActor static var event: JSExpr { JSExpr("event") }
+    static var `this`: JSExpr { JSExpr("this") }
+    static var event: JSExpr { JSExpr("event") }
 }
 
 // JS argument type - can be strings, numbers, bools, or raw code
