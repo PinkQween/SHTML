@@ -28,7 +28,7 @@ pub fn run(output: &str) -> io::Result<()> {
 
     // Find the executable name from Package.swift
     let package_content = fs::read_to_string("Package.swift")?;
-    let exec_name = extract_executable_name(&package_content).unwrap_or("Demo".to_string());
+    let exec_name = extract_executable_name(&package_content).unwrap_or("Website".to_string());
 
     println!("📝 Generating HTML...");
     let run_result = Command::new("swift")

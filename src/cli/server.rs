@@ -102,19 +102,18 @@ fn build_swift_package() -> bool {
     if output.status.success() {
         println!("✅ Build completed");
         
-        // Run the Demo executable to generate HTML
+        // Run the executable to generate HTML
         println!("📝 Generating HTML...");
-        let demo_output = Command::new("swift")
+        let output = Command::new("swift")
             .arg("run")
-            .arg("Demo")
             .output()
-            .expect("Failed to run Demo");
+            .expect("Failed to build");
         
-        if demo_output.status.success() {
-            println!("{}", String::from_utf8_lossy(&demo_output.stdout));
+        if output.status.success() {
+            println!("{}", String::from_utf8_lossy(&output.stdout));
         } else {
-            eprintln!("⚠️  Demo generation failed:");
-            eprintln!("{}", String::from_utf8_lossy(&demo_output.stderr));
+            eprintln!("⚠️ Generation failed:");
+            eprintln!("{}", String::from_utf8_lossy(&output.stderr));
         }
         
         true
