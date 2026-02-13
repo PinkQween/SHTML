@@ -30,6 +30,12 @@ public struct JSExpr: JavaScript {
         return JSExpr("\(code)(\(argList))")
     }
 
+    // Method calls with typed Swift values: document.getElementById("id")
+    public func dynamicallyCall(withArguments args: [any ExpressibleAsJSArg]) -> JSExpr {
+        let argList = args.map { $0.jsArg.toJS() }.joined(separator: ", ")
+        return JSExpr("\(code)(\(argList))")
+    }
+
     // Method calls with type-safe Swift values.
     public func call(_ args: any ExpressibleAsJSArg...) -> JSExpr {
         let jsArgs = args.map { $0.jsArg.toJS() }.joined(separator: ", ")
@@ -49,6 +55,11 @@ public struct JSExpr: JavaScript {
     // Direct expression assignment: JS.this.scrollTop.set(...)
     public func set(_ value: any ExpressibleAsJSArg) -> JSStatement {
         JSStatement("\(code) = \(value.jsArg.toJS())")
+    }
+
+    // Direct assignment for CSS colors: element.style.background.set(.red)
+    public func set(_ color: Color) -> JSStatement {
+        JSStatement("\(code) = '\(color.css)'")
     }
     
     // Array/object indexing: arr[0], obj["key"]
@@ -85,10 +96,73 @@ public extension JS {
     static var console: JSExpr { JSExpr("console") }
     static var document: JSExpr { JSExpr("document") }
     static var window: JSExpr { JSExpr("window") }
+    static var globalThis: JSExpr { JSExpr("globalThis") }
+    static var navigator: JSExpr { JSExpr("navigator") }
+    static var history: JSExpr { JSExpr("history") }
+    static var location: JSExpr { JSExpr("location") }
+    static var performance: JSExpr { JSExpr("performance") }
+    static var math: JSExpr { JSExpr("Math") }
+    static var json: JSExpr { JSExpr("JSON") }
+    static var intl: JSExpr { JSExpr("Intl") }
+    static var promise: JSExpr { JSExpr("Promise") }
+    static var reflect: JSExpr { JSExpr("Reflect") }
+    static var symbol: JSExpr { JSExpr("Symbol") }
+    static var error: JSExpr { JSExpr("Error") }
+    static var url: JSExpr { JSExpr("URL") }
+    static var urlSearchParams: JSExpr { JSExpr("URLSearchParams") }
+    static var date: JSExpr { JSExpr("Date") }
+    static var fetch: JSExpr { JSExpr("fetch") }
     static var localStorage: JSExpr { JSExpr("localStorage") }
     static var sessionStorage: JSExpr { JSExpr("sessionStorage") }
     static var `this`: JSExpr { JSExpr("this") }
     static var event: JSExpr { JSExpr("event") }
+
+    // Fetch helpers
+    static func fetch(_ resource: any ExpressibleAsJSArg) -> JSExpr {
+        JS.fetch.call(resource)
+    }
+
+    static func fetch(_ resource: any ExpressibleAsJSArg, options: any ExpressibleAsJSArg) -> JSExpr {
+        JS.fetch.call(resource, options)
+    }
+
+    // Math helpers
+    enum Math {
+        public static var E: JSExpr { JSExpr("Math.E") }
+        public static var PI: JSExpr { JSExpr("Math.PI") }
+
+        public static func abs(_ value: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.abs.call(value)
+        }
+
+        public static func floor(_ value: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.floor.call(value)
+        }
+
+        public static func ceil(_ value: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.ceil.call(value)
+        }
+
+        public static func round(_ value: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.round.call(value)
+        }
+
+        public static func max(_ a: any ExpressibleAsJSArg, _ b: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.max.call(a, b)
+        }
+
+        public static func min(_ a: any ExpressibleAsJSArg, _ b: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.min.call(a, b)
+        }
+
+        public static func pow(_ base: any ExpressibleAsJSArg, _ exponent: any ExpressibleAsJSArg) -> JSExpr {
+            JS.math.pow.call(base, exponent)
+        }
+
+        public static func random() -> JSExpr {
+            JS.math.random.call()
+        }
+    }
 }
 
 // JS argument type - can be strings, numbers, bools, or raw code
@@ -135,6 +209,10 @@ extension Bool: ExpressibleAsJSArg {
 
 extension JSExpr: ExpressibleAsJSArg {
     public var jsArg: JSArg { .expr(self) }
+}
+
+extension Color: ExpressibleAsJSArg {
+    public var jsArg: JSArg { .string(css) }
 }
 
 public protocol ExpressibleAsJSArg {
@@ -265,6 +343,65 @@ public struct JSArrow: JavaScript {
 
 // Event listeners
 public extension JSExpr {
+    // DOM query helpers
+    func getElementById(_ id: String) -> JSExpr {
+        self.getElementById(.string(id))
+    }
+
+    func getElementById(_ id: JSArg) -> JSExpr {
+        JSExpr("\(render()).getElementById(\(id.toJS()))")
+    }
+
+    func querySelector(_ selector: String) -> JSExpr {
+        self.querySelector(.string(selector))
+    }
+
+    func querySelector(_ selector: JSArg) -> JSExpr {
+        JSExpr("\(render()).querySelector(\(selector.toJS()))")
+    }
+
+    func querySelectorAll(_ selector: String) -> JSExpr {
+        self.querySelectorAll(.string(selector))
+    }
+
+    func querySelectorAll(_ selector: JSArg) -> JSExpr {
+        JSExpr("\(render()).querySelectorAll(\(selector.toJS()))")
+    }
+
+    // Element helpers
+    func setAttribute(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
+        JSStatement("\(render()).setAttribute('\(name)', \(value.jsArg.toJS()))")
+    }
+
+    func getAttribute(_ name: String) -> JSExpr {
+        JSExpr("\(render()).getAttribute('\(name)')")
+    }
+
+    func appendChild(_ child: any ExpressibleAsJSArg) -> JSStatement {
+        JSStatement("\(render()).appendChild(\(child.jsArg.toJS()))")
+    }
+
+    func remove() -> JSStatement {
+        JSStatement("\(render()).remove()")
+    }
+
+    func preventDefault() -> JSStatement {
+        JSStatement("\(render()).preventDefault()")
+    }
+
+    // classList helpers
+    func classListAdd(_ className: String) -> JSStatement {
+        JSStatement("\(render()).classList.add('\(className)')")
+    }
+
+    func classListRemove(_ className: String) -> JSStatement {
+        JSStatement("\(render()).classList.remove('\(className)')")
+    }
+
+    func classListToggle(_ className: String) -> JSStatement {
+        JSStatement("\(render()).classList.toggle('\(className)')")
+    }
+
     func addEventListener(_ event: String, @JSBuilder handler: @escaping () -> [any JavaScript]) -> JSStatement {
         let body = JSRendering.renderStatements(handler)
         return JSStatement("\(code).addEventListener('\(event)', () => { \(body) })")

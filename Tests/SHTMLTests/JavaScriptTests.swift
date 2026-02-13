@@ -66,6 +66,70 @@ final class JavaScriptTests: XCTestCase {
         let expr = JS.console.log.call("drag y", JS.event.clientY)
         XCTAssertEqual(expr.render(), "console.log('drag y', event.clientY)")
     }
+
+    func testDocumentGetElementByIdWithStringCallSyntax() {
+        let expr = JS.document.getElementById("id")
+        XCTAssertEqual(expr.render(), "document.getElementById('id')")
+    }
+
+    func testTypedBackgroundColorAssignment() {
+        let statement = JS.document
+            .getElementById("id")
+            .style
+            .background
+            .set(.red)
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.background = 'red';"
+        )
+    }
+
+    func testStandardGlobalAliases() {
+        XCTAssertEqual(JS.globalThis.render(), "globalThis")
+        XCTAssertEqual(JS.navigator.render(), "navigator")
+        XCTAssertEqual(JS.history.render(), "history")
+        XCTAssertEqual(JS.location.render(), "location")
+        XCTAssertEqual(JS.performance.render(), "performance")
+        XCTAssertEqual(JS.math.render(), "Math")
+        XCTAssertEqual(JS.json.render(), "JSON")
+        XCTAssertEqual(JS.fetch.render(), "fetch")
+    }
+
+    func testFetchHelpers() {
+        XCTAssertEqual(JS.fetch("/api").render(), "fetch('/api')")
+        XCTAssertEqual(
+            JS.fetch("/api", options: JSExpr("{ method: 'POST' }")).render(),
+            "fetch('/api', { method: 'POST' })"
+        )
+    }
+
+    func testMathHelpers() {
+        XCTAssertEqual(JS.Math.PI.render(), "Math.PI")
+        XCTAssertEqual(JS.Math.floor(3.9).render(), "Math.floor(3.9)")
+        XCTAssertEqual(JS.Math.max(10, 20).render(), "Math.max(10, 20)")
+        XCTAssertEqual(JS.Math.random().render(), "Math.random()")
+    }
+
+    func testQueryHelpers() {
+        XCTAssertEqual(
+            JS.document.querySelector("#app").render(),
+            "document.querySelector('#app')"
+        )
+        XCTAssertEqual(
+            JS.document.querySelectorAll(".item").render(),
+            "document.querySelectorAll('.item')"
+        )
+    }
+
+    func testClassListHelpers() {
+        let add = JS.document.getElementById("id").classListAdd("active")
+        let remove = JS.document.getElementById("id").classListRemove("active")
+        let toggle = JS.document.getElementById("id").classListToggle("active")
+
+        XCTAssertEqual(add.render(), "document.getElementById('id').classList.add('active');")
+        XCTAssertEqual(remove.render(), "document.getElementById('id').classList.remove('active');")
+        XCTAssertEqual(toggle.render(), "document.getElementById('id').classList.toggle('active');")
+    }
     
     // MARK: - Helper Function Tests
     
