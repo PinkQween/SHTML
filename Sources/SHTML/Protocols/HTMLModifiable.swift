@@ -256,8 +256,16 @@ public extension HTMLModifiable {
         appendingStyle("background: \(color)")
     }
     
+    func background(_ color: Color) -> Self {
+        appendingStyle("background: \(color.css)")
+    }
+    
     func foregroundColor(_ color: String) -> Self {
         appendingStyle("color: \(color)")
+    }
+    
+    func foregroundColor(_ color: Color) -> Self {
+        appendingStyle("color: \(color.css)")
     }
     
     // Typography
@@ -279,6 +287,10 @@ public extension HTMLModifiable {
     
     func textAlign(_ alignment: String) -> Self {
         appendingStyle("text-align: \(alignment)")
+    }
+    
+    func textAlign(_ alignment: TextAlign) -> Self {
+        appendingStyle("text-align: \(alignment.rawValue)")
     }
     
     // Visual effects
@@ -307,6 +319,10 @@ public extension HTMLModifiable {
         appendingStyle("display: flex; flex-direction: \(direction)")
     }
     
+    func flexDirection(_ direction: FlexDirection) -> Self {
+        appendingStyle("display: flex; flex-direction: \(direction.rawValue)")
+    }
+    
     func gap(_ spacing: String) -> Self {
         appendingStyle("gap: \(spacing)")
     }
@@ -315,8 +331,16 @@ public extension HTMLModifiable {
         appendingStyle("justify-content: \(value)")
     }
     
+    func justifyContent(_ value: JustifyContent) -> Self {
+        appendingStyle("justify-content: \(value.rawValue)")
+    }
+    
     func alignItems(_ value: String) -> Self {
         appendingStyle("align-items: \(value)")
+    }
+    
+    func alignItems(_ value: AlignItems) -> Self {
+        appendingStyle("align-items: \(value.rawValue)")
     }
     
     // Display
@@ -324,8 +348,32 @@ public extension HTMLModifiable {
         appendingStyle("display: \(value)")
     }
     
+    func display(_ value: Display) -> Self {
+        appendingStyle("display: \(value.rawValue)")
+    }
+    
     func overflow(_ value: String) -> Self {
         appendingStyle("overflow: \(value)")
+    }
+    
+    func overflow(_ value: Overflow) -> Self {
+        appendingStyle("overflow: \(value.rawValue)")
+    }
+    
+    func overflowX(_ value: String) -> Self {
+        appendingStyle("overflow-x: \(value)")
+    }
+    
+    func overflowX(_ value: Overflow) -> Self {
+        appendingStyle("overflow-x: \(value.rawValue)")
+    }
+    
+    func overflowY(_ value: String) -> Self {
+        appendingStyle("overflow-y: \(value)")
+    }
+    
+    func overflowY(_ value: Overflow) -> Self {
+        appendingStyle("overflow-y: \(value.rawValue)")
     }
     
     // Aspect Ratio
@@ -411,6 +459,47 @@ public extension HTMLModifiable {
     // Position
     func position(_ value: String) -> Self {
         appendingStyle("position: \(value)")
+    }
+    
+    func position(_ value: Position) -> Self {
+        appendingStyle("position: \(value.rawValue)")
+    }
+    
+    func top(_ value: String) -> Self {
+        appendingStyle("top: \(value)")
+    }
+    
+    func top(_ value: CSSLength) -> Self {
+        appendingStyle("top: \(value.css)")
+    }
+    
+    func bottom(_ value: String) -> Self {
+        appendingStyle("bottom: \(value)")
+    }
+    
+    func bottom(_ value: CSSLength) -> Self {
+        appendingStyle("bottom: \(value.css)")
+    }
+    
+    func left(_ value: String) -> Self {
+        appendingStyle("left: \(value)")
+    }
+    
+    func left(_ value: CSSLength) -> Self {
+        appendingStyle("left: \(value.css)")
+    }
+    
+    func right(_ value: String) -> Self {
+        appendingStyle("right: \(value)")
+    }
+    
+    func right(_ value: CSSLength) -> Self {
+        appendingStyle("right: \(value.css)")
+    }
+    
+    // Positioned fill helper
+    func positionedFill() -> Self {
+        appendingStyle("position: absolute; top: 0; left: 0; width: 100%; height: 100%")
     }
     
     // Transform

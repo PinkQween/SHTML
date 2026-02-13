@@ -13,15 +13,15 @@
 /// ```swift
 /// // Default - fills container
 /// RoundedRectangle(cornerRadius: 12.px)
-///     .fill("#007AFF")
+///     .fill(.blue)
 /// 
 /// // Specific size
 /// RoundedRectangle(cornerRadius: 12.px, width: 200.px, height: 100.px)
-///     .fill("red")
+///     .fill(.rgb(255, 0, 0))
 /// 
 /// // Pill shape with 50% corner radius
 /// RoundedRectangle(cornerRadius: .percent(50))
-///     .fill("green")
+///     .fill(.hex("00FF00"))
 ///     .frame(width: 200.px, height: 60.px)
 /// ```
 public struct RoundedRectangle: Shape, HTML {
@@ -59,9 +59,21 @@ public struct RoundedRectangle: Shape, HTML {
         return copy
     }
     
+    public func fill(_ color: Color) -> Self {
+        var copy = self
+        copy.attributes["fill"] = color.css
+        return copy
+    }
+    
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
+        return copy
+    }
+    
+    public func stroke(_ color: Color) -> Self {
+        var copy = self
+        copy.attributes["stroke"] = color.css
         return copy
     }
     

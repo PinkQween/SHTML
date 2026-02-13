@@ -14,15 +14,15 @@
 /// ```swift
 /// // Default - fills container
 /// Ellipse()
-///     .fill("#007AFF")
+///     .fill(.blue)
 /// 
 /// // Circle with specific size
 /// Ellipse(width: 100.px, height: 100.px)
-///     .fill("red")
+///     .fill(.red)
 /// 
 /// // Ellipse
 /// Ellipse(width: 200.px, height: 100.px)
-///     .fill("green")
+///     .fill(.green)
 /// ```
 public struct Ellipse: Shape, HTML {
     public typealias Body = Never
@@ -108,9 +108,21 @@ public struct Ellipse: Shape, HTML {
         return copy
     }
     
+    public func fill(_ color: Color) -> Self {
+        var copy = self
+        copy.attributes["fill"] = color.css
+        return copy
+    }
+    
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
+        return copy
+    }
+    
+    public func stroke(_ color: Color) -> Self {
+        var copy = self
+        copy.attributes["stroke"] = color.css
         return copy
     }
     

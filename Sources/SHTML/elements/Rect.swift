@@ -55,9 +55,21 @@ public struct Rect: Shape, HTML {
         return copy
     }
     
+    public func fill(_ color: Color) -> Self {
+        var copy = self
+        copy.attributes["fill"] = color.css
+        return copy
+    }
+    
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
+        return copy
+    }
+    
+    public func stroke(_ color: Color) -> Self {
+        var copy = self
+        copy.attributes["stroke"] = color.css
         return copy
     }
     
