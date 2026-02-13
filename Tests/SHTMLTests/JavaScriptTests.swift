@@ -35,6 +35,22 @@ final class JavaScriptTests: XCTestCase {
         let expr = JSExpr("myVar")
         XCTAssertEqual(expr.render(), "myVar")
     }
+
+    func testTypedThisAndEventExpressions() {
+        let expr = JS.this.scrollTop.minus(JS.event.movementY)
+        XCTAssertEqual(expr.render(), "(this.scrollTop - event.movementY)")
+    }
+
+    func testTypedAssignWithoutRawString() {
+        let statement = JS.this.assign(
+            "scrollTop",
+            JS.this.scrollTop.minus(JS.event.movementY)
+        )
+        XCTAssertEqual(
+            statement.render(),
+            "this.scrollTop = (this.scrollTop - event.movementY);"
+        )
+    }
     
     // MARK: - Helper Function Tests
     

@@ -34,10 +34,32 @@ public struct JSExpr: JavaScript {
     public func assign(_ property: String, _ value: JSArg) -> JSStatement {
         JSStatement("\(code).\(property) = \(value.toJS())")
     }
+
+    // Assignment with typed JS expression/values
+    public func assign(_ property: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
+        assign(property, value.jsArg)
+    }
     
     // Array/object indexing: arr[0], obj["key"]
     public subscript(_ index: JSArg) -> JSExpr {
         JSExpr("\(code)[\(index.toJS())]")
+    }
+
+    // Arithmetic helpers for type-safe expression building
+    public func plus(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) + \(value.jsArg.toJS()))")
+    }
+
+    public func minus(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) - \(value.jsArg.toJS()))")
+    }
+
+    public func multiplied(by value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) * \(value.jsArg.toJS()))")
+    }
+
+    public func divided(by value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) / \(value.jsArg.toJS()))")
     }
 }
 
@@ -52,6 +74,11 @@ public let window = JSExpr("window")
 public let localStorage = JSExpr("localStorage")
 @MainActor
 public let sessionStorage = JSExpr("sessionStorage")
+
+public extension JS {
+    @MainActor static var `this`: JSExpr { JSExpr("this") }
+    @MainActor static var event: JSExpr { JSExpr("event") }
+}
 
 // JS argument type - can be strings, numbers, bools, or raw code
 public enum JSArg {
@@ -72,6 +99,10 @@ public enum JSArg {
         case .expr(let e): return e.render()
         }
     }
+}
+
+extension JSArg: ExpressibleAsJSArg {
+    public var jsArg: JSArg { self }
 }
 
 // Allow literals to be used as arguments

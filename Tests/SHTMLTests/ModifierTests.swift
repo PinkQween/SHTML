@@ -207,9 +207,10 @@ final class ModifierTests: XCTestCase {
     }
 
     func testOnDragGestureWithJavaScriptType() {
+        let framework = JSExpr("framework")
         let div = Div { "Drag" }.onDragGesture(
-            onChanged: JSRaw("framework.dragMove(event)"),
-            onEnded: JSRaw("framework.dragEnd(event)")
+            onChanged: framework.dragMove(.expr(JSExpr("event"))),
+            onEnded: framework.dragEnd(.expr(JSExpr("event")))
         )
         let result = div.render()
         XCTAssertTrue(result.contains("onpointermove="))
