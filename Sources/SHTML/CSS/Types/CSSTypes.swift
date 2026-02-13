@@ -172,3 +172,18 @@ public enum BoxSizing: String {
     case contentBox = "content-box"
     case borderBox = "border-box"
 }
+
+public enum UserSelcet: String {
+    case auto
+    case none
+    case text
+    case all
+}
+
+public enum ObjectFit: String {
+    case contain
+    case cover
+    case fill
+    case `none`
+    case scaleDown = "scale-down"
+}

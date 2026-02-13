@@ -100,9 +100,12 @@ public func animationFillMode(_ value: String) -> CSSProperty {
 }
 
 // MARK: - Other Common Properties
-
 public func objectFit(_ value: String) -> CSSProperty {
     CSSProperty("object-fit", value)
+}
+
+public func objectFit(_ value: ObjectFit) -> CSSProperty {
+    CSSProperty("object-fit", value.rawValue)
 }
 
 public func objectPosition(_ value: String) -> CSSProperty {
@@ -123,6 +126,10 @@ public func clipPath(_ value: String) -> CSSProperty {
 
 public func userSelect(_ value: String) -> CSSProperty {
     CSSProperty("user-select", value)
+}
+
+public func userSelect(_ value: UserSelcet) -> CSSProperty {
+    CSSProperty("user-select", value.rawValue)
 }
 
 public func pointerEvents(_ value: String) -> CSSProperty {
