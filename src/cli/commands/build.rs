@@ -70,6 +70,22 @@ pub fn run(output: &str) -> io::Result<()> {
     let gen_time = gen_start.elapsed();
     println!("   ✅ Generated in {:.2}s", gen_time.as_secs_f64());
 
+    // Copy Assets to output directory if they exist
+    if std::path::Path::new("Assets").exists() {
+        println!("\n📦 Step 3/3: Copying assets...");
+        let assets_start = Instant::now();
+        
+        let output_assets = format!("{}/Assets", output);
+        if std::path::Path::new(&output_assets).exists() {
+            fs::remove_dir_all(&output_assets)?;
+        }
+        
+        copy_dir_all("Assets", &output_assets)?;
+        
+        let assets_time = assets_start.elapsed();
+        println!("   ✅ Assets copied in {:.2}s", assets_time.as_secs_f64());
+    }
+
     // Show results
     let total_time = total_start.elapsed();
     println!("\n╔══════════════════════════════════════╗");
@@ -113,4 +129,18 @@ fn extract_executable_name(package_swift: &str) -> Option<String> {
         }
     }
     None
+}
+
+fn copy_dir_all(src: impl AsRef<std::path::Path>, dst: impl AsRef<std::path::Path>) -> io::Result<()> {
+    fs::create_dir_all(&dst)?;
+    for entry in fs::read_dir(src)? {
+        let entry = entry?;
+        let ty = entry.file_type()?;
+        if ty.is_dir() {
+            copy_dir_all(entry.path(), dst.as_ref().join(entry.file_name()))?;
+        } else {
+            fs::copy(entry.path(), dst.as_ref().join(entry.file_name()))?;
+        }
+    }
+    Ok(())
 }
