@@ -328,6 +328,15 @@ public extension HTMLModifiable {
         appendingStyle("overflow: \(value)")
     }
     
+    // Aspect Ratio
+    func aspectRatio(_ ratio: Double) -> Self {
+        appendingStyle("aspect-ratio: \(ratio)")
+    }
+    
+    func aspectRatio(width: Double, height: Double) -> Self {
+        appendingStyle("aspect-ratio: \(width) / \(height)")
+    }
+    
     // Frame - sizing modifiers
     func frame(width: String? = nil, height: String? = nil, minWidth: String? = nil, maxWidth: String? = nil, minHeight: String? = nil, maxHeight: String? = nil) -> Self {
         var result = self
