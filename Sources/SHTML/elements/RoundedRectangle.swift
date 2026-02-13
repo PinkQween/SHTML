@@ -29,15 +29,7 @@ public struct RoundedRectangle: Shape, HTML {
     public let shape: ShapeType = .rectangle
     private var attributes: [String: String] = [:]
 
-    public init(cornerRadius: any CSSLengthConvertible = .px(0)) {
-        let radius = cornerRadius.cssLength
-        self.attributes["width"] = "100%"
-        self.attributes["height"] = "100%"
-        self.attributes["rx"] = radius
-        self.attributes["ry"] = radius
-    }
-    
-    public init(cornerRadius: any CSSLengthConvertible = .px(0), width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) {
+    public init(cornerRadius: any CSSLengthConvertible, width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) {
         let radius = cornerRadius.cssLength
         self.attributes["width"] = width?.cssLength ?? "100%"
         self.attributes["height"] = height?.cssLength ?? "100%"
