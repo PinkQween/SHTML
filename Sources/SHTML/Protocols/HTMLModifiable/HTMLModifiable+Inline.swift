@@ -25,7 +25,7 @@ public extension HTMLModifiable {
         appendingStyle("padding: \(length.css)")
     }
 
-    public func padding(_ edges: Edge.Set, _ length: CSSLength) -> Self {
+    func padding(_ edges: Edge.Set, _ length: CSSLength) -> Self {
         return padding(edges, length.css)
     }
 
@@ -64,7 +64,7 @@ public extension HTMLModifiable {
         appendingStyle("margin: \(length.css)")
     }
 
-    public func margin(_ edges: Edge.Set, _ length: CSSLength) -> Self {
+    func margin(_ edges: Edge.Set, _ length: CSSLength) -> Self {
         return margin(edges, length.css)
     }
 

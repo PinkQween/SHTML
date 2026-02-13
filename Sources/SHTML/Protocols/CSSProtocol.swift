@@ -24,13 +24,33 @@ public struct CSSProperty: CSS {
     }
 }
 
+// CSS Property Group - represents multiple CSS properties that should be treated as one
+public struct CSSPropertyGroup: CSS {
+    let properties: [CSSProperty]
+    
+    public init(_ properties: [CSSProperty]) {
+        self.properties = properties
+    }
+    
+    public func render() -> String {
+        properties.map { $0.render() }.joined(separator: "\n    ")
+    }
+}
+
 public struct CSSKeyframe: CSS {
     let position: String
     let properties: [CSSProperty]
     
-    public init(_ position: String, @CSSBuilder _ properties: () -> [CSSProperty]) {
+    public init(_ position: String, @CSSBuilder _ properties: () -> [CSS]) {
         self.position = position
-        self.properties = properties()
+        self.properties = properties().flatMap { item -> [CSSProperty] in
+            if let prop = item as? CSSProperty {
+                return [prop]
+            } else if let group = item as? CSSPropertyGroup {
+                return group.properties
+            }
+            return []
+        }
     }
     
     public func render() -> String {
@@ -44,14 +64,29 @@ public struct CSSRule: CSS {
     let selector: String
     let properties: [CSSProperty]
     
-    public init(_ selector: String, @CSSBuilder _ properties: () -> [CSSProperty]) {
+    public init(_ selector: String, @CSSBuilder _ properties: () -> [CSS]) {
         self.selector = selector
-        self.properties = properties()
+        // Flatten CSS items into properties
+        self.properties = properties().flatMap { item -> [CSSProperty] in
+            if let prop = item as? CSSProperty {
+                return [prop]
+            } else if let group = item as? CSSPropertyGroup {
+                return group.properties
+            }
+            return []
+        }
     }
     
-    public init(_ selector: CSSSelector, @CSSBuilder _ properties: () -> [CSSProperty]) {
+    public init(_ selector: CSSSelector, @CSSBuilder _ properties: () -> [CSS]) {
         self.selector = selector.value
-        self.properties = properties()
+        self.properties = properties().flatMap { item -> [CSSProperty] in
+            if let prop = item as? CSSProperty {
+                return [prop]
+            } else if let group = item as? CSSPropertyGroup {
+                return group.properties
+            }
+            return []
+        }
     }
     
     public func render() -> String {

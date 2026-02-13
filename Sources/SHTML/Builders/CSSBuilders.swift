@@ -7,19 +7,15 @@
 
 @resultBuilder
 public enum CSSBuilder {
-    public static func buildBlock(_ components: CSSProperty...) -> [CSSProperty] {
+    public static func buildBlock(_ components: CSS...) -> [CSS] {
         components
     }
     
-    public static func buildExpression(_ expression: CSSProperty) -> CSSProperty {
+    public static func buildExpression(_ expression: CSS) -> CSS {
         expression
     }
     
-    public static func buildExpression(_ expression: [CSSProperty]) -> [CSSProperty] {
-        expression
-    }
-    
-    public static func buildArray(_ components: [[CSSProperty]]) -> [CSSProperty] {
+    public static func buildArray(_ components: [[CSS]]) -> [CSS] {
         components.flatMap { $0 }
     }
 }

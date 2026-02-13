@@ -59,12 +59,12 @@ public func marginLeft(_ value: any CSSLengthConvertible) -> CSSProperty {
 public func padding(
     _ edges: Edge.Set = .all,
     _ value: any CSSLengthConvertible
-) -> [CSSProperty] {
+) -> CSS {
     let v = value.cssLength
 
     // Only safe shorthand case
     if edges == .all {
-        return [.init("padding", v)]
+        return CSSProperty("padding", v)
     }
 
     var props: [CSSProperty] = []
@@ -82,12 +82,12 @@ public func padding(
         props.append(.init("padding-right", v))
     }
 
-    return props
+    return CSSPropertyGroup(props)
 }
 
 public func padding(
     _ value: any CSSLengthConvertible
-) -> [CSSProperty] {
+) -> CSS {
     padding(.all, value)
 }
 
