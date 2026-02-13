@@ -56,6 +56,12 @@ public func padding(
     return .init("style", parts.joined(separator: " "))
 }
 
+public func padding(
+    _ value: any CSSLengthConvertible
+) -> CSSProperty {
+    padding(.all, value)
+}
+
 public func paddingTop(_ value: any CSSLengthConvertible) -> CSSProperty {
     CSSProperty("padding-top", value.cssLength)
 }
