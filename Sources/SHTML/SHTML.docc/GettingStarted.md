@@ -49,8 +49,11 @@ struct MyFirstPage: HTML {
                 Title("My First SHTML Page")
             }
             body {
-                h1 { "Welcome to SHTML!" }
-                p { "This page was generated with Swift." }
+                VStack(spacing: "20px") {
+                    h1 { "Welcome to SHTML!" }
+                    p { "This page was generated with Swift." }
+                }
+                .padding("40px")
             }
         }
     }
@@ -60,6 +63,56 @@ struct MyFirstPage: HTML {
 let htmlString = MyFirstPage().render()
 print(htmlString)
 ```
+
+## Quick Examples
+
+### Adding CSS Styles
+
+```swift
+html {
+    head {
+        Title("Styled Page")
+        Style {
+            CSSRule("body") {
+                fontFamily("system-ui, sans-serif")
+                background("#f5f5f5")
+            }
+            
+            CSSRule(".card") {
+                background("white")
+                padding("20px")
+                borderRadius("12px")
+            }
+        }
+    }
+    body {
+        Div { "Hello!" }
+            .class("card")
+    }
+}
+```
+
+### Adding JavaScript
+
+```swift
+html {
+    head {
+        ScriptElement {
+            JSFunc("sayHello") {
+                JSRaw("alert('Hello from SHTML!')")
+            }
+        }
+    }
+    body {
+        button { "Click Me" }
+            .onclick("sayHello()")
+    }
+}
+```
+
+For complete guides, see:
+- <doc:CSSGuide> - Learn how to style your pages
+- <doc:JavaScriptGuide> - Learn how to add interactivity
 
 ## Using the CLI
 

@@ -53,3 +53,4 @@ public struct ScriptTag: HTMLPrimitive {
 }
 
 public typealias script = ScriptTag
+public typealias ScriptElement = ScriptTag

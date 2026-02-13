@@ -16,13 +16,13 @@ struct MyPage: HTML {
                 Title("My Website")
             }
             body {
-                Div {
+                VStack(spacing: "20px") {
                     h1 { "Hello, World!" }
                     p { "Built with SHTML" }
                 }
                 .padding("20px")
-                .background("#f0f0f0")
             }
+            .background("#f5f5f5")
         }
     }
 }
@@ -34,7 +34,8 @@ struct MyPage: HTML {
 - **Type-Safe CSS** - Declarative CSS using result builders
 - **Natural JavaScript API** - Write JS with type safety
 - **Client-Side Routing** - React Router-like navigation
-- **Modifier System** - SwiftUI-style modifiers for styling
+- **Modifier System** - SwiftUI-style modifiers for styling (`.padding()`, `.background()`, etc.)
+- **Stack Layouts** - VStack, HStack, and ZStack for flexible layouts
 - **Zero Dependencies** - Pure Swift code generation
 
 ## Topics
@@ -44,6 +45,11 @@ struct MyPage: HTML {
 - <doc:GettingStarted>
 - <doc:CreatingComponents>
 - <doc:StylingElements>
+
+### Guides
+
+- <doc:CSSGuide>
+- <doc:JavaScriptGuide>
 
 ### HTML Generation
 
@@ -61,6 +67,13 @@ struct MyPage: HTML {
 - ``p``
 - ``span``
 - ``button``
+- ``body``
+
+### Layout Containers
+
+- ``VStack``
+- ``HStack``
+- ``ZStack``
 
 ### CSS System
 
