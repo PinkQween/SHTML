@@ -328,6 +328,77 @@ public extension HTMLModifiable {
         appendingStyle("overflow: \(value)")
     }
     
+    // Frame - sizing modifiers
+    func frame(width: String? = nil, height: String? = nil, minWidth: String? = nil, maxWidth: String? = nil, minHeight: String? = nil, maxHeight: String? = nil) -> Self {
+        var result = self
+        if let width = width { result = result.appendingStyle("width: \(width)") }
+        if let height = height { result = result.appendingStyle("height: \(height)") }
+        if let minWidth = minWidth { result = result.appendingStyle("min-width: \(minWidth)") }
+        if let maxWidth = maxWidth { result = result.appendingStyle("max-width: \(maxWidth)") }
+        if let minHeight = minHeight { result = result.appendingStyle("min-height: \(minHeight)") }
+        if let maxHeight = maxHeight { result = result.appendingStyle("max-height: \(maxHeight)") }
+        return result
+    }
+    
+    func frame(width: CSSLength? = nil, height: CSSLength? = nil, minWidth: CSSLength? = nil, maxWidth: CSSLength? = nil, minHeight: CSSLength? = nil, maxHeight: CSSLength? = nil) -> Self {
+        var result = self
+        if let width = width { result = result.appendingStyle("width: \(width.css)") }
+        if let height = height { result = result.appendingStyle("height: \(height.css)") }
+        if let minWidth = minWidth { result = result.appendingStyle("min-width: \(minWidth.css)") }
+        if let maxWidth = maxWidth { result = result.appendingStyle("max-width: \(maxWidth.css)") }
+        if let minHeight = minHeight { result = result.appendingStyle("min-height: \(minHeight.css)") }
+        if let maxHeight = maxHeight { result = result.appendingStyle("max-height: \(maxHeight.css)") }
+        return result
+    }
+    
+    func width(_ value: String) -> Self {
+        appendingStyle("width: \(value)")
+    }
+    
+    func width(_ value: CSSLength) -> Self {
+        appendingStyle("width: \(value.css)")
+    }
+    
+    func height(_ value: String) -> Self {
+        appendingStyle("height: \(value)")
+    }
+    
+    func height(_ value: CSSLength) -> Self {
+        appendingStyle("height: \(value.css)")
+    }
+    
+    func maxWidth(_ value: String) -> Self {
+        appendingStyle("max-width: \(value)")
+    }
+    
+    func maxWidth(_ value: CSSLength) -> Self {
+        appendingStyle("max-width: \(value.css)")
+    }
+    
+    func maxHeight(_ value: String) -> Self {
+        appendingStyle("max-height: \(value)")
+    }
+    
+    func maxHeight(_ value: CSSLength) -> Self {
+        appendingStyle("max-height: \(value.css)")
+    }
+    
+    func minWidth(_ value: String) -> Self {
+        appendingStyle("min-width: \(value)")
+    }
+    
+    func minWidth(_ value: CSSLength) -> Self {
+        appendingStyle("min-width: \(value.css)")
+    }
+    
+    func minHeight(_ value: String) -> Self {
+        appendingStyle("min-height: \(value)")
+    }
+    
+    func minHeight(_ value: CSSLength) -> Self {
+        appendingStyle("min-height: \(value.css)")
+    }
+    
     // Position
     func position(_ value: String) -> Self {
         appendingStyle("position: \(value)")
