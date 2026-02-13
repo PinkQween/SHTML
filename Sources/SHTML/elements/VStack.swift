@@ -16,6 +16,16 @@ public struct VStack: HTML, HTMLModifiable {
         self.content = content
     }
     
+    public init(spacing: CSSLength, @HTMLBuilder _ content: @escaping () -> [any HTML]) {
+        var attrs: [String: String] = [:]
+        var style = "display: flex; flex-direction: column;"
+        style += " gap: \(spacing.css);"
+        attrs["style"] = style
+        self.attributes = attrs
+        self.spacing = spacing.css
+        self.content = content
+    }
+    
     public func render() -> String {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().map { $0.render() }.joined()
