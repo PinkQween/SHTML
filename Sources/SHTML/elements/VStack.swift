@@ -4,9 +4,10 @@ public struct VStack: HTML, HTMLModifiable {
     private let spacing: String?
     private let content: () -> [any HTML]
     
-    public init(spacing: String? = nil, @HTMLBuilder _ content: @escaping () -> [any HTML]) {
+    public init(alignment: AlignItems = .stretch, spacing: String? = nil, @HTMLBuilder _ content: @escaping () -> [any HTML]) {
         var attrs: [String: String] = [:]
         var style = "display: flex; flex-direction: column;"
+        style += " align-items: \(alignment.rawValue);"
         if let spacing = spacing {
             style += " gap: \(spacing);"
         }
@@ -16,9 +17,10 @@ public struct VStack: HTML, HTMLModifiable {
         self.content = content
     }
     
-    public init(spacing: CSSLength, @HTMLBuilder _ content: @escaping () -> [any HTML]) {
+    public init(alignment: AlignItems = .stretch, spacing: CSSLength, @HTMLBuilder _ content: @escaping () -> [any HTML]) {
         var attrs: [String: String] = [:]
         var style = "display: flex; flex-direction: column;"
+        style += " align-items: \(alignment.rawValue);"
         style += " gap: \(spacing.css);"
         attrs["style"] = style
         self.attributes = attrs
