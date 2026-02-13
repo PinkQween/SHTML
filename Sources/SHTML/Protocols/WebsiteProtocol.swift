@@ -1,8 +1,8 @@
 import Foundation
 
 public protocol Website {
-    associatedtype Body: HTML
-    var body: Body { get }
+    associatedtype Content: HTML
+    var content: Content { get }
     init()
 }
 
@@ -12,7 +12,7 @@ public extension Website {
     }
     
     func build() -> String {
-        body.render()
+        content.render()
     }
     
     func generate(to outputPath: String = "public/index.html") {
