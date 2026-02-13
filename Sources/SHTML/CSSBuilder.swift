@@ -231,6 +231,10 @@ public func textAlign(_ value: String) -> CSSProperty {
     CSSProperty("text-align", value)
 }
 
+public func textAlign(_ value: TextAlign) -> CSSProperty {
+    CSSProperty("text-align", value.rawValue)
+}
+
 public func textDecoration(_ value: String) -> CSSProperty {
     CSSProperty("text-decoration", value)
 }
@@ -253,8 +257,16 @@ public func display(_ value: String) -> CSSProperty {
     CSSProperty("display", value)
 }
 
+public func display(_ value: Display) -> CSSProperty {
+    CSSProperty("display", value.rawValue)
+}
+
 public func position(_ value: String) -> CSSProperty {
     CSSProperty("position", value)
+}
+
+public func position(_ value: Position) -> CSSProperty {
+    CSSProperty("position", value.rawValue)
 }
 
 public func top(_ value: any CSSLengthConvertible) -> CSSProperty {
@@ -283,20 +295,40 @@ public func flexDirection(_ value: String) -> CSSProperty {
     CSSProperty("flex-direction", value)
 }
 
+public func flexDirection(_ value: FlexDirection) -> CSSProperty {
+    CSSProperty("flex-direction", value.rawValue)
+}
+
 public func justifyContent(_ value: String) -> CSSProperty {
     CSSProperty("justify-content", value)
+}
+
+public func justifyContent(_ value: JustifyContent) -> CSSProperty {
+    CSSProperty("justify-content", value.rawValue)
 }
 
 public func alignItems(_ value: String) -> CSSProperty {
     CSSProperty("align-items", value)
 }
 
+public func alignItems(_ value: AlignItems) -> CSSProperty {
+    CSSProperty("align-items", value.rawValue)
+}
+
 public func alignSelf(_ value: String) -> CSSProperty {
     CSSProperty("align-self", value)
 }
 
+public func alignSelf(_ value: AlignItems) -> CSSProperty {
+    CSSProperty("align-self", value.rawValue)
+}
+
 public func alignContent(_ value: String) -> CSSProperty {
     CSSProperty("align-content", value)
+}
+
+public func alignContent(_ value: AlignItems) -> CSSProperty {
+    CSSProperty("align-content", value.rawValue)
 }
 
 public func flexWrap(_ value: String) -> CSSProperty {
@@ -371,12 +403,24 @@ public func overflow(_ value: String) -> CSSProperty {
     CSSProperty("overflow", value)
 }
 
+public func overflow(_ value: Overflow) -> CSSProperty {
+    CSSProperty("overflow", value.rawValue)
+}
+
 public func overflowX(_ value: String) -> CSSProperty {
     CSSProperty("overflow-x", value)
 }
 
+public func overflowX(_ value: Overflow) -> CSSProperty {
+    CSSProperty("overflow-x", value.rawValue)
+}
+
 public func overflowY(_ value: String) -> CSSProperty {
     CSSProperty("overflow-y", value)
+}
+
+public func overflowY(_ value: Overflow) -> CSSProperty {
+    CSSProperty("overflow-y", value.rawValue)
 }
 
 public func cursor(_ value: String) -> CSSProperty {
