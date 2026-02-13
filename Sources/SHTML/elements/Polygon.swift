@@ -59,9 +59,9 @@ public struct Polygon: Shape, HTML {
         return copy
     }
     
-    public func strokeWidth(_ width: String) -> Self {
+    public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["stroke-width"] = width
+        copy.attributes["stroke-width"] = width.cssLength
         return copy
     }
 }

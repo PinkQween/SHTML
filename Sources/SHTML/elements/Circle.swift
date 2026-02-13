@@ -6,23 +6,26 @@
 //
 
 /// A circular shape for use in SVG graphics.
+/// Defaults to filling its container.
 ///
 /// ## Example
 ///
 /// ```swift
-/// SVG(width: "200", height: "200") {
-///     Circle()
-///         .fill("#007AFF")
-///         .stroke("white")
-///         .strokeWidth("2")
-/// }
+/// Circle()
+///     .fill("#007AFF")
+///     .r(50.px)
 /// ```
 public struct Circle: Shape, HTML {
     public typealias Body = Never
     public let shape: ShapeType = .circle
     private var attributes: [String: String] = [:]
     
-    public init() {}
+    public init() {
+        // Default to centered circle filling 50% of container
+        self.attributes["cx"] = "50%"
+        self.attributes["cy"] = "50%"
+        self.attributes["r"] = "50%"
+    }
     
     public func render() -> String {
         let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
@@ -46,21 +49,21 @@ public struct Circle: Shape, HTML {
     }
     
     // SVG-specific attributes
-    public func cx(_ value: String) -> Self {
+    public func cx(_ value: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["cx"] = value
+        copy.attributes["cx"] = value.cssLength
         return copy
     }
     
-    public func cy(_ value: String) -> Self {
+    public func cy(_ value: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["cy"] = value
+        copy.attributes["cy"] = value.cssLength
         return copy
     }
     
-    public func r(_ value: String) -> Self {
+    public func r(_ value: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["r"] = value
+        copy.attributes["r"] = value.cssLength
         return copy
     }
     
@@ -77,9 +80,9 @@ public struct Circle: Shape, HTML {
         return copy
     }
     
-    public func strokeWidth(_ width: String) -> Self {
+    public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["stroke-width"] = width
+        copy.attributes["stroke-width"] = width.cssLength
         return copy
     }
 }

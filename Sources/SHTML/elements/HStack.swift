@@ -43,4 +43,17 @@ public struct HStack: HTML, HTMLModifiable {
         copy.attributes["style"] = style
         return copy
     }
+    
+    public func frame(width: String? = nil, height: String? = nil) -> Self {
+        var copy = self
+        var style = copy.attributes["style"] ?? ""
+        if let width = width {
+            style += " width: \(width);"
+        }
+        if let height = height {
+            style += " height: \(height);"
+        }
+        copy.attributes["style"] = style
+        return copy
+    }
 }

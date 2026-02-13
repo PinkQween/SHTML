@@ -5,28 +5,37 @@
 //  Created by Hanna Skairipa on 2/13/26.
 //
 
+/// A rectangle shape for SVG graphics.
+/// Defaults to 100% width and height.
+///
+/// ## Example
+///
+/// ```swift
+/// Rect()
+///     .fill("#007AFF")
+///     .cornerRadius(10.px)
+/// 
+/// Rect(width: 200.px, height: 100.px)
+///     .fill("red")
+/// ```
 public struct Rect: Shape, HTML {
     public typealias Body = Never
     public let shape: ShapeType = .rectangle
-    public var width: Int
-    public var height: Int
     private var attributes: [String: String] = [:]
 
     public init() {
-        self.width = -1
-        self.height = -1
+        self.attributes["width"] = "100%"
+        self.attributes["height"] = "100%"
     }
     
-    public init(width: Int = -1, height: Int = -1) {
-        self.width = width
-        self.height = height
+    public init(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) {
+        self.attributes["width"] = width?.cssLength ?? "100%"
+        self.attributes["height"] = height?.cssLength ?? "100%"
     }
 
     public func render() -> String {
-        let w = (width == -1) ? "100%" : "\(width)"
-        let h = (height == -1) ? "100%" : "\(height)"
         let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
-        return "<rect width=\"\(w)\" height=\"\(h)\"\(attrs) />"
+        return "<rect\(attrs) />"
     }
 
     public func path(in rect: HTMLRect) -> HTMLPath {
@@ -52,23 +61,28 @@ public struct Rect: Shape, HTML {
         return copy
     }
     
-    public func strokeWidth(_ width: String) -> Self {
+    public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["stroke-width"] = width
+        copy.attributes["stroke-width"] = width.cssLength
         return copy
     }
     
-    public func frame(width: String, height: String) -> Self {
+    public func frame(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) -> Self {
         var copy = self
-        copy.attributes["width"] = width
-        copy.attributes["height"] = height
+        if let width = width {
+            copy.attributes["width"] = width.cssLength
+        }
+        if let height = height {
+            copy.attributes["height"] = height.cssLength
+        }
         return copy
     }
     
-    public func cornerRadius(_ radius: String) -> Self {
+    public func cornerRadius(_ radius: any CSSLengthConvertible) -> Self {
         var copy = self
-        copy.attributes["rx"] = radius
-        copy.attributes["ry"] = radius
+        let r = radius.cssLength
+        copy.attributes["rx"] = r
+        copy.attributes["ry"] = r
         return copy
     }
 }
