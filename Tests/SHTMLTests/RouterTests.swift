@@ -96,6 +96,33 @@ final class RouterTests: XCTestCase {
         let result = router.render()
         XCTAssertTrue(result.contains("data-path=\"/blog/*\""))
     }
+
+    func testDynamicPathParamRoute() {
+        let router = Router {
+            Route(path: "/users/:id") {
+                h1 { "User Profile" }
+            }
+        }
+
+        let result = router.render()
+        XCTAssertTrue(result.contains("data-path=\"/users/:id\""))
+        XCTAssertTrue(result.contains("routeSegment.startsWith(':')"))
+    }
+
+    func testRouterGeneratesQueryAndParamState() {
+        let router = Router {
+            Route(path: "/search") {
+                h1 { "Search" }
+            }
+        }
+
+        let result = router.render()
+        XCTAssertTrue(result.contains("parseQuery"))
+        XCTAssertTrue(result.contains("window.routeParams"))
+        XCTAssertTrue(result.contains("window.queryParams"))
+        XCTAssertTrue(result.contains("new URL(target, window.location.origin)"))
+        XCTAssertTrue(result.contains("shtml:routechange"))
+    }
     
     // MARK: - RouterLink Tests
     

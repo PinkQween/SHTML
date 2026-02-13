@@ -51,6 +51,7 @@ struct MyPage: HTML {
 - <doc:CSSGuide>
 - <doc:CSSReference>
 - <doc:JavaScriptGuide>
+- <doc:RoutingGuide>
 - <doc:ShapesGuide>
 
 ### HTML Generation

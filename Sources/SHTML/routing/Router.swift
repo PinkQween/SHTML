@@ -36,33 +36,124 @@ public struct Router: HTML {
     
     private func renderScript() -> String {
         script {
-            JSFunc(params: ["path"]) {
-                const("routes", .raw("document.querySelectorAll('.router .route')"))
-                const("fallback", .raw("document.querySelector('.router .route-fallback')"))
-                let_("matched", .bool(false))
+            JSRaw("""
+            function parseQuery(search) {
+                const params = {};
+                const query = search.startsWith('?') ? search.slice(1) : search;
+                if (!query) return params;
                 
-                JSRaw("""
+                query.split('&').forEach(pair => {
+                    if (!pair) return;
+                    const [rawKey, rawValue = ''] = pair.split('=');
+                    const key = decodeURIComponent(rawKey || '');
+                    const value = decodeURIComponent(rawValue || '');
+                    if (!key) return;
+                    
+                    if (Object.prototype.hasOwnProperty.call(params, key)) {
+                        const current = params[key];
+                        if (Array.isArray(current)) {
+                            current.push(value);
+                        } else {
+                            params[key] = [current, value];
+                        }
+                    } else {
+                        params[key] = value;
+                    }
+                });
+                
+                return params;
+            }
+            
+            function normalizePath(path) {
+                if (!path) return '/';
+                if (path.length > 1 && path.endsWith('/')) {
+                    return path.slice(0, -1);
+                }
+                return path;
+            }
+            
+            function matchRoute(routePath, currentPath) {
+                const normalizedRoute = normalizePath(routePath);
+                const normalizedPath = normalizePath(currentPath);
+                const params = {};
+                
+                if (normalizedRoute === normalizedPath) {
+                    return { matched: true, params };
+                }
+                
+                if (normalizedRoute.endsWith('*')) {
+                    const prefix = normalizePath(normalizedRoute.slice(0, -1));
+                    if (normalizedPath.startsWith(prefix)) {
+                        return { matched: true, params };
+                    }
+                }
+                
+                const routeSegments = normalizedRoute.split('/').filter(Boolean);
+                const pathSegments = normalizedPath.split('/').filter(Boolean);
+                
+                if (routeSegments.length !== pathSegments.length) {
+                    return { matched: false, params: {} };
+                }
+                
+                for (let i = 0; i < routeSegments.length; i++) {
+                    const routeSegment = routeSegments[i];
+                    const pathSegment = pathSegments[i];
+                    
+                    if (routeSegment.startsWith(':')) {
+                        const key = routeSegment.slice(1);
+                        if (!key) {
+                            return { matched: false, params: {} };
+                        }
+                        params[key] = decodeURIComponent(pathSegment);
+                        continue;
+                    }
+                    
+                    if (routeSegment !== pathSegment) {
+                        return { matched: false, params: {} };
+                    }
+                }
+                
+                return { matched: true, params };
+            }
+            
+            function navigateToPath(target) {
+                const url = new URL(target, window.location.origin);
+                const path = url.pathname;
+                const query = parseQuery(url.search);
+                const routes = document.querySelectorAll('.router .route');
+                const fallback = document.querySelector('.router .route-fallback');
+                let matched = false;
+                let routeParams = {};
+                
                 routes.forEach(route => {
-                    const routePath = route.getAttribute('data-path');
-                    if (routePath === path || (routePath.endsWith('*') && path.startsWith(routePath.slice(0, -1)))) {
+                    const routePath = route.getAttribute('data-path') || '';
+                    const result = matchRoute(routePath, path);
+                    
+                    if (result.matched) {
                         route.style.display = 'block';
                         matched = true;
+                        routeParams = result.params;
                     } else {
                         route.style.display = 'none';
                     }
                 });
+                
+                window.routeParams = routeParams;
+                window.queryParams = query;
+                window.currentPath = path;
+                window.dispatchEvent(new CustomEvent('shtml:routechange', {
+                    detail: { path, params: routeParams, query }
+                }));
                 
                 if (!matched && fallback) {
                     fallback.style.display = 'block';
                 } else if (fallback) {
                     fallback.style.display = 'none';
                 }
-                """)
             }
             
-            JSRaw("""
             window.addEventListener('popstate', () => {
-                navigateToPath(window.location.pathname);
+                navigateToPath(window.location.pathname + window.location.search);
             });
             
             window.navigate = function(path, replace = false) {
@@ -74,7 +165,7 @@ public struct Router: HTML {
                 navigateToPath(path);
             };
             
-            navigateToPath(window.location.pathname);
+            navigateToPath(window.location.pathname + window.location.search);
             """)
         }.render()
     }

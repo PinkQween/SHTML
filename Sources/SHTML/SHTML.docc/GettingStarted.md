@@ -113,6 +113,7 @@ html {
 For complete guides, see:
 - <doc:CSSGuide> - Learn how to style your pages
 - <doc:JavaScriptGuide> - Learn how to add interactivity
+- <doc:RoutingGuide> - Learn how to add client-side navigation
 
 ## Using the CLI
 
