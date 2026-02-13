@@ -187,3 +187,9 @@ public enum ObjectFit: String {
     case `none`
     case scaleDown = "scale-down"
 }
+
+public enum UserDrag: String {
+    case none
+    case element
+    case auto
+}

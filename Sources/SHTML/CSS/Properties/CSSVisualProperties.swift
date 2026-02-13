@@ -108,6 +108,10 @@ public func objectFit(_ value: ObjectFit) -> CSSProperty {
     CSSProperty("object-fit", value.rawValue)
 }
 
+public func userDrag(_ value: UserDrag) -> CSSProperty {
+    CSSProperty("user-drag", value.rawValue)
+}
+
 public func objectPosition(_ value: String) -> CSSProperty {
     CSSProperty("object-position", value)
 }
