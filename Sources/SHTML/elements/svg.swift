@@ -34,14 +34,23 @@ public struct SVG: HTMLPrimitive, HTMLModifiable {
     ///
     /// - Parameters:
     ///   - width: The width of the SVG canvas (default: 100%)
-    ///   - height: The height of the SVG canvas (default: 100%)
+    ///   - height: The height of the SVG canvas (default: 100%). Use `"auto"` with aspectRatio modifier.
     ///   - viewBox: Optional viewBox attribute for scaling (e.g., "0 0 100 100")
     ///   - content: The shapes and graphics to render inside the SVG
     public init(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil, viewBox: String? = nil, @HTMLBuilder _ content: @escaping () -> [any HTML] = { [] }) {
         var attrs: [String: String] = [:]
         attrs["xmlns"] = "http://www.w3.org/2000/svg"
+        
+        // Set width
         attrs["width"] = width?.cssLength ?? "100%"
-        attrs["height"] = height?.cssLength ?? "100%"
+        
+        // Only set height if explicitly provided, otherwise use auto for aspect-ratio compatibility
+        if let height = height {
+            attrs["height"] = height.cssLength
+        } else {
+            attrs["height"] = "100%"
+        }
+        
         if let viewBox = viewBox { attrs["viewBox"] = viewBox }
         self.attributes = attrs
         self.content = content
