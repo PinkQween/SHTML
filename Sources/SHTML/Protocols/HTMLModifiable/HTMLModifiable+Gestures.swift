@@ -25,12 +25,43 @@ public extension HTMLModifiable {
     /// Handles drag updates and optional drag end, and enables dragging.
     func onDragGesture(onChanged: String, onEnded: String = "") -> Self {
         var copy = self
-        copy = copy.draggable(true)
-        copy = copy.appendingEventHandler(named: "ondrag", script: onChanged)
-        if !onEnded.isEmpty {
-            copy = copy.appendingEventHandler(named: "ondragend", script: onEnded)
+        let startScript = "this.__shtmlDragGestureActive = true;"
+        let moveScript = "if (!this.__shtmlDragGestureActive) { return; } \(onChanged)"
+
+        let endScript: String
+        if onEnded.isEmpty {
+            endScript = "if (!this.__shtmlDragGestureActive) { return; } this.__shtmlDragGestureActive = false;"
+        } else {
+            endScript = "if (!this.__shtmlDragGestureActive) { return; } this.__shtmlDragGestureActive = false; \(onEnded)"
         }
+
+        copy = copy.appendingEventHandler(named: "onpointerdown", script: startScript)
+        copy = copy.appendingEventHandler(named: "onpointermove", script: moveScript)
+        copy = copy.appendingEventHandler(named: "onpointerup", script: endScript)
+        copy = copy.appendingEventHandler(named: "onpointercancel", script: endScript)
+        copy = copy.appendingEventHandler(named: "onpointerleave", script: endScript)
         return copy
+    }
+
+    /// Handles drag updates using SHTML JavaScript DSL.
+    func onDragGesture(onChanged: any JavaScript, onEnded: (any JavaScript)? = nil) -> Self {
+        onDragGesture(onChanged: onChanged.render(), onEnded: onEnded?.render() ?? "")
+    }
+
+    /// Handles drag updates using JSBuilder.
+    func onDragGesture(@JSBuilder onChanged: () -> [any JavaScript]) -> Self {
+        onDragGesture(onChanged: JSRendering.renderStatements(onChanged), onEnded: "")
+    }
+
+    /// Handles drag updates/end using JSBuilder.
+    func onDragGesture(
+        @JSBuilder onChanged: () -> [any JavaScript],
+        @JSBuilder onEnded: () -> [any JavaScript]
+    ) -> Self {
+        onDragGesture(
+            onChanged: JSRendering.renderStatements(onChanged),
+            onEnded: JSRendering.renderStatements(onEnded)
+        )
     }
 
     /// Handles long-press by scheduling action after the minimum duration.

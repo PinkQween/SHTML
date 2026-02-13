@@ -199,9 +199,22 @@ final class ModifierTests: XCTestCase {
     func testOnDragGesture() {
         let div = Div { "Drag" }.onDragGesture(onChanged: "handleDrag()", onEnded: "handleDragEnd()")
         let result = div.render()
-        XCTAssertTrue(result.contains("draggable=\"true\""))
-        XCTAssertTrue(result.contains("ondrag=\"handleDrag()\""))
-        XCTAssertTrue(result.contains("ondragend=\"handleDragEnd()\""))
+        XCTAssertTrue(result.contains("onpointerdown="))
+        XCTAssertTrue(result.contains("onpointermove="))
+        XCTAssertTrue(result.contains("onpointerup="))
+        XCTAssertTrue(result.contains("handleDrag()"))
+        XCTAssertTrue(result.contains("handleDragEnd()"))
+    }
+
+    func testOnDragGestureWithJavaScriptType() {
+        let div = Div { "Drag" }.onDragGesture(
+            onChanged: JSRaw("framework.dragMove(event)"),
+            onEnded: JSRaw("framework.dragEnd(event)")
+        )
+        let result = div.render()
+        XCTAssertTrue(result.contains("onpointermove="))
+        XCTAssertTrue(result.contains("framework.dragMove(event)"))
+        XCTAssertTrue(result.contains("framework.dragEnd(event)"))
     }
 
     func testOnLongPressGesture() {
@@ -214,4 +227,5 @@ final class ModifierTests: XCTestCase {
         XCTAssertTrue(result.contains("handleLongPress()"))
         XCTAssertTrue(result.contains("1200"))
     }
+
 }
