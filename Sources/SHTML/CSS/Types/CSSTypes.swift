@@ -146,3 +146,22 @@ public enum Visibility: String {
     case hidden
     case collapse
 }
+
+// Type-safe scroll behavior
+public enum ScrollBehavior: String {
+    case auto
+    case smooth
+}
+
+// Type-safe scrollbar width
+public enum ScrollbarWidth: String {
+    case auto
+    case thin
+    case none
+}
+
+// Type-safe box sizing
+public enum BoxSizing: String {
+    case contentBox = "content-box"
+    case borderBox = "border-box"
+}
