@@ -100,3 +100,9 @@ public enum TimingFunction {
         }
     }
 }
+
+public enum Visiblity: String {
+    case visible
+    case hidden
+    case collapse
+}

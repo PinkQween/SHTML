@@ -423,11 +423,11 @@ public func overflowY(_ value: Overflow) -> CSSProperty {
     CSSProperty("overflow-y", value.rawValue)
 }
 
-public func cursor(_ value: String) -> CSSProperty {
-    CSSProperty("cursor", value)
+public func cursor(_ value: Cursor) -> CSSProperty {
+    CSSProperty("cursor", value.rawValue)
 }
 
-public func visibility(_ value: String) -> CSSProperty {
+public func visibility(_ value: Visibility) -> CSSProperty {
     CSSProperty("visibility", value)
 }
 
