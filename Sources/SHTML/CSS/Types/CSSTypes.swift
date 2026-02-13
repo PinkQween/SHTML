@@ -160,6 +160,13 @@ public enum ScrollbarWidth: String {
     case none
 }
 
+// Type-safe scrollbar gutter
+public enum ScrollbarGutter: String {
+    case auto
+    case stable
+    case stableBothEdges = "stable both-edges"
+}
+
 // Type-safe box sizing
 public enum BoxSizing: String {
     case contentBox = "content-box"

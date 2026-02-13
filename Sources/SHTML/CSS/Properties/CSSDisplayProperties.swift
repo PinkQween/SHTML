@@ -153,6 +153,10 @@ public func scrollbarGutter(_ value: String) -> CSSProperty {
     CSSProperty("scrollbar-gutter", value)
 }
 
+public func scrollbarGutter(_ value: ScrollbarGutter) -> CSSProperty {
+    CSSProperty("scrollbar-gutter", value.rawValue)
+}
+
 public func visibility(_ value: Visibility) -> CSSProperty {
     CSSProperty("visibility", value.rawValue)
 }

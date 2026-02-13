@@ -155,8 +155,49 @@ public func scrollbarColor(_ thumbColor: Color, _ trackColor: Color) -> CSSPrope
     CSSProperty("scrollbar-color", "\(thumbColor.css) \(trackColor.css)")
 }
 
+public func scrollbarColor(_ color: Color) -> CSSProperty {
+    CSSProperty("scrollbar-color", color.css)
+}
+
+public func scrollbarColor(_ thumbColor: String, _ trackColor: String) -> CSSProperty {
+    CSSProperty("scrollbar-color", "\(thumbColor) \(trackColor)")
+}
+
 public func scrollbarColor(_ value: String) -> CSSProperty {
     CSSProperty("scrollbar-color", value)
+}
+
+// Webkit scrollbar color properties
+public func scrollbarTrackColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-track-color", value.css)
+}
+
+public func scrollbarThumbColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-thumb-color", value.css)
+}
+
+public func scrollbarArrowColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-arrow-color", value.css)
+}
+
+public func scrollbarFaceColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-face-color", value.css)
+}
+
+public func scrollbarShadowColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-shadow-color", value.css)
+}
+
+public func scrollbarHighlightColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-highlight-color", value.css)
+}
+
+public func scrollbarDarkshadowColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-darkshadow-color", value.css)
+}
+
+public func scrollbar3dlightColor(_ value: Color) -> CSSProperty {
+    CSSProperty("scrollbar-3dlight-color", value.css)
 }
 
 // MARK: - Blend Modes & Compositing
