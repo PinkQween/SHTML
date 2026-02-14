@@ -25,7 +25,7 @@ rm -rf docs/*
 cp -R "$DOCC_ARCHIVE"/* docs/
 
 # Add CNAME for custom domain
-echo "SHTML.hannaskairipa.com" > docs/CNAME
+echo "shtml.hannaskairipa.com" > docs/CNAME
 
 # Disable Jekyll for GitHub Pages
 touch docs/.nojekyll
@@ -37,11 +37,11 @@ cat > docs/index.html <<'EOF'
   <head>
     <meta charset="utf-8">
     <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0; url=documentation/SHTML/">
+    <meta http-equiv="refresh" content="0; url=documentation/shtml/">
     <link rel="canonical" href="documentation/SHTML/">
   </head>
   <body>
-    <p>If you are not redirected, <a href="documentation/SHTML/">click here</a>.</p>
+    <p>If you are not redirected, <a href="documentation/shtml/">click here</a>.</p>
   </body>
 </html>
 EOF
