@@ -115,6 +115,78 @@ public indirect enum FontFamily: Sendable, Hashable {
         return .stack(values)
     }
 
+    /// Default sans-serif web-safe stack.
+    public static var sansSerif: FontFamily {
+        .stack([
+            .custom("Arial"),
+            .custom("Helvetica"),
+            .generic(.sansSerif)
+        ])
+    }
+
+    /// Default serif web-safe stack.
+    public static var serif: FontFamily {
+        .stack([
+            .custom("Times New Roman"),
+            .custom("Times"),
+            .generic(.serif)
+        ])
+    }
+
+    /// Default monospace web-safe stack.
+    public static var monospace: FontFamily {
+        .stack([
+            .custom("Courier New"),
+            .custom("Courier"),
+            .generic(.monospace)
+        ])
+    }
+
+    /// Common Arial stack.
+    public static var arial: FontFamily {
+        .named("Arial", fallbacks: .sansSerif)
+    }
+
+    /// Common Helvetica stack.
+    public static var helvetica: FontFamily {
+        .named("Helvetica", fallbacks: .sansSerif)
+    }
+
+    /// Common Times New Roman stack.
+    public static var timesNewRoman: FontFamily {
+        .named("Times New Roman", fallbacks: .serif)
+    }
+
+    /// Common Georgia stack.
+    public static var georgia: FontFamily {
+        .named("Georgia", fallbacks: .serif)
+    }
+
+    /// Common Verdana stack.
+    public static var verdana: FontFamily {
+        .named("Verdana", fallbacks: .sansSerif)
+    }
+
+    /// Common Tahoma stack.
+    public static var tahoma: FontFamily {
+        .named("Tahoma", fallbacks: .sansSerif)
+    }
+
+    /// Common Trebuchet MS stack.
+    public static var trebuchetMS: FontFamily {
+        .named("Trebuchet MS", fallbacks: .sansSerif)
+    }
+
+    /// Common impact stack.
+    public static var impact: FontFamily {
+        .named("Impact", fallbacks: .sansSerif)
+    }
+
+    /// Common Courier New stack.
+    public static var courierNew: FontFamily {
+        .named("Courier New", fallbacks: .monospace)
+    }
+
     private static func quoteIfNeeded(_ value: String) -> String {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.hasPrefix("'") || trimmed.hasPrefix("\"") {

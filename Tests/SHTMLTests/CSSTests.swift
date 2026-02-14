@@ -114,6 +114,16 @@ final class CSSTests: XCTestCase {
         XCTAssertEqual(prop.render(), "font-family: Inter, sans-serif;")
     }
 
+    func testDefaultSansSerifFontFamilyHelper() {
+        let prop = fontFamily(.sansSerif)
+        XCTAssertEqual(prop.render(), "font-family: Arial, Helvetica, sans-serif;")
+    }
+
+    func testDefaultSerifFontFamilyHelper() {
+        let prop = fontFamily(.serif)
+        XCTAssertEqual(prop.render(), "font-family: 'Times New Roman', Times, serif;")
+    }
+
     func testTypedTextDecorationHelper() {
         let prop = textDecoration(.underline)
         XCTAssertEqual(prop.render(), "text-decoration: underline;")
