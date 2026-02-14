@@ -47,20 +47,12 @@ public struct HStack: HTML, HTMLModifiable {
     
     /// padding function.
     public func padding(_ value: String) -> Self {
-        var copy = self
-        var style = copy.attributes["style"] ?? ""
-        style += " padding: \(value);"
-        copy.attributes["style"] = style
-        return copy
+        appendingStyle("padding: \(value)")
     }
     
     /// background function.
     public func background(_ value: String) -> Self {
-        var copy = self
-        var style = copy.attributes["style"] ?? ""
-        style += " background: \(value);"
-        copy.attributes["style"] = style
-        return copy
+        appendingStyle("background: \(value)")
     }
 
     /// background function.
@@ -75,15 +67,9 @@ public struct HStack: HTML, HTMLModifiable {
     
     /// frame function.
     public func frame(width: String? = nil, height: String? = nil) -> Self {
-        var copy = self
-        var style = copy.attributes["style"] ?? ""
-        if let width = width {
-            style += " width: \(width);"
-        }
-        if let height = height {
-            style += " height: \(height);"
-        }
-        copy.attributes["style"] = style
-        return copy
+        var result = self
+        if let width = width { result = result.appendingStyle("width: \(width)") }
+        if let height = height { result = result.appendingStyle("height: \(height)") }
+        return result
     }
 }

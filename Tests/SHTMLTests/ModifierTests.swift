@@ -162,6 +162,17 @@ final class ModifierTests: XCTestCase {
         let div = Div { "Content" }.gap("20px")
         XCTAssertTrue(div.render().contains("gap: 20px"))
     }
+
+    func testVStackBackgroundAfterOverflowKeepsValidStyleSeparator() {
+        let stack = VStack {
+            "Item"
+        }
+        .overflow(.scroll)
+        .background(.red)
+
+        let result = stack.render()
+        XCTAssertTrue(result.contains("overflow: scroll; background: red"))
+    }
     
     // MARK: - Modifier Chaining
     

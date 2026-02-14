@@ -88,20 +88,12 @@ public struct ZStack: HTML, HTMLModifiable {
     
     /// padding function.
     public func padding(_ value: String) -> Self {
-        var copy = self
-        var style = copy.attributes["style"] ?? ""
-        style += " padding: \(value);"
-        copy.attributes["style"] = style
-        return copy
+        appendingStyle("padding: \(value)")
     }
     
     /// background function.
     public func background(_ value: String) -> Self {
-        var copy = self
-        var style = copy.attributes["style"] ?? ""
-        style += " background: \(value);"
-        copy.attributes["style"] = style
-        return copy
+        appendingStyle("background: \(value)")
     }
 
     /// background function.
