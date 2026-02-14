@@ -299,6 +299,21 @@ final class JavaScriptTests: XCTestCase {
         XCTAssertTrue(result.contains("function add(a, b) {"))
         XCTAssertTrue(result.contains("return a + b;"))
     }
+
+    func testJSFuncCallableFromSwiftDSL() {
+        let updateBackground = JSFunc("UpdateBackground") {
+            JSRaw("console.log('ok')")
+        }
+        XCTAssertEqual(updateBackground().render(), "UpdateBackground()")
+    }
+
+    func testAddEventListenerWithFunctionReference() {
+        let updateBackground = JSFunc("UpdateBackground") {
+            JSRaw("console.log('ok')")
+        }
+        let stmt = window.addEventListener("DOMContentLoaded", updateBackground)
+        XCTAssertEqual(stmt.render(), "window.addEventListener('DOMContentLoaded', UpdateBackground);")
+    }
     
     func testAsyncFunction() {
         let func_ = JSFunc("fetchData", async: true) {

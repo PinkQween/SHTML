@@ -469,6 +469,21 @@ public struct JSFunc: JavaScript {
             """
         }
     }
+
+    /// Reference expression for this function.
+    /// Named functions use their symbol; anonymous functions become inline expressions.
+    public var ref: JSExpr {
+        if let name = name {
+            return JSExpr(name)
+        }
+        return JSExpr("(\(render()))")
+    }
+
+    /// Call the function from Swift DSL.
+    public func callAsFunction(_ args: any ExpressibleAsJSArg...) -> JSExpr {
+        let jsArgs = args.map { $0.jsArg.toJS() }.joined(separator: ", ")
+        return JSExpr("\(ref.render())(\(jsArgs))")
+    }
 }
 
 // Arrow functions
@@ -610,6 +625,16 @@ public extension JSExpr {
     func addEventListener(_ event: String, @JSBuilder handler: @escaping () -> [any JavaScript]) -> JSStatement {
         let body = JSRendering.renderStatements(handler)
         return JSStatement("\(code).addEventListener('\(event)', () => { \(body) })")
+    }
+
+    /// Attach a named/inline function reference directly.
+    func addEventListener(_ event: String, _ handler: JSFunc) -> JSStatement {
+        JSStatement("\(code).addEventListener('\(event)', \(handler.ref.render()))")
+    }
+
+    /// Attach any JS expression as an event listener callback.
+    func addEventListener(_ event: String, handler: JSExpr) -> JSStatement {
+        JSStatement("\(code).addEventListener('\(event)', \(handler.render()))")
     }
 }
 
