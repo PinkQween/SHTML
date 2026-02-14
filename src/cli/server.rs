@@ -448,7 +448,19 @@ fn handle_request(req: &Request) -> Response {
         _ => {
             // Try to serve static file from public directory
             let file_path = format!("public{}", req.path);
-            serve_static_file(&file_path)
+            let static_response = serve_static_file(&file_path);
+            if static_response.status != 404 {
+                return static_response;
+            }
+
+            // SPA fallback: serve generated HTML for client-side routes
+            let path = req.path.split('?').next().unwrap_or(&req.path);
+            let looks_like_file = path.rsplit('/').next().unwrap_or("").contains('.');
+            if !looks_like_file {
+                return serve_generated_html();
+            }
+
+            static_response
         }
     }
 }

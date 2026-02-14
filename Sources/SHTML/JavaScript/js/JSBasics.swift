@@ -52,29 +52,47 @@ public struct JSFunction: JavaScript {
 // Legacy - prefer using const() from NaturalJS
 public struct JSConst: JavaScript {
     private let name: String
-    private let value: String
+    private let value: JSArg
     
-    public init(_ name: String, _ value: String) {
+    public init(_ name: String, _ value: JSArg) {
         self.name = name
         self.value = value
     }
+
+    public init(_ name: String, _ value: any ExpressibleAsJSArg) {
+        self.init(name, value.jsArg)
+    }
+
+    // Backward compatibility for legacy raw JS expression usage.
+    public init(_ name: String, _ value: String) {
+        self.init(name, .raw(value))
+    }
     
     public func render() -> String {
-        "const \(name) = \(value);"
+        "const \(name) = \(value.toJS());"
     }
 }
 
 // Legacy - prefer using let_() from NaturalJS
 public struct JSLet: JavaScript {
     private let name: String
-    private let value: String
+    private let value: JSArg
     
-    public init(_ name: String, _ value: String) {
+    public init(_ name: String, _ value: JSArg) {
         self.name = name
         self.value = value
     }
+
+    public init(_ name: String, _ value: any ExpressibleAsJSArg) {
+        self.init(name, value.jsArg)
+    }
+
+    // Backward compatibility for legacy raw JS expression usage.
+    public init(_ name: String, _ value: String) {
+        self.init(name, .raw(value))
+    }
     
     public func render() -> String {
-        "let \(name) = \(value);"
+        "let \(name) = \(value.toJS());"
     }
 }

@@ -199,6 +199,21 @@ final class JavaScriptTests: XCTestCase {
         let stmt = var_("oldStyle", .bool(true))
         XCTAssertEqual(stmt.render(), "var oldStyle = true;")
     }
+
+    func testLegacyJSConstTypedValue() {
+        let stmt = JSConst("count", JSArg.int(5))
+        XCTAssertEqual(stmt.render(), "const count = 5;")
+    }
+
+    func testLegacyJSConstExpressibleValue() {
+        let stmt = JSConst("name", "alice")
+        XCTAssertEqual(stmt.render(), "const name = alice;")
+    }
+
+    func testLegacyJSLetTypedValue() {
+        let stmt = JSLet("enabled", JSArg.bool(true))
+        XCTAssertEqual(stmt.render(), "let enabled = true;")
+    }
     
     func testReturnStatement() {
         let stmt = `return`(.int(42))
