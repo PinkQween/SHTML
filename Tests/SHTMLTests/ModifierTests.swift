@@ -104,6 +104,13 @@ final class ModifierTests: XCTestCase {
         let div = Div { "Content" }.cornerRadius("10px")
         XCTAssertTrue(div.render().contains("border-radius: 10px"))
     }
+
+    func testCornerRadiusSpecificCorners() {
+        let div = Div { "Content" }.cornerRadius([.topLeft, .bottomRight], 12.px)
+        let result = div.render()
+        XCTAssertTrue(result.contains("border-top-left-radius: 12px"))
+        XCTAssertTrue(result.contains("border-bottom-right-radius: 12px"))
+    }
     
     func testShadow() {
         let div = Div { "Content" }.shadow(x: "0", y: "5px", blur: "10px", color: "rgba(0,0,0,0.2)")
@@ -161,6 +168,16 @@ final class ModifierTests: XCTestCase {
     func testGap() {
         let div = Div { "Content" }.gap("20px")
         XCTAssertTrue(div.render().contains("gap: 20px"))
+    }
+
+    func testOverflowTyped() {
+        let div = Div { "Content" }.overflow(.scroll)
+        XCTAssertTrue(div.render().contains("overflow: scroll"))
+    }
+
+    func testFlexShrinkModifier() {
+        let div = Div { "Content" }.flexShrink(0)
+        XCTAssertTrue(div.render().contains("flex-shrink: 0"))
     }
 
     func testVStackBackgroundAfterOverflowKeepsValidStyleSeparator() {
@@ -268,6 +285,18 @@ final class ModifierTests: XCTestCase {
         let result = div.render()
         XCTAssertTrue(result.contains("onmouseenter=\"handleEnter()\""))
         XCTAssertTrue(result.contains("onmouseleave=\"handleLeave()\""))
+    }
+
+    func testOnHoverCSSModifier() {
+        let div = Div { "Hover" }.onHoverCSS {
+            textDecoration(.none)
+            color(.white)
+        }
+        let result = div.render()
+        XCTAssertTrue(result.contains("onmouseenter="))
+        XCTAssertTrue(result.contains("onmouseleave="))
+        XCTAssertTrue(result.contains("text-decoration: none; color: white"))
+        XCTAssertTrue(result.contains("__shtmlHoverPrevStyle"))
     }
 
     func testOnDragGesture() {

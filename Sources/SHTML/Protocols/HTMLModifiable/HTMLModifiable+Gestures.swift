@@ -22,6 +22,39 @@ public extension HTMLModifiable {
         return copy
     }
 
+    /// Applies CSS declarations while hovered, then restores the previous inline style.
+    func onHoverCSS(_ css: CSS...) -> Self {
+        let declarations = hoverCSSDeclarations(css)
+        return onHoverCSS(withDeclarations: declarations)
+    }
+
+    /// Applies CSS declarations while hovered, then restores the previous inline style.
+    func onHoverCSS(@CSSBuilder _ css: () -> [CSS]) -> Self {
+        let declarations = hoverCSSDeclarations(css())
+        return onHoverCSS(withDeclarations: declarations)
+    }
+
+    private func onHoverCSS(withDeclarations declarations: String) -> Self {
+        guard !declarations.isEmpty else { return self }
+        let escaped = escapeForSingleQuotedJS(declarations)
+        let enter = """
+        this.__shtmlHoverPrevStyle = this.getAttribute('style') || '';
+        this.style.cssText = this.__shtmlHoverPrevStyle;
+        this.style.cssText += (this.style.cssText && !this.style.cssText.trim().endsWith(';') ? '; ' : '') + '\(escaped)';
+        """
+        let leave = """
+        if (this.__shtmlHoverPrevStyle !== undefined) {
+            this.setAttribute('style', this.__shtmlHoverPrevStyle);
+            this.__shtmlHoverPrevStyle = undefined;
+        }
+        """
+
+        var copy = self
+        copy = copy.appendingEventHandler(named: "onmouseenter", script: enter)
+        copy = copy.appendingEventHandler(named: "onmouseleave", script: leave)
+        return copy
+    }
+
     /// Handles drag updates and optional drag end, and enables dragging.
     func onDragGesture(onChanged: String, onEnded: String = "") -> Self {
         var copy = self
@@ -90,5 +123,29 @@ public extension HTMLModifiable {
             copy.attributes[attribute] = script
         }
         return copy
+    }
+
+    private func hoverCSSDeclarations(_ values: [CSS]) -> String {
+        var declarations: [String] = []
+        for value in values {
+            if let property = value as? CSSProperty {
+                declarations.append("\(property.name): \(property.value)")
+                continue
+            }
+            if let group = value as? CSSPropertyGroup {
+                for property in group.properties {
+                    declarations.append("\(property.name): \(property.value)")
+                }
+            }
+        }
+        return declarations.joined(separator: "; ")
+    }
+
+    private func escapeForSingleQuotedJS(_ value: String) -> String {
+        value
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "'", with: "\\'")
+            .replacingOccurrences(of: "\n", with: " ")
+            .replacingOccurrences(of: "\r", with: " ")
     }
 }

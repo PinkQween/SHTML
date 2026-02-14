@@ -14,6 +14,14 @@ public extension HTMLModifiable {
     func cornerRadius(_ radius: CSSLength) -> Self {
         appendingStyle("border-radius: \(radius.css)")
     }
+
+    func cornerRadius(_ corners: Corner.Set, _ radius: String) -> Self {
+        appendingStyle(borderRadiusDeclarations(for: corners, radius: radius))
+    }
+
+    func cornerRadius(_ corners: Corner.Set, _ radius: CSSLength) -> Self {
+        cornerRadius(corners, radius.css)
+    }
     
     func borderRadius(_ radius: String) -> Self {
         appendingStyle("border-radius: \(radius)")
@@ -21,6 +29,14 @@ public extension HTMLModifiable {
     
     func borderRadius(_ radius: CSSLength) -> Self {
         appendingStyle("border-radius: \(radius.css)")
+    }
+
+    func borderRadius(_ corners: Corner.Set, _ radius: String) -> Self {
+        appendingStyle(borderRadiusDeclarations(for: corners, radius: radius))
+    }
+
+    func borderRadius(_ corners: Corner.Set, _ radius: CSSLength) -> Self {
+        borderRadius(corners, radius.css)
     }
     
     func transition(_ value: String) -> Self {
@@ -64,5 +80,26 @@ public extension HTMLModifiable {
     // Image
     func objectFit(_ value: ObjectFit) -> Self {
         appendingStyle("object-fit: \(value.rawValue)")
+    }
+
+    private func borderRadiusDeclarations(for corners: Corner.Set, radius: String) -> String {
+        if corners == .all {
+            return "border-radius: \(radius)"
+        }
+
+        var declarations: [String] = []
+        if corners.contains(.topLeft) {
+            declarations.append("border-top-left-radius: \(radius)")
+        }
+        if corners.contains(.topRight) {
+            declarations.append("border-top-right-radius: \(radius)")
+        }
+        if corners.contains(.bottomRight) {
+            declarations.append("border-bottom-right-radius: \(radius)")
+        }
+        if corners.contains(.bottomLeft) {
+            declarations.append("border-bottom-left-radius: \(radius)")
+        }
+        return declarations.joined(separator: "; ")
     }
 }
