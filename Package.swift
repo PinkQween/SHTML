@@ -31,6 +31,18 @@ let package = Package(
             name: "SHTML",
             dependencies: ["SHTMLMacros"]
         ),
+
+        // Asset symbol generator tool (used by build plugin)
+        .executableTarget(
+            name: "shtml-asset-name-gen"
+        ),
+
+        // Build tool plugin for auto-generating ImageName/FontName symbols
+        .plugin(
+            name: "SHTMLAssetNamePlugin",
+            capability: .buildTool(),
+            dependencies: ["shtml-asset-name-gen"]
+        ),
         
         .testTarget(
             name: "SHTMLTests",

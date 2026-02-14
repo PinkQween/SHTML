@@ -6,7 +6,30 @@ Generate typed `ImageName` and `FontName` symbols from your asset folders so you
 
 Swift autocomplete requires static symbols. Asset folders are dynamic, so SHTML provides `AssetNameGenerator` to generate those symbols from files.
 
-## Generate Files
+## Automatic (Build Plugin)
+
+Attach SHTML's build plugin to your app target:
+
+```swift
+.target(
+    name: "App",
+    dependencies: [
+        .product(name: "SHTML", package: "SHTML")
+    ],
+    plugins: [
+        .plugin(name: "SHTMLAssetNamePlugin", package: "SHTML")
+    ]
+)
+```
+
+On build, the plugin scans:
+
+- `Assets/Images`
+- `Assets/Fonts`
+
+and generates typed members into the plugin output directory.
+
+## Manual Generation
 
 ```swift
 import SHTML
