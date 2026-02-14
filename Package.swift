@@ -12,6 +12,10 @@ let package = Package(
             name: "SHTML",
             targets: ["SHTML"]
         ),
+        .plugin(
+            name: "SHTMLAssetNamePlugin",
+            targets: ["SHTMLAssetNamePlugin"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "600.0.0"),
