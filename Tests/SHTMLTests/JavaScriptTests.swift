@@ -28,6 +28,19 @@ final class JavaScriptTests: XCTestCase {
         let arg = JSArg.raw("myVariable")
         XCTAssertEqual(arg.toJS(), "myVariable")
     }
+
+    func testTemplateLiteral() {
+        let tpl = template(
+            .text("rgb("),
+            .value(JSExpr("r")),
+            .text(", "),
+            .value(JSExpr("g")),
+            .text(", "),
+            .value(JSExpr("b")),
+            .text(")")
+        )
+        XCTAssertEqual(tpl.render(), "`rgb(${r}, ${g}, ${b})`")
+    }
     
     // MARK: - JSExpr Tests
     
@@ -189,15 +202,30 @@ final class JavaScriptTests: XCTestCase {
         let stmt = const("myVar", .string("value"))
         XCTAssertEqual(stmt.render(), "const myVar = 'value';")
     }
+
+    func testConstDeclarationWithExpressibleValue() {
+        let stmt = const("color", template(.text("#"), .value(255)))
+        XCTAssertEqual(stmt.render(), "const color = `#${255}`;")
+    }
     
     func testLetDeclaration() {
         let stmt = let_("count", .int(0))
         XCTAssertEqual(stmt.render(), "let count = 0;")
     }
+
+    func testLetDeclarationWithExpressibleValue() {
+        let stmt = let_("enabled", true)
+        XCTAssertEqual(stmt.render(), "let enabled = true;")
+    }
     
     func testVarDeclaration() {
         let stmt = var_("oldStyle", .bool(true))
         XCTAssertEqual(stmt.render(), "var oldStyle = true;")
+    }
+
+    func testVarDeclarationWithExpressibleValue() {
+        let stmt = var_("message", "hello")
+        XCTAssertEqual(stmt.render(), "var message = 'hello';")
     }
 
     func testLegacyJSConstTypedValue() {

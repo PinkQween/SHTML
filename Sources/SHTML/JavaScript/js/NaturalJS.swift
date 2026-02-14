@@ -292,6 +292,46 @@ extension JSArg: ExpressibleAsJSArg {
     public var jsArg: JSArg { self }
 }
 
+public enum JSTemplateSegment {
+    case text(String)
+    case value(any ExpressibleAsJSArg)
+}
+
+public struct JSTemplate: JavaScript, ExpressibleAsJSArg {
+    private let segments: [JSTemplateSegment]
+
+    public init(_ segments: [JSTemplateSegment]) {
+        self.segments = segments
+    }
+
+    public func render() -> String {
+        let body = segments.map { segment in
+            switch segment {
+            case .text(let value):
+                return JSTemplate.escapeText(value)
+            case .value(let value):
+                return "${\(value.jsArg.toJS())}"
+            }
+        }.joined()
+        return "`\(body)`"
+    }
+
+    public var jsArg: JSArg {
+        .raw(render())
+    }
+
+    private static func escapeText(_ value: String) -> String {
+        value
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "`", with: "\\`")
+            .replacingOccurrences(of: "${", with: "\\${")
+    }
+}
+
+public func template(_ segments: JSTemplateSegment...) -> JSTemplate {
+    JSTemplate(segments)
+}
+
 // Allow literals to be used as arguments
 extension String: ExpressibleAsJSArg {
     public var jsArg: JSArg { .string(self) }
@@ -355,12 +395,24 @@ public func const(_ name: String, _ value: JSArg) -> JSStatement {
     JSStatement("const \(name) = \(value.toJS())")
 }
 
+public func const(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
+    const(name, value.jsArg)
+}
+
 public func let_(_ name: String, _ value: JSArg) -> JSStatement {
     JSStatement("let \(name) = \(value.toJS())")
 }
 
+public func let_(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
+    let_(name, value.jsArg)
+}
+
 public func var_(_ name: String, _ value: JSArg) -> JSStatement {
     JSStatement("var \(name) = \(value.toJS())")
+}
+
+public func var_(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
+    var_(name, value.jsArg)
 }
 
 public func `return`(_ value: JSArg? = nil) -> JSStatement {
@@ -545,6 +597,12 @@ public extension JSExpr {
     func addEventListener(_ event: String, @JSBuilder handler: @escaping () -> [any JavaScript]) -> JSStatement {
         let body = JSRendering.renderStatements(handler)
         return JSStatement("\(code).addEventListener('\(event)', () => { \(body) })")
+    }
+}
+
+public extension JS {
+    static func template(_ segments: JSTemplateSegment...) -> JSTemplate {
+        JSTemplate(segments)
     }
 }
 
