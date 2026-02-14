@@ -26,6 +26,11 @@ public func fontStyle(_ value: String) -> CSSProperty {
     CSSProperty("font-style", value)
 }
 
+/// fontStyle function.
+public func fontStyle(_ value: FontStyle) -> CSSProperty {
+    CSSProperty("font-style", value.rawValue)
+}
+
 /// lineHeight function.
 public func lineHeight(_ value: any CSSLengthConvertible) -> CSSProperty {
     CSSProperty("line-height", value.cssLength)
@@ -51,14 +56,29 @@ public func textDecoration(_ value: String) -> CSSProperty {
     CSSProperty("text-decoration", value)
 }
 
+/// textDecoration function.
+public func textDecoration(_ value: TextDecoration) -> CSSProperty {
+    CSSProperty("text-decoration", value.rawValue)
+}
+
 /// textTransform function.
 public func textTransform(_ value: String) -> CSSProperty {
     CSSProperty("text-transform", value)
 }
 
+/// textTransform function.
+public func textTransform(_ value: TextTransform) -> CSSProperty {
+    CSSProperty("text-transform", value.rawValue)
+}
+
 /// whiteSpace function.
 public func whiteSpace(_ value: String) -> CSSProperty {
     CSSProperty("white-space", value)
+}
+
+/// whiteSpace function.
+public func whiteSpace(_ value: WhiteSpace) -> CSSProperty {
+    CSSProperty("white-space", value.rawValue)
 }
 
 /// wordSpacing function.
@@ -74,6 +94,11 @@ public func textShadow(_ value: String) -> CSSProperty {
 /// verticalAlign function.
 public func verticalAlign(_ value: String) -> CSSProperty {
     CSSProperty("vertical-align", value)
+}
+
+/// verticalAlign function.
+public func verticalAlign(_ value: VerticalAlign) -> CSSProperty {
+    CSSProperty("vertical-align", value.rawValue)
 }
 
 // MARK: - Lists

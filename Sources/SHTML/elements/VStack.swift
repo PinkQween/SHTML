@@ -56,6 +56,16 @@ public struct VStack: HTML, HTMLModifiable {
         copy.attributes["style"] = style
         return copy
     }
+
+    /// background function.
+    public func background(_ value: Color) -> Self {
+        background(value.css)
+    }
+
+    /// background function.
+    public func background(_ value: LinearGradient) -> Self {
+        background(value.css)
+    }
     
     /// frame function.
     public func frame(width: String? = nil, height: String? = nil) -> Self {

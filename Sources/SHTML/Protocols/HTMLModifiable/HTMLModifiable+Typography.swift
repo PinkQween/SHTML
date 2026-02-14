@@ -26,6 +26,10 @@ public extension HTMLModifiable {
     func fontStyle(_ style: String) -> Self {
         appendingStyle("font-style: \(style)")
     }
+
+    func fontStyle(_ style: FontStyle) -> Self {
+        appendingStyle("font-style: \(style.rawValue)")
+    }
     
     func textAlign(_ alignment: String) -> Self {
         appendingStyle("text-align: \(alignment)")
@@ -39,8 +43,16 @@ public extension HTMLModifiable {
         appendingStyle("text-decoration: \(value)")
     }
 
+    func textDecoration(_ value: TextDecoration) -> Self {
+        appendingStyle("text-decoration: \(value.rawValue)")
+    }
+
     func textTransform(_ value: String) -> Self {
         appendingStyle("text-transform: \(value)")
+    }
+
+    func textTransform(_ value: TextTransform) -> Self {
+        appendingStyle("text-transform: \(value.rawValue)")
     }
 
     func lineHeight(_ value: String) -> Self {
@@ -71,11 +83,19 @@ public extension HTMLModifiable {
         appendingStyle("white-space: \(value)")
     }
 
+    func whiteSpace(_ value: WhiteSpace) -> Self {
+        appendingStyle("white-space: \(value.rawValue)")
+    }
+
     func textShadow(_ value: String) -> Self {
         appendingStyle("text-shadow: \(value)")
     }
 
     func verticalAlign(_ value: String) -> Self {
         appendingStyle("vertical-align: \(value)")
+    }
+
+    func verticalAlign(_ value: VerticalAlign) -> Self {
+        appendingStyle("vertical-align: \(value.rawValue)")
     }
 }

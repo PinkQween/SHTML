@@ -36,6 +36,130 @@ public enum TextAlign: String {
     case justify
 }
 
+/// Type-safe text decoration values.
+public enum TextDecoration: String {
+    case none
+    case underline
+    case overline
+    case lineThrough = "line-through"
+}
+
+/// Type-safe text transform values.
+public enum TextTransform: String {
+    case none
+    case capitalize
+    case uppercase
+    case lowercase
+}
+
+/// Type-safe white-space values.
+public enum WhiteSpace: String {
+    case normal
+    case nowrap
+    case pre
+    case preWrap = "pre-wrap"
+    case preLine = "pre-line"
+    case breakSpaces = "break-spaces"
+}
+
+/// Type-safe vertical-align values.
+public enum VerticalAlign: String {
+    case baseline
+    case `sub`
+    case `super`
+    case top
+    case textTop = "text-top"
+    case middle
+    case bottom
+    case textBottom = "text-bottom"
+}
+
+/// Type-safe font-style values.
+public enum FontStyle: String {
+    case normal
+    case italic
+    case oblique
+}
+
+/// Type-safe linear-gradient direction.
+public enum LinearGradientDirection: Sendable {
+    case toTop
+    case toBottom
+    case toLeft
+    case toRight
+    case toTopLeft
+    case toTopRight
+    case toBottomLeft
+    case toBottomRight
+    case angle(CSSAngle)
+
+    /// Property.
+    public var css: String {
+        switch self {
+        case .toTop: return "to top"
+        case .toBottom: return "to bottom"
+        case .toLeft: return "to left"
+        case .toRight: return "to right"
+        case .toTopLeft: return "to top left"
+        case .toTopRight: return "to top right"
+        case .toBottomLeft: return "to bottom left"
+        case .toBottomRight: return "to bottom right"
+        case .angle(let angle): return angle.css
+        }
+    }
+}
+
+/// Type-safe linear-gradient color stop.
+public struct GradientStop: Sendable {
+    /// Constant.
+    public let color: Color
+    /// Constant.
+    public let position: CSSLength?
+
+    /// Creates a new instance.
+    public init(_ color: Color, at position: CSSLength? = nil) {
+        self.color = color
+        self.position = position
+    }
+
+    /// Property.
+    public var css: String {
+        if let position {
+            return "\(color.css) \(position.css)"
+        }
+        return color.css
+    }
+}
+
+/// Type-safe `linear-gradient(...)` value.
+public struct LinearGradient: Sendable {
+    /// Constant.
+    public let direction: LinearGradientDirection?
+    /// Constant.
+    public let stops: [GradientStop]
+
+    /// Creates a new instance.
+    public init(direction: LinearGradientDirection? = nil, _ stops: GradientStop...) {
+        self.direction = direction
+        self.stops = stops
+    }
+
+    /// Creates a new instance.
+    public init(direction: LinearGradientDirection? = nil, stops: [GradientStop]) {
+        self.direction = direction
+        self.stops = stops
+    }
+
+    /// Property.
+    public var css: String {
+        let stopList = stops.map(\.css).joined(separator: ", ")
+        if let direction {
+            return "linear-gradient(\(direction.css), \(stopList))"
+        }
+        return "linear-gradient(\(stopList))"
+    }
+}
+
 // Type-safe flex direction
 public enum FlexDirection: String {
     case row

@@ -103,6 +103,11 @@ public extension HTMLModifiable {
         appendingStyle("background: \(color.css)")
     }
 
+    /// Sets `background` using a typed linear gradient.
+    func background(_ gradient: LinearGradient) -> Self {
+        appendingStyle("background: \(gradient.css)")
+    }
+
     /// Sets `background-color` using a raw CSS string.
     func backgroundColor(_ color: String) -> Self {
         appendingStyle("background-color: \(color)")
@@ -111,6 +116,16 @@ public extension HTMLModifiable {
     /// Sets `background-color` using a typed ``Color``.
     func backgroundColor(_ color: Color) -> Self {
         appendingStyle("background-color: \(color.css)")
+    }
+
+    /// Sets `background-image` using a raw CSS string.
+    func backgroundImage(_ value: String) -> Self {
+        appendingStyle("background-image: \(value)")
+    }
+
+    /// Sets `background-image` using a typed linear gradient.
+    func backgroundImage(_ value: LinearGradient) -> Self {
+        appendingStyle("background-image: \(value.css)")
     }
     
     func foregroundColor(_ color: String) -> Self {

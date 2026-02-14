@@ -59,6 +59,16 @@ final class ModifierTests: XCTestCase {
         let div = Div { "Content" }.backgroundColor(.blue)
         XCTAssertTrue(div.render().contains("background-color: blue"))
     }
+
+    func testTypedLinearGradientBackgroundModifier() {
+        let gradient = LinearGradient(
+            direction: .toRight,
+            GradientStop(.red),
+            GradientStop(.blue)
+        )
+        let div = Div { "Content" }.background(gradient)
+        XCTAssertTrue(div.render().contains("background: linear-gradient(to right, red, blue)"))
+    }
     
     func testFontSize() {
         let div = Div { "Content" }.fontSize("18px")
@@ -75,9 +85,19 @@ final class ModifierTests: XCTestCase {
         XCTAssertTrue(div.render().contains("text-decoration: underline"))
     }
 
+    func testTypedTextDecoration() {
+        let div = Div { "Content" }.textDecoration(.lineThrough)
+        XCTAssertTrue(div.render().contains("text-decoration: line-through"))
+    }
+
     func testTextTransform() {
         let div = Div { "Content" }.textTransform("uppercase")
         XCTAssertTrue(div.render().contains("text-transform: uppercase"))
+    }
+
+    func testTypedTextTransform() {
+        let div = Div { "Content" }.textTransform(.capitalize)
+        XCTAssertTrue(div.render().contains("text-transform: capitalize"))
     }
     
     func testCornerRadius() {

@@ -103,4 +103,14 @@ public struct ZStack: HTML, HTMLModifiable {
         copy.attributes["style"] = style
         return copy
     }
+
+    /// background function.
+    public func background(_ value: Color) -> Self {
+        background(value.css)
+    }
+
+    /// background function.
+    public func background(_ value: LinearGradient) -> Self {
+        background(value.css)
+    }
 }

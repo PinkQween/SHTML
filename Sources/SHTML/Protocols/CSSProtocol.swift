@@ -42,6 +42,31 @@ public struct CSSPropertyGroup: CSS {
 }
 
 /// CSSKeyframe type.
+public enum CSSKeyframePosition: Sendable, Hashable {
+    case from
+    case to
+    case percent(Double)
+    case custom(String)
+
+    /// Property.
+    public var css: String {
+        switch self {
+        case .from:
+            return "from"
+        case .to:
+            return "to"
+        case .percent(let value):
+            if value.rounded() == value {
+                return "\(Int(value))%"
+            }
+            return "\(value)%"
+        case .custom(let value):
+            return value
+        }
+    }
+}
+
+/// CSSKeyframe type.
 public struct CSSKeyframe: CSS {
     let position: String
     let properties: [CSSProperty]
@@ -57,6 +82,11 @@ public struct CSSKeyframe: CSS {
             }
             return []
         }
+    }
+
+    /// Creates a new instance.
+    public init(_ position: CSSKeyframePosition, @CSSBuilder _ properties: () -> [CSS]) {
+        self.init(position.css, properties)
     }
     
     /// render function.

@@ -58,6 +58,26 @@ final class CSSTests: XCTestCase {
         let prop = background("#f0f0f0")
         XCTAssertEqual(prop.render(), "background: #f0f0f0;")
     }
+
+    func testTypedLinearGradientBackgroundHelper() {
+        let gradient = LinearGradient(
+            direction: .angle(135.deg),
+            GradientStop(.hex("667eea")),
+            GradientStop(.hex("764ba2"))
+        )
+        let prop = background(gradient)
+        XCTAssertEqual(prop.render(), "background: linear-gradient(135deg, #667eea, #764ba2);")
+    }
+
+    func testTypedLinearGradientBackgroundImageHelper() {
+        let gradient = LinearGradient(
+            direction: .toBottom,
+            GradientStop(.red, at: 0.percent),
+            GradientStop(.blue, at: 100.percent)
+        )
+        let prop = backgroundImage(gradient)
+        XCTAssertEqual(prop.render(), "background-image: linear-gradient(to bottom, red 0%, blue 100%);")
+    }
     
     func testColorHelper() {
         let prop = color("#333")
@@ -88,16 +108,26 @@ final class CSSTests: XCTestCase {
         let prop = fontFamily("Arial, sans-serif")
         XCTAssertEqual(prop.render(), "font-family: Arial, sans-serif;")
     }
+
+    func testTypedTextDecorationHelper() {
+        let prop = textDecoration(.underline)
+        XCTAssertEqual(prop.render(), "text-decoration: underline;")
+    }
+
+    func testTypedTextTransformHelper() {
+        let prop = textTransform(.uppercase)
+        XCTAssertEqual(prop.render(), "text-transform: uppercase;")
+    }
     
     // MARK: - CSS Keyframes Tests
     
     func testCSSKeyframes() {
         let keyframes = CSSKeyframes("fadeIn") {
-            CSSKeyframe("from") {
-                opacity("0")
+            CSSKeyframe(.from) {
+                opacity(0)
             }
-            CSSKeyframe("to") {
-                opacity("1")
+            CSSKeyframe(.to) {
+                opacity(1)
             }
         }
         
@@ -110,7 +140,7 @@ final class CSSTests: XCTestCase {
     }
     
     func testKeyframeWithPercentage() {
-        let keyframe = CSSKeyframe("50%") {
+        let keyframe = CSSKeyframe(.percent(50)) {
             transform("scale(1.2)")
         }
         
