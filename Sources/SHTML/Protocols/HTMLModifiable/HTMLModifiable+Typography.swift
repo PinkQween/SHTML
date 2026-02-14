@@ -39,6 +39,10 @@ public extension HTMLModifiable {
         appendingStyle("font-weight: \(weight)")
     }
 
+    func fontWeight(_ weight: FontWeight) -> Self {
+        appendingStyle("font-weight: \(weight.rawValue)")
+    }
+
     func fontFamily(_ family: String) -> Self {
         appendingStyle("font-family: \(family)")
     }

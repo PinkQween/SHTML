@@ -81,6 +81,35 @@ public enum FontStyle: String {
     case oblique
 }
 
+// Type-safe font-weight values.
+public enum FontWeight: String {
+    case thin = "100"
+    case extraLight = "200"
+    case light = "300"
+    case normal = "400"
+    case medium = "500"
+    case semibold = "600"
+    case bold = "700"
+    case extraBold = "800"
+    case black = "900"
+    case bolder
+    case lighter
+}
+
+// Type-safe border-style values.
+public enum BorderStyle: String {
+    case none
+    case hidden
+    case dotted
+    case dashed
+    case solid
+    case double
+    case groove
+    case ridge
+    case inset
+    case outset
+}
+
 /// Type-safe generic font families.
 public enum GenericFontFamily: String, Sendable, Hashable {
     case serif

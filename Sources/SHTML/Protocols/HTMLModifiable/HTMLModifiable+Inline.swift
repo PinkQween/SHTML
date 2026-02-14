@@ -154,6 +154,14 @@ public extension HTMLModifiable {
     func border(width: String, style: String = "solid", color: Color) -> Self {
         appendingStyle("border: \(width) \(style) \(color.css)")
     }
+
+    func border(width: CSSLength = 1.px, style: BorderStyle = .solid, color: Color = .black) -> Self {
+        appendingStyle("border: \(width.css) \(style.rawValue) \(color.css)")
+    }
+
+    func border(width: CSSLength = 1.px, style: BorderStyle = .solid, color: String) -> Self {
+        appendingStyle("border: \(width.css) \(style.rawValue) \(color)")
+    }
     
     func borderLeft(width: String, color: String) -> Self {
         appendingStyle("border-left: \(width) solid \(color)")
@@ -161,6 +169,22 @@ public extension HTMLModifiable {
     
     func borderLeft(width: String, color: Color) -> Self {
         appendingStyle("border-left: \(width) solid \(color.css)")
+    }
+
+    func borderLeft(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
+        appendingStyle("border-left: \(width.css) \(style.rawValue) \(color.css)")
+    }
+
+    func borderRight(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
+        appendingStyle("border-right: \(width.css) \(style.rawValue) \(color.css)")
+    }
+
+    func borderTop(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
+        appendingStyle("border-top: \(width.css) \(style.rawValue) \(color.css)")
+    }
+
+    func borderBottom(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
+        appendingStyle("border-bottom: \(width.css) \(style.rawValue) \(color.css)")
     }
     
     // Sizing
