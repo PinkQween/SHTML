@@ -115,7 +115,7 @@ final class CSSTests: XCTestCase {
     }
 
     func testFontNameFontFamilyHelper() {
-        let prop = fontFamily(.assetFont)
+        let prop = fontFamily(FontName("assetFont"))
         XCTAssertEqual(prop.render(), "font-family: assetFont;")
     }
 

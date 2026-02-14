@@ -23,8 +23,3 @@ public struct FontName: ExpressibleByStringLiteral, Sendable {
         .custom(name)
     }
 }
-
-// Static font names - add your fonts here
-extension FontName {
-    public static let assetFont: FontName = "assetFont"
-}

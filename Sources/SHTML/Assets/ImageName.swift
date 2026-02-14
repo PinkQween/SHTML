@@ -18,8 +18,3 @@ public struct ImageName: ExpressibleByStringLiteral, Sendable {
         "Assets/Images/\(name).webp"
     }
 }
-
-// Static image names - add your images here
-extension ImageName {
-    public static let lily: ImageName = "lily"
-}

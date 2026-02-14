@@ -54,6 +54,7 @@ struct MyPage: HTML {
 - <doc:JavaScriptGuide>
 - <doc:RoutingGuide>
 - <doc:ShapesGuide>
+- <doc:AssetNameGeneration>
 
 ### HTML Generation
 

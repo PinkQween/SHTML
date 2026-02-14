@@ -86,7 +86,7 @@ final class ModifierTests: XCTestCase {
     }
 
     func testFontNameFontFamilyModifier() {
-        let div = Div { "Content" }.fontFamily(.assetFont)
+        let div = Div { "Content" }.fontFamily(FontName("assetFont"))
         XCTAssertTrue(div.render().contains("font-family: assetFont"))
     }
 
