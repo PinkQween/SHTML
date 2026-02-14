@@ -18,6 +18,14 @@ public extension HTMLModifiable {
         if let family = family { result = result.appendingStyle("font-family: \(family.css)") }
         return result
     }
+
+    func font(size: String? = nil, weight: String? = nil, family: FontName? = nil) -> Self {
+        var result = self
+        if let size = size { result = result.appendingStyle("font-size: \(size)") }
+        if let weight = weight { result = result.appendingStyle("font-weight: \(weight)") }
+        if let family = family { result = result.appendingStyle("font-family: \(family.family.css)") }
+        return result
+    }
     
     func fontSize(_ size: String) -> Self {
         appendingStyle("font-size: \(size)")
@@ -37,6 +45,10 @@ public extension HTMLModifiable {
 
     func fontFamily(_ family: FontFamily) -> Self {
         appendingStyle("font-family: \(family.css)")
+    }
+
+    func fontFamily(_ family: FontName) -> Self {
+        appendingStyle("font-family: \(family.family.css)")
     }
 
     func fontStyle(_ style: String) -> Self {

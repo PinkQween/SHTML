@@ -201,6 +201,11 @@ public struct AssetCatalog {
         fonts[name] = FontAsset(name, format: format, path: path)
     }
 
+    /// registerFont function.
+    public mutating func registerFont(_ fontName: FontName, format: FontAsset.FontFormat = .woff2, path: String? = nil) {
+        registerFont(fontName.name, format: format, path: path ?? fontName.path(format: format))
+    }
+
     /// registerExternalFont function.
     public mutating func registerExternalFont(
         family: String,
@@ -230,6 +235,11 @@ public struct AssetCatalog {
     /// font function.
     public func font(_ name: String) -> FontAsset? {
         fonts[name]
+    }
+
+    /// font function.
+    public func font(_ fontName: FontName) -> FontAsset? {
+        font(fontName.name)
     }
     
     // MARK: Colors
@@ -322,6 +332,13 @@ public final class AssetManager: @unchecked Sendable {
         catalog.registerFont(name, format: format, path: path)
     }
 
+    /// registerFont function.
+    public func registerFont(_ fontName: FontName, format: FontAsset.FontFormat = .woff2, path: String? = nil) {
+        lock.lock()
+        defer { lock.unlock() }
+        catalog.registerFont(fontName, format: format, path: path)
+    }
+
     /// registerExternalFont function.
     public func registerExternalFont(
         family: String,
@@ -355,6 +372,11 @@ public final class AssetManager: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         return catalog.font(name)
+    }
+
+    /// font function.
+    public func font(_ fontName: FontName) -> FontAsset? {
+        font(fontName.name)
     }
     
     /// registerColor function.
@@ -447,6 +469,11 @@ public func configureAssets(@AssetBuilder _ builder: () -> [AssetRegistration]) 
 
 public func Font(_ name: String, format: FontAsset.FontFormat = .woff2) -> AssetRegistration {
     .font(name, format: format, path: nil)
+}
+
+/// Font function.
+public func Font(_ fontName: FontName, format: FontAsset.FontFormat = .woff2) -> AssetRegistration {
+    .font(fontName.name, format: format, path: fontName.path(format: format))
 }
 
 /// Font function.

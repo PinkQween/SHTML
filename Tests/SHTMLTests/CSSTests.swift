@@ -114,6 +114,11 @@ final class CSSTests: XCTestCase {
         XCTAssertEqual(prop.render(), "font-family: Inter, sans-serif;")
     }
 
+    func testFontNameFontFamilyHelper() {
+        let prop = fontFamily(.assetFont)
+        XCTAssertEqual(prop.render(), "font-family: assetFont;")
+    }
+
     func testDefaultSansSerifFontFamilyHelper() {
         let prop = fontFamily(.sansSerif)
         XCTAssertEqual(prop.render(), "font-family: Arial, Helvetica, sans-serif;")

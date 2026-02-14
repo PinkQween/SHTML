@@ -85,6 +85,11 @@ final class ModifierTests: XCTestCase {
         XCTAssertTrue(div.render().contains("font-family: 'JetBrains Mono', monospace"))
     }
 
+    func testFontNameFontFamilyModifier() {
+        let div = Div { "Content" }.fontFamily(.assetFont)
+        XCTAssertTrue(div.render().contains("font-family: assetFont"))
+    }
+
     func testTextDecoration() {
         let div = Div { "Content" }.textDecoration("underline")
         XCTAssertTrue(div.render().contains("text-decoration: underline"))
