@@ -85,6 +85,11 @@ final class JavaScriptTests: XCTestCase {
         XCTAssertEqual(expr.render(), "document.getElementById('id')")
     }
 
+    func testGlobalDocumentAliasGetElementById() {
+        let expr = document.getElementById("id")
+        XCTAssertEqual(expr.render(), "document.getElementById('id')")
+    }
+
     func testTypedBackgroundColorAssignment() {
         let statement = JS.document
             .getElementById("id")
@@ -101,6 +106,15 @@ final class JavaScriptTests: XCTestCase {
         let statement = JS.document
             .getElementById("id")
             .setStyle(.background, .red)
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('id').style.background = 'red';"
+        )
+    }
+
+    func testSetStyleFromStoredJSExprVariable() {
+        let swiftVarJSId = document.getElementById("id")
+        let statement = swiftVarJSId.setStyle(.background, .red)
         XCTAssertEqual(
             statement.render(),
             "document.getElementById('id').style.background = 'red';"
@@ -146,6 +160,16 @@ final class JavaScriptTests: XCTestCase {
         XCTAssertEqual(
             statement.render(),
             "document.getElementById('id').style.background = 'red';"
+        )
+    }
+
+    func testJSGetElementByIdSetStyleChaining() {
+        let bg = JSGetElementById("bg")
+        let color = JS.routeParam("id")
+        let statement = bg.setStyle(.background, color)
+        XCTAssertEqual(
+            statement.render(),
+            "document.getElementById('bg').style.background = window.routeParams['id'];"
         )
     }
 

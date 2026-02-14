@@ -18,6 +18,20 @@ public struct JSGetElementById: JavaScript {
     }
 }
 
+public extension JSGetElementById {
+    func setStyle(_ property: JSStyleProperty, _ value: any ExpressibleAsJSArg) -> JSStatement {
+        JSExpr(render()).setStyle(property, value)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ value: any JSStyleValueConvertible) -> JSStatement {
+        JSExpr(render()).setStyle(property, value)
+    }
+
+    func setStyle(_ property: JSStyleProperty, _ color: Color) -> JSStatement {
+        JSExpr(render()).setStyle(property, color)
+    }
+}
+
 // Legacy - prefer using JSExpr.assign() from NaturalJS
 public struct JSSetTextContent: JavaScript {
     private let element: String

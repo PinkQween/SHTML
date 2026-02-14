@@ -187,7 +187,7 @@ extension Transition: JSStyleValueConvertible {
     public var jsStyleValue: String { css }
 }
 
-// Root JS objects
+// Root JS objects (global aliases for script-like ergonomics)
 @MainActor public let console = JSExpr("console")
 @MainActor public let document = JSExpr("document")
 @MainActor public let window = JSExpr("window")
@@ -218,6 +218,15 @@ public extension JS {
     static var sessionStorage: JSExpr { JSExpr("sessionStorage") }
     static var `this`: JSExpr { JSExpr("this") }
     static var event: JSExpr { JSExpr("event") }
+
+    // Router helpers
+    static func routeParam(_ key: String) -> JSExpr {
+        JS.window.routeParams[.string(key)]
+    }
+
+    static var routeColor: JSExpr {
+        routeParam("id")
+    }
 
     // Fetch helpers
     static func fetch(_ resource: any ExpressibleAsJSArg) -> JSExpr {
@@ -538,6 +547,10 @@ public extension JSExpr {
     // DOM query helpers
     func getElementById(_ id: String) -> JSExpr {
         self.getElementById(.string(id))
+    }
+
+    func getElementById(_ id: any ExpressibleAsJSArg) -> JSExpr {
+        self.getElementById(id.jsArg)
     }
 
     func getElementById(_ id: JSArg) -> JSExpr {
