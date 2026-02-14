@@ -8,13 +8,16 @@
 // Natural JavaScript API using dynamic member/call lookup
 @dynamicMemberLookup
 @dynamicCallable
+/// JSExpr type.
 public struct JSExpr: JavaScript {
     private let code: String
     
+    /// Creates a new instance.
     public init(_ code: String) {
         self.code = code
     }
     
+    /// render function.
     public func render() -> String {
         code
     }
@@ -72,14 +75,17 @@ public struct JSExpr: JavaScript {
         JSExpr("(\(code) + \(value.jsArg.toJS()))")
     }
 
+    /// minus function.
     public func minus(_ value: any ExpressibleAsJSArg) -> JSExpr {
         JSExpr("(\(code) - \(value.jsArg.toJS()))")
     }
 
+    /// multiplied function.
     public func multiplied(by value: any ExpressibleAsJSArg) -> JSExpr {
         JSExpr("(\(code) * \(value.jsArg.toJS()))")
     }
 
+    /// divided function.
     public func divided(by value: any ExpressibleAsJSArg) -> JSExpr {
         JSExpr("(\(code) / \(value.jsArg.toJS()))")
     }
@@ -123,67 +129,83 @@ public enum JSStyleProperty: String, Sendable {
     case zIndex = "zIndex"
 }
 
+/// JSStyleValueConvertible protocol.
 public protocol JSStyleValueConvertible {
     var jsStyleValue: String { get }
 }
 
 extension Color: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { css }
 }
 
 extension CSSLength: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { css }
 }
 
 extension CSSValue: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { css }
 }
 
 extension Display: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension Overflow: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension Position: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension Cursor: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension ScrollBehavior: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension ScrollbarWidth: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension ScrollbarGutter: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension BoxSizing: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension ObjectFit: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension UserDrag: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { rawValue }
 }
 
 extension TimingFunction: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { css }
 }
 
 extension Transition: JSStyleValueConvertible {
+    /// Property.
     public var jsStyleValue: String { css }
 }
 
@@ -194,6 +216,7 @@ extension Transition: JSStyleValueConvertible {
 @MainActor public let localStorage = JSExpr("localStorage")
 @MainActor public let sessionStorage = JSExpr("sessionStorage")
 
+/// Extension for JS.
 public extension JS {
     static var console: JSExpr { JSExpr("console") }
     static var document: JSExpr { JSExpr("document") }
@@ -298,21 +321,26 @@ public enum JSArg {
 }
 
 extension JSArg: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { self }
 }
 
+/// JSTemplateSegment type.
 public enum JSTemplateSegment {
     case text(String)
     case value(any ExpressibleAsJSArg)
 }
 
+/// JSTemplate type.
 public struct JSTemplate: JavaScript, ExpressibleAsJSArg {
     private let segments: [JSTemplateSegment]
 
+    /// Creates a new instance.
     public init(_ segments: [JSTemplateSegment]) {
         self.segments = segments
     }
 
+    /// render function.
     public func render() -> String {
         let body = segments.map { segment in
             switch segment {
@@ -325,6 +353,7 @@ public struct JSTemplate: JavaScript, ExpressibleAsJSArg {
         return "`\(body)`"
     }
 
+    /// Property.
     public var jsArg: JSArg {
         .raw(render())
     }
@@ -337,51 +366,63 @@ public struct JSTemplate: JavaScript, ExpressibleAsJSArg {
     }
 }
 
+/// template function.
 public func template(_ segments: JSTemplateSegment...) -> JSTemplate {
     JSTemplate(segments)
 }
 
 // Allow literals to be used as arguments
 extension String: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { .string(self) }
 }
 
 extension Int: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { .int(self) }
 }
 
 extension Double: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { .number(self) }
 }
 
 extension Bool: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { .bool(self) }
 }
 
 extension JSExpr: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { .expr(self) }
 }
 
 extension Color: ExpressibleAsJSArg {
+    /// Property.
     public var jsArg: JSArg { .string(css) }
 }
 
+/// ExpressibleAsJSArg protocol.
 public protocol ExpressibleAsJSArg {
     var jsArg: JSArg { get }
 }
 
+/// +  function.
 public func + (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
     lhs.plus(rhs)
 }
 
+/// -  function.
 public func - (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
     lhs.minus(rhs)
 }
 
+/// *  function.
 public func * (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
     lhs.multiplied(by: rhs)
 }
 
+/// /  function.
 public func / (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
     lhs.divided(by: rhs)
 }
@@ -390,10 +431,12 @@ public func / (lhs: JSExpr, rhs: any ExpressibleAsJSArg) -> JSExpr {
 public struct JSStatement: JavaScript {
     private let code: String
     
+    /// Creates a new instance.
     public init(_ code: String) {
         self.code = code.hasSuffix(";") ? code : code + ";"
     }
     
+    /// render function.
     public func render() -> String {
         code
     }
@@ -404,26 +447,32 @@ public func const(_ name: String, _ value: JSArg) -> JSStatement {
     JSStatement("const \(name) = \(value.toJS())")
 }
 
+/// const function.
 public func const(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
     const(name, value.jsArg)
 }
 
+/// let_ function.
 public func let_(_ name: String, _ value: JSArg) -> JSStatement {
     JSStatement("let \(name) = \(value.toJS())")
 }
 
+/// let_ function.
 public func let_(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
     let_(name, value.jsArg)
 }
 
+/// var_ function.
 public func var_(_ name: String, _ value: JSArg) -> JSStatement {
     JSStatement("var \(name) = \(value.toJS())")
 }
 
+/// var_ function.
 public func var_(_ name: String, _ value: any ExpressibleAsJSArg) -> JSStatement {
     var_(name, value.jsArg)
 }
 
+/// `return` function.
 public func `return`(_ value: JSArg? = nil) -> JSStatement {
     if let value = value {
         return JSStatement("return \(value.toJS())")
@@ -438,6 +487,7 @@ public struct JSFunc: JavaScript {
     private let isAsync: Bool
     private let body: () -> [any JavaScript]
     
+    /// Creates a new instance.
     public init(
         _ name: String? = nil,
         params: [String] = [],
@@ -450,6 +500,7 @@ public struct JSFunc: JavaScript {
         self.body = body
     }
     
+    /// render function.
     public func render() -> String {
         let asyncKeyword = isAsync ? "async " : ""
         let paramList = params.joined(separator: ", ")
@@ -492,6 +543,7 @@ public struct JSArrow: JavaScript {
     private let isAsync: Bool
     private let body: () -> [any JavaScript]
     
+    /// Creates a new instance.
     public init(
         params: [String] = [],
         async: Bool = false,
@@ -502,6 +554,7 @@ public struct JSArrow: JavaScript {
         self.body = body
     }
     
+    /// render function.
     public func render() -> String {
         let asyncKeyword = isAsync ? "async " : ""
         let paramList: String
@@ -638,6 +691,7 @@ public extension JSExpr {
     }
 }
 
+/// Extension for JS.
 public extension JS {
     static func template(_ segments: JSTemplateSegment...) -> JSTemplate {
         JSTemplate(segments)

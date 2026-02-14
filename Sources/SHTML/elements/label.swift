@@ -1,7 +1,9 @@
 /// Label element.
 public struct Label: HTMLPrimitive, HTMLContentModifiable {
+    /// Type alias.
     public typealias Content = Never
 
+    /// Property.
     public var attributes: [String: String]
     private let content: () -> [any HTML]
 

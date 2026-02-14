@@ -24,8 +24,10 @@
 /// }
 /// ```
 public struct SVG: HTMLPrimitive, HTMLModifiable {
+    /// Type alias.
     public typealias Content = Never
     
+    /// Property.
     public var attributes: [String: String]
     private let content: () -> [any HTML]
     
@@ -56,18 +58,21 @@ public struct SVG: HTMLPrimitive, HTMLModifiable {
         self.content = content
     }
     
+    /// render function.
     public func render() -> String {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().map { $0.render() }.joined()
         return "<svg\(attrs)>\(children)</svg>"
     }
     
+    /// viewBox function.
     public func viewBox(_ value: String) -> Self {
         var copy = self
         copy.attributes["viewBox"] = value
         return copy
     }
     
+    /// preserveAspectRatio function.
     public func preserveAspectRatio(_ value: String) -> Self {
         var copy = self
         copy.attributes["preserveAspectRatio"] = value
@@ -75,4 +80,5 @@ public struct SVG: HTMLPrimitive, HTMLModifiable {
     }
 }
 
+/// Type alias.
 public typealias svg = SVG

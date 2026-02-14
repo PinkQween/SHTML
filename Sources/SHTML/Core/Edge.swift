@@ -11,23 +11,30 @@ public enum Edge: Int8, CaseIterable, Sendable {
     case bottom = 2
     case trailing = 3
 
+    /// Set type.
     public struct Set: OptionSet, Hashable, Sendable, ExpressibleByArrayLiteral {
+        /// Type alias.
         public typealias RawValue = UInt8
+        /// Type alias.
         public typealias ArrayLiteralElement = Edge
 
+        /// Constant.
         public let rawValue: RawValue
 
         @inlinable
+        /// Creates a new instance.
         public init(rawValue: RawValue) {
             self.rawValue = rawValue
         }
 
         @inlinable
+        /// Creates a new instance.
         public init(_ edge: Edge) {
             self.rawValue = 1 &<< RawValue(edge.rawValue)
         }
 
         @inlinable
+        /// Creates a new instance.
         public init(arrayLiteral elements: Edge...) {
             var v: RawValue = 0
             for e in elements {

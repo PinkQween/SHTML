@@ -18,6 +18,7 @@ public protocol HTMLContentModifiable: HTMLModifiable {
     init(attributes: [String: String], content: @escaping () -> [any HTML])
 }
 
+/// Extension for HTMLModifiable.
 public extension HTMLModifiable where Self: HTMLContentModifiable {
     func with(class className: String, @HTMLBuilder content: @escaping () -> [any HTML]) -> Self {
         var copy = self
@@ -38,6 +39,7 @@ public extension HTMLModifiable where Self: HTMLContentModifiable {
     }
 }
 
+/// Extension for HTMLModifiable.
 public extension HTMLModifiable {
     func id(_ value: String) -> Self {
         var copy = self

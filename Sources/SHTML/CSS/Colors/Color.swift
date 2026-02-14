@@ -3,10 +3,12 @@
 /// Compile-time validated hex color
 /// Example: `#hex("#ff0000")` or `#hex("abc")` or `#hex("0xaabbcc")`
 @freestanding(expression)
+/// Macro.
 public macro hex(_ color: String) -> Color = #externalMacro(module: "SHTMLMacros", type: "HexColorMacro")
 
 import Foundation
 
+/// Color type.
 public enum Color: Sendable {
     case hex(String)
     case rgb(Int, Int, Int)
@@ -16,6 +18,7 @@ public enum Color: Sendable {
     case named(String)
     case variable(String)  // CSS custom property
     
+    /// Property.
     public var css: String {
         switch self {
         case .hex(let value):

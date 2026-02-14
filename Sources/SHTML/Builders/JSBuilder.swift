@@ -6,6 +6,7 @@
 //
 
 @resultBuilder
+/// JSBuilder type.
 public enum JSBuilder {
     public static func buildBlock(_ components: [any JavaScript]...) -> [any JavaScript] {
         components.flatMap { $0 }

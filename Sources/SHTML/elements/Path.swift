@@ -18,7 +18,9 @@
 /// }
 /// ```
 public struct Path: Shape, HTML {
+    /// Type alias.
     public typealias Content = Never
+    /// Constant.
     public let shape: ShapeType = .path
     private let d: String
     private var attributes: [String: String] = [:]
@@ -30,11 +32,13 @@ public struct Path: Shape, HTML {
         self.d = d
     }
     
+    /// render function.
     public func render() -> String {
         let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
         return "<path d=\"\(d)\"\(attrs) />"
     }
     
+    /// path function.
     public func path(in rect: HTMLRect) -> HTMLPath {
         // For custom paths, we can't easily convert back to HTMLPath
         // This is mainly for rendering purposes
@@ -48,30 +52,35 @@ public struct Path: Shape, HTML {
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
         return copy
     }
     
+    /// strokeWidth function.
     public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["stroke-width"] = width.cssLength
         return copy
     }
     
+    /// strokeLinecap function.
     public func strokeLinecap(_ value: String) -> Self {
         var copy = self
         copy.attributes["stroke-linecap"] = value
         return copy
     }
     
+    /// strokeLinejoin function.
     public func strokeLinejoin(_ value: String) -> Self {
         var copy = self
         copy.attributes["stroke-linejoin"] = value
         return copy
     }
     
+    /// fillRule function.
     public func fillRule(_ value: String) -> Self {
         var copy = self
         copy.attributes["fill-rule"] = value

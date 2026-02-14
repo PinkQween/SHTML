@@ -6,6 +6,7 @@
 //
 
 extension String: HTML {
+    /// render function.
     public func render() -> String {
         Text(self).render()
     }

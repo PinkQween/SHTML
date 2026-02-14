@@ -28,8 +28,10 @@
 /// .cornerRadius("12px")
 /// ```
 public struct ZStack: HTML, HTMLModifiable {
+    /// Property.
     public var attributes: [String: String]
     private let alignment: String
+    /// Constant.
     public let content: () -> [any HTML]
     
     /// Creates a ZStack with the specified alignment and content.
@@ -73,6 +75,7 @@ public struct ZStack: HTML, HTMLModifiable {
         self.content = content
     }
     
+    /// render function.
     public func render() -> String {
         let attrs = HTMLRendering.renderAttributes(attributes)
         let children = content().enumerated().map { index, child in
@@ -83,6 +86,7 @@ public struct ZStack: HTML, HTMLModifiable {
         return "<div\(attrs)>\(children)</div>"
     }
     
+    /// padding function.
     public func padding(_ value: String) -> Self {
         var copy = self
         var style = copy.attributes["style"] ?? ""
@@ -91,6 +95,7 @@ public struct ZStack: HTML, HTMLModifiable {
         return copy
     }
     
+    /// background function.
     public func background(_ value: String) -> Self {
         var copy = self
         var style = copy.attributes["style"] ?? ""

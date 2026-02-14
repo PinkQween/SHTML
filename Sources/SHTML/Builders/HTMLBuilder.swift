@@ -6,6 +6,7 @@
 //
 
 @resultBuilder
+/// HTMLBuilder type.
 public enum HTMLBuilder {
     public static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
         components.flatMap { $0 }

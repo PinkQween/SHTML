@@ -1,7 +1,9 @@
+/// A client-side router that renders the matching route for the current URL.
 public struct Router: HTML {
     private let routes: [Route]
     private let fallback: (() -> [any HTML])?
     
+    /// Creates a router with route definitions and optional fallback content.
     public init(
         @RouteBuilder routes: () -> [Route],
         @HTMLBuilder fallback: @escaping () -> [any HTML] = { [] }
@@ -10,6 +12,7 @@ public struct Router: HTML {
         self.fallback = fallback
     }
     
+    /// Renders the router container, route nodes, and client-side navigation script.
     public func render() -> String {
         let routeElements = routes.map { route in
             """

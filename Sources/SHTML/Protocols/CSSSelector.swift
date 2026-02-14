@@ -9,10 +9,12 @@
 public struct CSSSelector: ExpressibleByStringLiteral, Sendable {
     let value: String
     
+    /// Creates a new instance.
     public init(_ value: String) {
         self.value = value
     }
     
+    /// Creates a new instance.
     public init(stringLiteral value: String) {
         self.value = value
     }
@@ -22,26 +24,32 @@ public struct CSSSelector: ExpressibleByStringLiteral, Sendable {
         CSSSelector("\(value):hover")
     }
     
+    /// Property.
     public var active: CSSSelector {
         CSSSelector("\(value):active")
     }
     
+    /// Property.
     public var focus: CSSSelector {
         CSSSelector("\(value):focus")
     }
     
+    /// Property.
     public var disabled: CSSSelector {
         CSSSelector("\(value):disabled")
     }
     
+    /// Property.
     public var firstChild: CSSSelector {
         CSSSelector("\(value):first-child")
     }
     
+    /// Property.
     public var lastChild: CSSSelector {
         CSSSelector("\(value):last-child")
     }
     
+    /// Property.
     public var nthChild: CSSSelector {
         CSSSelector("\(value):nth-child")
     }
@@ -52,18 +60,22 @@ public struct CSSSelector: ExpressibleByStringLiteral, Sendable {
         CSSSelector("\(value)::-webkit-scrollbar")
     }
     
+    /// Property.
     public var webkitScrollbarTrack: CSSSelector {
         CSSSelector("\(value)::-webkit-scrollbar-track")
     }
     
+    /// Property.
     public var webkitScrollbarThumb: CSSSelector {
         CSSSelector("\(value)::-webkit-scrollbar-thumb")
     }
     
+    /// Property.
     public var webkitScrollbarButton: CSSSelector {
         CSSSelector("\(value)::-webkit-scrollbar-button")
     }
     
+    /// Property.
     public var webkitScrollbarCorner: CSSSelector {
         CSSSelector("\(value)::-webkit-scrollbar-corner")
     }

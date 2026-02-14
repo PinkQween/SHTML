@@ -12,6 +12,7 @@ public enum CSSValue: Sendable, Hashable {
     case variable(String)
     case raw(String)
     
+    /// Property.
     public var css: String {
         switch self {
         case .length(let value, let unit):
@@ -46,9 +47,11 @@ public enum CSSValue: Sendable, Hashable {
     }
 }
 
+/// CSSLength type.
 public struct CSSLength: Sendable, Hashable, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
     internal let value: CSSValue
     
+    /// Creates a new instance.
     public init(_ val: Double, _ unit: CSSUnit = .px) {
         self.value = .length(val, unit)
     }
@@ -57,10 +60,12 @@ public struct CSSLength: Sendable, Hashable, ExpressibleByIntegerLiteral, Expres
         self.value = value
     }
     
+    /// Creates a new instance.
     public init(integerLiteral val: Int) {
         self.value = .length(Double(val), .px)
     }
     
+    /// Creates a new instance.
     public init(floatLiteral val: Double) {
         self.value = .length(val, .px)
     }
@@ -75,6 +80,7 @@ public struct CSSLength: Sendable, Hashable, ExpressibleByIntegerLiteral, Expres
         CSSLength(.raw(value))
     }
 
+    /// Property.
     public var css: String {
         value.css
     }
@@ -99,6 +105,7 @@ public struct CSSLength: Sendable, Hashable, ExpressibleByIntegerLiteral, Expres
 
 // String conversion for easy use in attributes
 extension CSSLength: CustomStringConvertible {
+    /// Property.
     public var description: String { css }
 }
 
@@ -108,17 +115,21 @@ public protocol CSSLengthConvertible {
 }
 
 extension CSSLength: CSSLengthConvertible {
+    /// Property.
     public var cssLength: String { css }
 }
 
 extension String: CSSLengthConvertible {
+    /// Property.
     public var cssLength: String { self }
 }
 
 extension Int: CSSLengthConvertible {
+    /// Property.
     public var cssLength: String { "\(self)px" }
 }
 
 extension Double: CSSLengthConvertible {
+    /// Property.
     public var cssLength: String { "\(self)px" }
 }

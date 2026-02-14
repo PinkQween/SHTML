@@ -25,10 +25,13 @@
 ///     .frame(width: 200.px, height: 60.px)
 /// ```
 public struct RoundedRectangle: Shape, HTML {
+    /// Type alias.
     public typealias Content = Never
+    /// Constant.
     public let shape: ShapeType = .rectangle
     private var attributes: [String: String] = [:]
 
+    /// Creates a new instance.
     public init(cornerRadius: any CSSLengthConvertible, width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) {
         let radius = cornerRadius.cssLength
         self.attributes["width"] = width?.cssLength ?? "100%"
@@ -37,11 +40,13 @@ public struct RoundedRectangle: Shape, HTML {
         self.attributes["ry"] = radius
     }
 
+    /// render function.
     public func render() -> String {
         let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
         return "<rect\(attrs) />"
     }
 
+    /// path function.
     public func path(in rect: HTMLRect) -> HTMLPath {
         var p = HTMLPath()
         p.move(to: (rect.x, rect.y))
@@ -59,30 +64,35 @@ public struct RoundedRectangle: Shape, HTML {
         return copy
     }
     
+    /// fill function.
     public func fill(_ color: Color) -> Self {
         var copy = self
         copy.attributes["fill"] = color.css
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: Color) -> Self {
         var copy = self
         copy.attributes["stroke"] = color.css
         return copy
     }
     
+    /// strokeWidth function.
     public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["stroke-width"] = width.cssLength
         return copy
     }
     
+    /// frame function.
     public func frame(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) -> Self {
         var copy = self
         if let width = width {
@@ -94,6 +104,7 @@ public struct RoundedRectangle: Shape, HTML {
         return copy
     }
     
+    /// cornerRadius function.
     public func cornerRadius(_ radius: any CSSLengthConvertible) -> Self {
         var copy = self
         let r = radius.cssLength

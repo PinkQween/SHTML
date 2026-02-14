@@ -16,9 +16,12 @@ public protocol Asset {
 // MARK: - Image Asset
 
 public struct ImageAsset: Asset {
+    /// Constant.
     public let name: String
+    /// Constant.
     public let path: String
     
+    /// Creates a new instance.
     public init(_ name: String, path: String? = nil) {
         self.name = name
         self.path = path ?? "Assets/Images/\(name)"
@@ -40,10 +43,14 @@ public struct ImageAsset: Asset {
 // MARK: - Font Asset
 
 public struct FontAsset: Asset {
+    /// Constant.
     public let name: String
+    /// Constant.
     public let path: String
+    /// Constant.
     public let format: FontFormat
     
+    /// FontFormat type.
     public enum FontFormat: String {
         case woff2
         case woff
@@ -52,6 +59,7 @@ public struct FontAsset: Asset {
         case eot
     }
     
+    /// Creates a new instance.
     public init(_ name: String, format: FontFormat = .woff2, path: String? = nil) {
         self.name = name
         self.format = format
@@ -74,10 +82,14 @@ public struct FontAsset: Asset {
 // MARK: - Color Asset
 
 public struct ColorAsset {
+    /// Constant.
     public let name: String
+    /// Constant.
     public let light: Color
+    /// Constant.
     public let dark: Color?
     
+    /// Creates a new instance.
     public init(_ name: String, light: Color, dark: Color? = nil) {
         self.name = name
         self.light = light
@@ -102,6 +114,7 @@ public struct AssetCatalog {
     private var fonts: [String: FontAsset] = [:]
     private var colors: [String: ColorAsset] = [:]
     
+    /// Creates a new instance.
     public init() {}
     
     // MARK: Images
@@ -110,6 +123,7 @@ public struct AssetCatalog {
         images[name] = ImageAsset(name, path: path)
     }
     
+    /// image function.
     public func image(_ name: String) -> ImageAsset? {
         images[name]
     }
@@ -120,6 +134,7 @@ public struct AssetCatalog {
         fonts[name] = FontAsset(name, format: format, path: path)
     }
     
+    /// font function.
     public func font(_ name: String) -> FontAsset? {
         fonts[name]
     }
@@ -130,6 +145,7 @@ public struct AssetCatalog {
         colors[name] = ColorAsset(name, light: light, dark: dark)
     }
     
+    /// color function.
     public func color(_ name: String) -> ColorAsset? {
         colors[name]
     }
@@ -184,48 +200,56 @@ public final class AssetManager: @unchecked Sendable {
     
     private init() {}
     
+    /// registerImage function.
     public func registerImage(_ name: String, path: String? = nil) {
         lock.lock()
         defer { lock.unlock() }
         catalog.registerImage(name, path: path)
     }
     
+    /// image function.
     public func image(_ name: String) -> ImageAsset? {
         lock.lock()
         defer { lock.unlock() }
         return catalog.image(name)
     }
     
+    /// registerFont function.
     public func registerFont(_ name: String, format: FontAsset.FontFormat = .woff2, path: String? = nil) {
         lock.lock()
         defer { lock.unlock() }
         catalog.registerFont(name, format: format, path: path)
     }
     
+    /// font function.
     public func font(_ name: String) -> FontAsset? {
         lock.lock()
         defer { lock.unlock() }
         return catalog.font(name)
     }
     
+    /// registerColor function.
     public func registerColor(_ name: String, light: Color, dark: Color? = nil) {
         lock.lock()
         defer { lock.unlock() }
         catalog.registerColor(name, light: light, dark: dark)
     }
     
+    /// color function.
     public func color(_ name: String) -> ColorAsset? {
         lock.lock()
         defer { lock.unlock() }
         return catalog.color(name)
     }
     
+    /// generateColorCSS function.
     public func generateColorCSS() -> String {
         lock.lock()
         defer { lock.unlock() }
         return catalog.generateColorCSS()
     }
     
+    /// generateFontCSS function.
     public func generateFontCSS() -> String {
         lock.lock()
         defer { lock.unlock() }
@@ -239,18 +263,21 @@ public var Assets: AssetManager { AssetManager.shared }
 // MARK: - Asset Configuration DSL
 
 @resultBuilder
+/// AssetBuilder type.
 public enum AssetBuilder {
     public static func buildBlock(_ components: AssetRegistration...) -> [AssetRegistration] {
         components
     }
 }
 
+/// AssetRegistration type.
 public enum AssetRegistration {
     case image(String, path: String?)
     case font(String, format: FontAsset.FontFormat, path: String?)
     case color(String, light: Color, dark: Color?)
 }
 
+/// configureAssets function.
 public func configureAssets(@AssetBuilder _ builder: () -> [AssetRegistration]) {
     let registrations = builder()
     for registration in registrations {
@@ -273,10 +300,12 @@ public func Font(_ name: String, format: FontAsset.FontFormat = .woff2) -> Asset
     .font(name, format: format, path: nil)
 }
 
+/// Font function.
 public func Font(_ name: String, format: FontAsset.FontFormat, path: String) -> AssetRegistration {
     .font(name, format: format, path: path)
 }
 
+/// ColorPair function.
 public func ColorPair(_ name: String, light: Color, dark: Color? = nil) -> AssetRegistration {
     .color(name, light: light, dark: dark)
 }

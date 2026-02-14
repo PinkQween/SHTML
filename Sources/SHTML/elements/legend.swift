@@ -1,7 +1,9 @@
 /// Fieldset legend element.
 public struct Legend: HTMLPrimitive, HTMLContentModifiable {
+    /// Type alias.
     public typealias Content = Never
 
+    /// Property.
     public var attributes: [String: String]
     private let content: () -> [any HTML]
 

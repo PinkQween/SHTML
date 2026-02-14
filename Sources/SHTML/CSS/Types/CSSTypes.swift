@@ -89,6 +89,7 @@ public enum TimingFunction {
     case easeInOut
     case custom(String)
     
+    /// Property.
     public var css: String {
         switch self {
         case .linear: return "linear"
@@ -103,11 +104,16 @@ public enum TimingFunction {
 
 // Type-safe transition
 public struct Transition {
+    /// Constant.
     public let property: String
+    /// Constant.
     public let duration: CSSLength
+    /// Constant.
     public let timingFunction: TimingFunction
+    /// Constant.
     public let delay: CSSLength?
     
+    /// Creates a new instance.
     public init(property: String = "all", duration: CSSLength, timingFunction: TimingFunction = .easeInOut, delay: CSSLength? = nil) {
         self.property = property
         self.duration = duration
@@ -115,6 +121,7 @@ public struct Transition {
         self.delay = delay
     }
     
+    /// Property.
     public var css: String {
         var result = "\(property) \(duration.css) \(timingFunction.css)"
         if let delay = delay {
@@ -141,6 +148,7 @@ public struct Transition {
     }
 }
 
+/// Visibility type.
 public enum Visibility: String {
     case visible
     case hidden
@@ -173,6 +181,7 @@ public enum BoxSizing: String {
     case borderBox = "border-box"
 }
 
+/// UserSelcet type.
 public enum UserSelcet: String {
     case auto
     case none
@@ -180,6 +189,7 @@ public enum UserSelcet: String {
     case all
 }
 
+/// ObjectFit type.
 public enum ObjectFit: String {
     case contain
     case cover
@@ -188,6 +198,7 @@ public enum ObjectFit: String {
     case scaleDown = "scale-down"
 }
 
+/// UserDrag type.
 public enum UserDrag: String {
     case none
     case element

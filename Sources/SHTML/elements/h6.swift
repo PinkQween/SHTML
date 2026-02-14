@@ -1,7 +1,9 @@
 /// Heading level 6 element.
 public struct H6: HTMLPrimitive, HTMLContentModifiable {
+    /// Type alias.
     public typealias Content = Never
 
+    /// Property.
     public var attributes: [String: String]
     private let content: () -> [any HTML]
 

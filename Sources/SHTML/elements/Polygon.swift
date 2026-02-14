@@ -6,13 +6,16 @@
 //
 
 public struct Polygon: Shape, HTML {
+    /// Type alias.
     public typealias Content = Never
+    /// Constant.
     public let shape: ShapeType = .polygon
 
     /// The points that make up the polygon in local coordinates.
     public var points: [(x: Double, y: Double)]
     private var attributes: [String: String] = [:]
 
+    /// Creates a new instance.
     public init(points: [(Double, Double)]) {
         self.points = points.map { (x: $0.0, y: $0.1) }
     }
@@ -53,12 +56,14 @@ public struct Polygon: Shape, HTML {
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
         return copy
     }
     
+    /// strokeWidth function.
     public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["stroke-width"] = width.cssLength

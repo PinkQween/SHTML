@@ -25,10 +25,13 @@
 ///     .fill(.green)
 /// ```
 public struct Ellipse: Shape, HTML {
+    /// Type alias.
     public typealias Content = Never
+    /// Constant.
     public let shape: ShapeType = .circle
     private var attributes: [String: String] = [:]
     
+    /// Creates a new instance.
     public init() {
         // Default to 100% container size
         self.attributes["cx"] = "50%"
@@ -37,6 +40,7 @@ public struct Ellipse: Shape, HTML {
         self.attributes["ry"] = "50%"
     }
     
+    /// Creates a new instance.
     public init(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) {
         self.attributes["cx"] = "50%"
         self.attributes["cy"] = "50%"
@@ -54,11 +58,13 @@ public struct Ellipse: Shape, HTML {
         }
     }
     
+    /// render function.
     public func render() -> String {
         let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
         return "<ellipse\(attrs) />"
     }
     
+    /// path function.
     public func path(in rect: HTMLRect) -> HTMLPath {
         var p = HTMLPath()
         let cx = rect.x + rect.width / 2
@@ -83,18 +89,21 @@ public struct Ellipse: Shape, HTML {
         return copy
     }
     
+    /// cy function.
     public func cy(_ value: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["cy"] = value.cssLength
         return copy
     }
     
+    /// rx function.
     public func rx(_ value: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["rx"] = value.cssLength
         return copy
     }
     
+    /// ry function.
     public func ry(_ value: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["ry"] = value.cssLength
@@ -108,24 +117,28 @@ public struct Ellipse: Shape, HTML {
         return copy
     }
     
+    /// fill function.
     public func fill(_ color: Color) -> Self {
         var copy = self
         copy.attributes["fill"] = color.css
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: Color) -> Self {
         var copy = self
         copy.attributes["stroke"] = color.css
         return copy
     }
     
+    /// strokeWidth function.
     public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["stroke-width"] = width.cssLength

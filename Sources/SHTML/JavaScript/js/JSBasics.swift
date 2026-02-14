@@ -9,10 +9,12 @@
 public struct JSRaw: JavaScript {
     private let code: String
     
+    /// Creates a new instance.
     public init(_ code: String) {
         self.code = code
     }
     
+    /// render function.
     public func render() -> String {
         code
     }
@@ -25,6 +27,7 @@ public struct JSFunction: JavaScript {
     private let isAsync: Bool
     private let body: () -> [any JavaScript]
     
+    /// Creates a new instance.
     public init(
         _ name: String,
         params: [String] = [],
@@ -37,6 +40,7 @@ public struct JSFunction: JavaScript {
         self.body = body
     }
     
+    /// render function.
     public func render() -> String {
         let asyncKeyword = isAsync ? "async " : ""
         let paramList = params.joined(separator: ", ")
@@ -54,11 +58,13 @@ public struct JSConst: JavaScript {
     private let name: String
     private let value: JSArg
     
+    /// Creates a new instance.
     public init(_ name: String, _ value: JSArg) {
         self.name = name
         self.value = value
     }
 
+    /// Creates a new instance.
     public init(_ name: String, _ value: any ExpressibleAsJSArg) {
         self.init(name, value.jsArg)
     }
@@ -68,6 +74,7 @@ public struct JSConst: JavaScript {
         self.init(name, .raw(value))
     }
     
+    /// render function.
     public func render() -> String {
         "const \(name) = \(value.toJS());"
     }
@@ -78,11 +85,13 @@ public struct JSLet: JavaScript {
     private let name: String
     private let value: JSArg
     
+    /// Creates a new instance.
     public init(_ name: String, _ value: JSArg) {
         self.name = name
         self.value = value
     }
 
+    /// Creates a new instance.
     public init(_ name: String, _ value: any ExpressibleAsJSArg) {
         self.init(name, value.jsArg)
     }
@@ -92,6 +101,7 @@ public struct JSLet: JavaScript {
         self.init(name, .raw(value))
     }
     
+    /// render function.
     public func render() -> String {
         "let \(name) = \(value.toJS());"
     }

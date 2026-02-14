@@ -1,7 +1,9 @@
 /// Horizontal rule element.
 public struct Hr: HTMLPrimitive, HTMLModifiable {
+    /// Type alias.
     public typealias Content = Never
 
+    /// Property.
     public var attributes: [String: String]
 
     /// Creates a horizontal rule with optional attributes.

@@ -9,11 +9,16 @@ import Foundation
 
 /// A rectangle in local coordinates, used to compute paths.
 public struct HTMLRect: Equatable {
+    /// Property.
     public var x: Double
+    /// Property.
     public var y: Double
+    /// Property.
     public var width: Double
+    /// Property.
     public var height: Double
 
+    /// Creates a new instance.
     public init(x: Double, y: Double, width: Double, height: Double) {
         self.x = x
         self.y = y
@@ -24,6 +29,7 @@ public struct HTMLRect: Equatable {
 
 /// A very lightweight path representation suitable for translating to SVG path data.
 public struct HTMLPath: Equatable {
+    /// Command type.
     public enum Command: Equatable {
         case moveTo(x: Double, y: Double)
         case lineTo(x: Double, y: Double)
@@ -33,6 +39,7 @@ public struct HTMLPath: Equatable {
 
     public private(set) var commands: [Command] = []
 
+    /// Creates a new instance.
     public init() {}
 
     public mutating func move(to point: (x: Double, y: Double)) {
@@ -74,6 +81,7 @@ public protocol Shape: HTML {
     func path(in rect: HTMLRect) -> HTMLPath
 }
 
+/// Default rendering helpers for ``Shape``.
 public extension Shape {
     /// Default HTML rendering using SVG path data.
     func renderHTML() -> String {

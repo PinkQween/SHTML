@@ -1,15 +1,18 @@
 // ForEach - Loop over collections to generate HTML (like SwiftUI's ForEach)
 public struct ForEach<Data: Sequence>: HTMLPrimitive {
+    /// Type alias.
     public typealias Content = Never
     
     private let data: Data
     private let content: (Data.Element) -> [any HTML]
     
+    /// Creates a new instance.
     public init(_ data: Data, @HTMLBuilder content: @escaping (Data.Element) -> [any HTML]) {
         self.data = data
         self.content = content
     }
     
+    /// render function.
     public func render() -> String {
         data.flatMap { element in
             content(element).map { $0.render() }

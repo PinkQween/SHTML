@@ -19,25 +19,31 @@
 ///     .fill("red")
 /// ```
 public struct Rect: Shape, HTML {
+    /// Type alias.
     public typealias Content = Never
+    /// Constant.
     public let shape: ShapeType = .rectangle
     private var attributes: [String: String] = [:]
 
+    /// Creates a new instance.
     public init() {
         self.attributes["width"] = "100%"
         self.attributes["height"] = "100%"
     }
     
+    /// Creates a new instance.
     public init(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) {
         self.attributes["width"] = width?.cssLength ?? "100%"
         self.attributes["height"] = height?.cssLength ?? "100%"
     }
 
+    /// render function.
     public func render() -> String {
         let attrs = attributes.map { " \($0.key)=\"\($0.value)\"" }.joined()
         return "<rect\(attrs) />"
     }
 
+    /// path function.
     public func path(in rect: HTMLRect) -> HTMLPath {
         var p = HTMLPath()
         p.move(to: (rect.x, rect.y))
@@ -55,30 +61,35 @@ public struct Rect: Shape, HTML {
         return copy
     }
     
+    /// fill function.
     public func fill(_ color: Color) -> Self {
         var copy = self
         copy.attributes["fill"] = color.css
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: String) -> Self {
         var copy = self
         copy.attributes["stroke"] = color
         return copy
     }
     
+    /// stroke function.
     public func stroke(_ color: Color) -> Self {
         var copy = self
         copy.attributes["stroke"] = color.css
         return copy
     }
     
+    /// strokeWidth function.
     public func strokeWidth(_ width: any CSSLengthConvertible) -> Self {
         var copy = self
         copy.attributes["stroke-width"] = width.cssLength
         return copy
     }
     
+    /// frame function.
     public func frame(width: (any CSSLengthConvertible)? = nil, height: (any CSSLengthConvertible)? = nil) -> Self {
         var copy = self
         if let width = width {
@@ -90,6 +101,7 @@ public struct Rect: Shape, HTML {
         return copy
     }
     
+    /// cornerRadius function.
     public func cornerRadius(_ radius: any CSSLengthConvertible) -> Self {
         var copy = self
         let r = radius.cssLength

@@ -6,6 +6,7 @@
 //
 
 @resultBuilder
+/// CSSBuilder type.
 public enum CSSBuilder {
     public static func buildBlock(_ components: CSS...) -> [CSS] {
         components
@@ -21,6 +22,7 @@ public enum CSSBuilder {
 }
 
 @resultBuilder
+/// CSSStyleBuilder type.
 public enum CSSStyleBuilder {
     public static func buildBlock(_ components: CSS...) -> [CSS] {
         components
@@ -32,6 +34,7 @@ public enum CSSStyleBuilder {
 }
 
 @resultBuilder
+/// CSSKeyframeBuilder type.
 public enum CSSKeyframeBuilder {
     public static func buildBlock(_ components: CSSKeyframe...) -> [CSSKeyframe] {
         components
@@ -47,6 +50,7 @@ public func property(_ name: String, _ value: String) -> CSSProperty {
     CSSProperty(name, value)
 }
 
+/// property function.
 public func property(_ name: String, _ value: any CSSLengthConvertible) -> CSSProperty {
     CSSProperty(name, value.cssLength)
 }

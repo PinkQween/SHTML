@@ -16,6 +16,7 @@ public extension Double {
     var s: CSSLength { CSSLength(self, .s) }
 }
 
+/// Extension for Int.
 public extension Int {
     var px: CSSLength { CSSLength(Double(self), .px) }
     var rem: CSSLength { CSSLength(Double(self), .rem) }

@@ -3,8 +3,10 @@ public struct Document: HTML {
     private let title: String
     private let styles: String?
     private let scripts: String?
+    /// Constant.
     public let content: () -> [any HTML]
     
+    /// Creates a new instance.
     public init(
         title: String,
         styles: String? = nil,
@@ -17,6 +19,7 @@ public struct Document: HTML {
         self.content = content
     }
     
+    /// render function.
     public func render() -> String {
         var html = """
         <!DOCTYPE html>
