@@ -111,6 +111,12 @@ final class ModifierTests: XCTestCase {
         XCTAssertTrue(result.contains("border-top-left-radius: 12px"))
         XCTAssertTrue(result.contains("border-bottom-right-radius: 12px"))
     }
+
+    func testBorderRadiusPerCornerValues() {
+        let div = Div { "Content" }
+            .borderRadius(topLeft: 4.px, topRight: 8.px, bottomRight: 12.px, bottomLeft: 16.px)
+        XCTAssertTrue(div.render().contains("border-radius: 4px 8px 12px 16px"))
+    }
     
     func testShadow() {
         let div = Div { "Content" }.shadow(x: "0", y: "5px", blur: "10px", color: "rgba(0,0,0,0.2)")

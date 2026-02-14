@@ -31,12 +31,33 @@ public extension HTMLModifiable {
         appendingStyle("border-radius: \(radius.css)")
     }
 
+    func borderRadius(topLeft: String, topRight: String, bottomRight: String, bottomLeft: String) -> Self {
+        appendingStyle("border-radius: \(topLeft) \(topRight) \(bottomRight) \(bottomLeft)")
+    }
+
+    func borderRadius(topLeft: CSSLength, topRight: CSSLength, bottomRight: CSSLength, bottomLeft: CSSLength) -> Self {
+        borderRadius(
+            topLeft: topLeft.css,
+            topRight: topRight.css,
+            bottomRight: bottomRight.css,
+            bottomLeft: bottomLeft.css
+        )
+    }
+
     func borderRadius(_ corners: Corner.Set, _ radius: String) -> Self {
         appendingStyle(borderRadiusDeclarations(for: corners, radius: radius))
     }
 
     func borderRadius(_ corners: Corner.Set, _ radius: CSSLength) -> Self {
         borderRadius(corners, radius.css)
+    }
+
+    func cornerRadius(topLeft: String, topRight: String, bottomRight: String, bottomLeft: String) -> Self {
+        borderRadius(topLeft: topLeft, topRight: topRight, bottomRight: bottomRight, bottomLeft: bottomLeft)
+    }
+
+    func cornerRadius(topLeft: CSSLength, topRight: CSSLength, bottomRight: CSSLength, bottomLeft: CSSLength) -> Self {
+        borderRadius(topLeft: topLeft, topRight: topRight, bottomRight: bottomRight, bottomLeft: bottomLeft)
     }
     
     func transition(_ value: String) -> Self {
