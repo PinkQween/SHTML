@@ -14,6 +14,9 @@ public extension Double {
     var vw: CSSLength { CSSLength(self, .vw) }
     var ms: CSSLength { CSSLength(self, .ms) }
     var s: CSSLength { CSSLength(self, .s) }
+    var deg: CSSAngle { .deg(self) }
+    var rad: CSSAngle { .rad(self) }
+    var turn: CSSAngle { .turn(self) }
 }
 
 /// Extension for Int.
@@ -26,4 +29,7 @@ public extension Int {
     var vw: CSSLength { CSSLength(Double(self), .vw) }
     var ms: CSSLength { CSSLength(Double(self), .ms) }
     var s: CSSLength { CSSLength(Double(self), .s) }
+    var deg: CSSAngle { .deg(Double(self)) }
+    var rad: CSSAngle { .rad(Double(self)) }
+    var turn: CSSAngle { .turn(Double(self)) }
 }

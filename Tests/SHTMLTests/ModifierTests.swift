@@ -49,6 +49,16 @@ final class ModifierTests: XCTestCase {
         let div = Div { "Content" }.foregroundColor("#333")
         XCTAssertTrue(div.render().contains("color: #333"))
     }
+
+    func testColorModifier() {
+        let div = Div { "Content" }.color(.red)
+        XCTAssertTrue(div.render().contains("color: red"))
+    }
+
+    func testBackgroundColorModifier() {
+        let div = Div { "Content" }.backgroundColor(.blue)
+        XCTAssertTrue(div.render().contains("background-color: blue"))
+    }
     
     func testFontSize() {
         let div = Div { "Content" }.fontSize("18px")
@@ -58,6 +68,16 @@ final class ModifierTests: XCTestCase {
     func testFontWeight() {
         let div = Div { "Content" }.fontWeight("bold")
         XCTAssertTrue(div.render().contains("font-weight: bold"))
+    }
+
+    func testTextDecoration() {
+        let div = Div { "Content" }.textDecoration("underline")
+        XCTAssertTrue(div.render().contains("text-decoration: underline"))
+    }
+
+    func testTextTransform() {
+        let div = Div { "Content" }.textTransform("uppercase")
+        XCTAssertTrue(div.render().contains("text-transform: uppercase"))
     }
     
     func testCornerRadius() {
@@ -175,6 +195,11 @@ final class ModifierTests: XCTestCase {
     func testCustomTransition() {
         let div = Div { "Content" }.transition("opacity 0.5s ease")
         XCTAssertTrue(div.render().contains("transition: opacity 0.5s ease"))
+    }
+
+    func testTypedTransformModifier() {
+        let div = Div { "Content" }.transform(.translateY(8.px), .scale(1.02))
+        XCTAssertTrue(div.render().contains("transform: translateY(8px) scale(1.02)"))
     }
 
     // MARK: - Gesture Modifiers

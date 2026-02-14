@@ -27,6 +27,16 @@ public func transform(_ value: String) -> CSSProperty {
     CSSProperty("transform", value)
 }
 
+/// transform function.
+public func transform(_ value: Transform) -> CSSProperty {
+    CSSProperty("transform", value.css)
+}
+
+/// transform function.
+public func transform(_ operations: TransformOperation...) -> CSSProperty {
+    transform(Transform(operations))
+}
+
 /// transformOrigin function.
 public func transformOrigin(_ value: String) -> CSSProperty {
     CSSProperty("transform-origin", value)
@@ -45,6 +55,11 @@ public func transition(_ value: Transition) -> CSSProperty {
 /// transitionProperty function.
 public func transitionProperty(_ value: String) -> CSSProperty {
     CSSProperty("transition-property", value)
+}
+
+/// transitionProperty function.
+public func transitionProperty(_ value: TransitionProperty) -> CSSProperty {
+    CSSProperty("transition-property", value.rawValue)
 }
 
 /// transitionDuration function.

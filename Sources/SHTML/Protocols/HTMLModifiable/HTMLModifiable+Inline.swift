@@ -102,6 +102,16 @@ public extension HTMLModifiable {
     func background(_ color: Color) -> Self {
         appendingStyle("background: \(color.css)")
     }
+
+    /// Sets `background-color` using a raw CSS string.
+    func backgroundColor(_ color: String) -> Self {
+        appendingStyle("background-color: \(color)")
+    }
+
+    /// Sets `background-color` using a typed ``Color``.
+    func backgroundColor(_ color: Color) -> Self {
+        appendingStyle("background-color: \(color.css)")
+    }
     
     func foregroundColor(_ color: String) -> Self {
         appendingStyle("color: \(color)")
@@ -109,6 +119,16 @@ public extension HTMLModifiable {
     
     func foregroundColor(_ color: Color) -> Self {
         appendingStyle("color: \(color.css)")
+    }
+
+    /// Sets text `color` using a raw CSS string.
+    func color(_ value: String) -> Self {
+        appendingStyle("color: \(value)")
+    }
+
+    /// Sets text `color` using a typed ``Color``.
+    func color(_ value: Color) -> Self {
+        appendingStyle("color: \(value.css)")
     }
     
     // Borders

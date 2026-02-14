@@ -102,6 +102,129 @@ public enum TimingFunction {
     }
 }
 
+/// Type-safe CSS angle value.
+public struct CSSAngle: Sendable, Hashable, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
+    /// Constant.
+    public let css: String
+
+    /// Creates a new instance.
+    public init(css: String) {
+        self.css = css
+    }
+
+    /// Creates a new instance.
+    public init(integerLiteral value: Int) {
+        self.css = "\(value)deg"
+    }
+
+    /// Creates a new instance.
+    public init(floatLiteral value: Double) {
+        self.css = "\(value)deg"
+    }
+
+    /// Creates angle in degrees.
+    public static func deg(_ value: Double) -> CSSAngle {
+        CSSAngle(css: "\(formatNumber(value))deg")
+    }
+
+    /// Creates angle in radians.
+    public static func rad(_ value: Double) -> CSSAngle {
+        CSSAngle(css: "\(formatNumber(value))rad")
+    }
+
+    /// Creates angle in turns.
+    public static func turn(_ value: Double) -> CSSAngle {
+        CSSAngle(css: "\(formatNumber(value))turn")
+    }
+
+    private static func formatNumber(_ value: Double) -> String {
+        if value.rounded() == value {
+            return "\(Int(value))"
+        }
+        return "\(value)"
+    }
+}
+
+/// Type-safe transform operations.
+public enum TransformOperation: Sendable, Hashable {
+    case translate(x: CSSLength, y: CSSLength)
+    case translateX(CSSLength)
+    case translateY(CSSLength)
+    case scale(Double)
+    case scaleXY(x: Double, y: Double)
+    case scaleX(Double)
+    case scaleY(Double)
+    case rotate(CSSAngle)
+    case skew(x: CSSAngle, y: CSSAngle)
+    case skewX(CSSAngle)
+    case skewY(CSSAngle)
+
+    /// Property.
+    public var css: String {
+        switch self {
+        case .translate(let x, let y):
+            return "translate(\(x.css), \(y.css))"
+        case .translateX(let x):
+            return "translateX(\(x.css))"
+        case .translateY(let y):
+            return "translateY(\(y.css))"
+        case .scale(let value):
+            return "scale(\(value))"
+        case .scaleXY(let x, let y):
+            return "scale(\(x), \(y))"
+        case .scaleX(let value):
+            return "scaleX(\(value))"
+        case .scaleY(let value):
+            return "scaleY(\(value))"
+        case .rotate(let angle):
+            return "rotate(\(angle.css))"
+        case .skew(let x, let y):
+            return "skew(\(x.css), \(y.css))"
+        case .skewX(let angle):
+            return "skewX(\(angle.css))"
+        case .skewY(let angle):
+            return "skewY(\(angle.css))"
+        }
+    }
+}
+
+/// Type-safe transform value composed from one or more operations.
+public struct Transform: Sendable, Hashable {
+    /// Constant.
+    public let operations: [TransformOperation]
+
+    /// Creates a new instance.
+    public init(_ operations: TransformOperation...) {
+        self.operations = operations
+    }
+
+    /// Creates a new instance.
+    public init(_ operations: [TransformOperation]) {
+        self.operations = operations
+    }
+
+    /// Property.
+    public var css: String {
+        operations.map(\.css).joined(separator: " ")
+    }
+}
+
+/// Type-safe transition properties.
+public enum TransitionProperty: String {
+    case all
+    case opacity
+    case transform
+    case background = "background"
+    case backgroundColor = "background-color"
+    case color
+    case width
+    case height
+    case left
+    case right
+    case top
+    case bottom
+}
+
 // Type-safe transition
 public struct Transition {
     /// Constant.
@@ -119,6 +242,11 @@ public struct Transition {
         self.duration = duration
         self.timingFunction = timingFunction
         self.delay = delay
+    }
+
+    /// Creates a new instance.
+    public init(property: TransitionProperty, duration: CSSLength, timingFunction: TimingFunction = .easeInOut, delay: CSSLength? = nil) {
+        self.init(property: property.rawValue, duration: duration, timingFunction: timingFunction, delay: delay)
     }
     
     /// Property.

@@ -41,7 +41,17 @@ public func borderColor(_ value: String) -> CSSProperty {
     CSSProperty("border-color", value)
 }
 
+/// borderColor function.
+public func borderColor(_ value: Color) -> CSSProperty {
+    CSSProperty("border-color", value.css)
+}
+
 /// outlineColor function.
 public func outlineColor(_ value: String) -> CSSProperty {
     CSSProperty("outline-color", value)
+}
+
+/// outlineColor function.
+public func outlineColor(_ value: Color) -> CSSProperty {
+    CSSProperty("outline-color", value.css)
 }

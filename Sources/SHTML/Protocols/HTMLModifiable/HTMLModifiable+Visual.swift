@@ -47,6 +47,14 @@ public extension HTMLModifiable {
     func transform(_ value: String) -> Self {
         appendingStyle("transform: \(value)")
     }
+
+    func transform(_ value: Transform) -> Self {
+        appendingStyle("transform: \(value.css)")
+    }
+
+    func transform(_ operations: TransformOperation...) -> Self {
+        transform(Transform(operations))
+    }
     
     // Animation
     func animation(_ value: String) -> Self {

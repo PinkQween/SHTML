@@ -63,6 +63,21 @@ final class CSSTests: XCTestCase {
         let prop = color("#333")
         XCTAssertEqual(prop.render(), "color: #333;")
     }
+
+    func testColorHelperWithTypedColor() {
+        let prop = color(.red)
+        XCTAssertEqual(prop.render(), "color: red;")
+    }
+
+    func testBorderColorHelperWithTypedColor() {
+        let prop = borderColor(.blue)
+        XCTAssertEqual(prop.render(), "border-color: blue;")
+    }
+
+    func testOutlineColorHelperWithTypedColor() {
+        let prop = outlineColor(.green)
+        XCTAssertEqual(prop.render(), "outline-color: green;")
+    }
     
     func testFontSizeHelper() {
         let prop = fontSize("16px")
@@ -136,11 +151,11 @@ final class CSSTests: XCTestCase {
             
             CSSKeyframes("fadeIn") {
                 CSSKeyframe("from") {
-                    opacity("0")
+                    opacity(0)
                     transform("translateY(10px)")
                 }
                 CSSKeyframe("to") {
-                    opacity("1")
+                    opacity(1)
                     transform("translateY(0)")
                 }
             }
@@ -163,6 +178,20 @@ final class CSSTests: XCTestCase {
     func testTransform() {
         let prop = transform("rotate(45deg)")
         XCTAssertEqual(prop.render(), "transform: rotate(45deg);")
+    }
+
+    func testTypedTransform() {
+        let prop = transform(
+            .translateX(12.px),
+            .rotate(45.deg),
+            .scale(1.1)
+        )
+        XCTAssertEqual(prop.render(), "transform: translateX(12px) rotate(45deg) scale(1.1);")
+    }
+
+    func testTransitionPropertyTyped() {
+        let prop = transitionProperty(.transform)
+        XCTAssertEqual(prop.render(), "transition-property: transform;")
     }
     
     func testAnimation() {
