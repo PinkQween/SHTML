@@ -213,6 +213,7 @@ extension Transition: JSStyleValueConvertible {
 @MainActor public let console = JSExpr("console")
 @MainActor public let document = JSExpr("document")
 @MainActor public let window = JSExpr("window")
+@MainActor public let crypto = JSExpr("crypto")
 @MainActor public let localStorage = JSExpr("localStorage")
 @MainActor public let sessionStorage = JSExpr("sessionStorage")
 
@@ -226,6 +227,7 @@ public extension JS {
     static var history: JSExpr { JSExpr("history") }
     static var location: JSExpr { JSExpr("location") }
     static var performance: JSExpr { JSExpr("performance") }
+    static var crypto: JSExpr { JSExpr("crypto") }
     static var math: JSExpr { JSExpr("Math") }
     static var json: JSExpr { JSExpr("JSON") }
     static var intl: JSExpr { JSExpr("Intl") }
@@ -295,6 +297,37 @@ public extension JS {
 
         public static func random() -> JSExpr {
             JS.math.random.call()
+        }
+    }
+
+    // Crypto helpers
+    enum Crypto {
+        public static func randomUUID() -> JSExpr {
+            JS.crypto.randomUUID.call()
+        }
+
+        public static func getRandomValues(_ typedArray: any ExpressibleAsJSArg) -> JSExpr {
+            JS.crypto.getRandomValues.call(typedArray)
+        }
+
+        public static func subtleDigest(_ algorithm: any ExpressibleAsJSArg, _ data: any ExpressibleAsJSArg) -> JSExpr {
+            JS.crypto.subtle.digest.call(algorithm, data)
+        }
+
+        public static func subtleDigestSHA1(_ data: any ExpressibleAsJSArg) -> JSExpr {
+            subtleDigest("SHA-1", data)
+        }
+
+        public static func subtleDigestSHA256(_ data: any ExpressibleAsJSArg) -> JSExpr {
+            subtleDigest("SHA-256", data)
+        }
+
+        public static func subtleDigestSHA384(_ data: any ExpressibleAsJSArg) -> JSExpr {
+            subtleDigest("SHA-384", data)
+        }
+
+        public static func subtleDigestSHA512(_ data: any ExpressibleAsJSArg) -> JSExpr {
+            subtleDigest("SHA-512", data)
         }
     }
 }

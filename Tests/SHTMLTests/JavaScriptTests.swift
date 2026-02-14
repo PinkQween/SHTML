@@ -179,6 +179,7 @@ final class JavaScriptTests: XCTestCase {
         XCTAssertEqual(JS.history.render(), "history")
         XCTAssertEqual(JS.location.render(), "location")
         XCTAssertEqual(JS.performance.render(), "performance")
+        XCTAssertEqual(JS.crypto.render(), "crypto")
         XCTAssertEqual(JS.math.render(), "Math")
         XCTAssertEqual(JS.json.render(), "JSON")
         XCTAssertEqual(JS.fetch.render(), "fetch")
@@ -197,6 +198,22 @@ final class JavaScriptTests: XCTestCase {
         XCTAssertEqual(JS.Math.floor(3.9).render(), "Math.floor(3.9)")
         XCTAssertEqual(JS.Math.max(10, 20).render(), "Math.max(10, 20)")
         XCTAssertEqual(JS.Math.random().render(), "Math.random()")
+    }
+
+    func testCryptoHelpers() {
+        XCTAssertEqual(JS.Crypto.randomUUID().render(), "crypto.randomUUID()")
+        XCTAssertEqual(
+            JS.Crypto.getRandomValues(JSExpr("arr")).render(),
+            "crypto.getRandomValues(arr)"
+        )
+        XCTAssertEqual(
+            JS.Crypto.subtleDigest("SHA-256", JSExpr("data")).render(),
+            "crypto.subtle.digest('SHA-256', data)"
+        )
+        XCTAssertEqual(
+            JS.Crypto.subtleDigestSHA256(JSExpr("bytes")).render(),
+            "crypto.subtle.digest('SHA-256', bytes)"
+        )
     }
 
     func testQueryHelpers() {
