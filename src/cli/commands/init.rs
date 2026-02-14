@@ -123,7 +123,16 @@ let package = Package(
         .package(url: "https://github.com/pinkqween/SHTML.git", branch: "main")
     ],
     targets: [
-        .executableTarget(name: "{target}", dependencies: ["SHTML"])
+            
+        .executableTarget(
+            name: "{target}",
+            dependencies: [
+                .product(name: "SHTML", package: "shtml")
+            ],
+            plugins: [
+                .plugin(name: "SHTMLAssetNamePlugin", package: "shtml")
+            ]
+        )
     ]
 )
 "#,

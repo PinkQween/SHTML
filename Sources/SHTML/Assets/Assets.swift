@@ -65,6 +65,17 @@ public struct FontAsset: Asset {
         case ttf
         case otf
         case eot
+
+        /// CSS format token used inside `src: ... format('...')`.
+        public var cssToken: String {
+            switch self {
+            case .woff2: return "woff2"
+            case .woff: return "woff"
+            case .ttf: return "truetype"
+            case .otf: return "opentype"
+            case .eot: return "embedded-opentype"
+            }
+        }
     }
 
     /// Type alias.
@@ -129,7 +140,7 @@ public struct FontAsset: Asset {
         return """
         @font-face {
             font-family: '\(family)';
-            src: url('\(path)') format('\(format.rawValue)');
+            src: url('\(path)') format('\(format.cssToken)');
             font-weight: \(weight);
             font-style: \(style);\(displayLine)
         }
