@@ -16,6 +16,11 @@ public func fontFamily(_ value: String) -> CSSProperty {
     CSSProperty("font-family", value)
 }
 
+/// fontFamily function.
+public func fontFamily(_ value: FontFamily) -> CSSProperty {
+    CSSProperty("font-family", value.css)
+}
+
 /// fontWeight function.
 public func fontWeight(_ value: String) -> CSSProperty {
     CSSProperty("font-weight", value)

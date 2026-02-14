@@ -81,6 +81,52 @@ public enum FontStyle: String {
     case oblique
 }
 
+/// Type-safe generic font families.
+public enum GenericFontFamily: String, Sendable, Hashable {
+    case serif
+    case sansSerif = "sans-serif"
+    case monospace
+    case cursive
+    case fantasy
+    case systemUI = "system-ui"
+}
+
+/// Type-safe font-family value.
+public indirect enum FontFamily: Sendable, Hashable {
+    case custom(String)
+    case generic(GenericFontFamily)
+    case stack([FontFamily])
+
+    /// Property.
+    public var css: String {
+        switch self {
+        case .custom(let name):
+            return FontFamily.quoteIfNeeded(name)
+        case .generic(let family):
+            return family.rawValue
+        case .stack(let families):
+            return families.map(\.css).joined(separator: ", ")
+        }
+    }
+
+    /// Creates a stack with a primary custom family and generic fallbacks.
+    public static func named(_ name: String, fallbacks: GenericFontFamily...) -> FontFamily {
+        let values: [FontFamily] = [.custom(name)] + fallbacks.map { .generic($0) }
+        return .stack(values)
+    }
+
+    private static func quoteIfNeeded(_ value: String) -> String {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.hasPrefix("'") || trimmed.hasPrefix("\"") {
+            return trimmed
+        }
+        if trimmed.contains(" ") {
+            return "'\(trimmed)'"
+        }
+        return trimmed
+    }
+}
+
 /// Type-safe linear-gradient direction.
 public enum LinearGradientDirection: Sendable {
     case toTop
