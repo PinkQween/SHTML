@@ -24,6 +24,9 @@ final class HTMLElementTests: XCTestCase {
         XCTAssertEqual(h1 { "H1" }.render(), "<h1>H1</h1>")
         XCTAssertEqual(h2 { "H2" }.render(), "<h2>H2</h2>")
         XCTAssertEqual(h3 { "H3" }.render(), "<h3>H3</h3>")
+        XCTAssertEqual(h4 { "H4" }.render(), "<h4>H4</h4>")
+        XCTAssertEqual(h5 { "H5" }.render(), "<h5>H5</h5>")
+        XCTAssertEqual(h6 { "H6" }.render(), "<h6>H6</h6>")
     }
     
     func testParagraph() {
@@ -59,12 +62,28 @@ final class HTMLElementTests: XCTestCase {
         XCTAssertTrue(result.contains("<li>Item 1</li>"))
         XCTAssertTrue(result.contains("<li>Item 2</li>"))
     }
+
+    func testOrderedList() {
+        let list = ol {
+            li { "First" }
+            li { "Second" }
+        }
+        .start(5)
+        let result = list.render()
+        XCTAssertTrue(result.contains("<ol"))
+        XCTAssertTrue(result.contains("start=\"5\""))
+        XCTAssertTrue(result.contains("<li>First</li>"))
+    }
     
     // MARK: - Empty Elements
     
     func testBreak() {
         let br = br()
         XCTAssertEqual(br.render(), "<br />")
+    }
+
+    func testHorizontalRule() {
+        XCTAssertEqual(hr().render(), "<hr />")
     }
     
     func testImage() {
@@ -117,6 +136,48 @@ final class HTMLElementTests: XCTestCase {
         }
         let expected = "<h1>Title</h1><p>Paragraph</p>"
         XCTAssertEqual(group.render(), expected)
+    }
+
+    func testFieldsetLegendLabel() {
+        let result = fieldset {
+            legend { "Profile" }
+            label { "Name" }.for("name")
+            input().id("name")
+        }
+        .render()
+        XCTAssertTrue(result.contains("<fieldset>"))
+        XCTAssertTrue(result.contains("<legend>Profile</legend>"))
+        XCTAssertTrue(result.contains("for=\"name\""))
+    }
+
+    func testSelectOptionAndTextarea() {
+        let result = Div {
+            select {
+                option { "One" }.value("1")
+                option { "Two" }.value("2").selected()
+            }
+            textarea { "Hello" }.rows(4).cols(10)
+        }
+        .render()
+        XCTAssertTrue(result.contains("<select>"))
+        XCTAssertTrue(result.contains("<option value=\"1\">One</option>"))
+        XCTAssertTrue(result.contains("selected=\"\""))
+        XCTAssertTrue(result.contains("<textarea"))
+        XCTAssertTrue(result.contains("rows=\"4\""))
+        XCTAssertTrue(result.contains("cols=\"10\""))
+    }
+
+    func testSemanticElements() {
+        let result = article {
+            header { h2 { "Title" } }
+            section { p { "Body" } }
+            footer { span { "Meta" } }
+        }
+        .render()
+        XCTAssertTrue(result.contains("<article>"))
+        XCTAssertTrue(result.contains("<header>"))
+        XCTAssertTrue(result.contains("<section>"))
+        XCTAssertTrue(result.contains("<footer>"))
     }
     
     // MARK: - Custom HTML Components

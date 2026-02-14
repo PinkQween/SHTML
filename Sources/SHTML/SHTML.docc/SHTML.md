@@ -45,6 +45,7 @@ struct MyPage: HTML {
 - <doc:GettingStarted>
 - <doc:CreatingComponents>
 - <doc:StylingElements>
+- <doc:ModifierProtocols>
 
 ### Guides
 
@@ -67,10 +68,25 @@ struct MyPage: HTML {
 - ``h1``
 - ``h2``
 - ``h3``
+- ``h4``
+- ``h5``
+- ``h6``
 - ``p``
 - ``span``
 - ``button``
 - ``body``
+- ``hr``
+- ``label``
+- ``textarea``
+- ``select``
+- ``option``
+- ``legend``
+- ``fieldset``
+- ``ol``
+- ``article``
+- ``section``
+- ``header``
+- ``footer``
 
 ### Layout Containers
 

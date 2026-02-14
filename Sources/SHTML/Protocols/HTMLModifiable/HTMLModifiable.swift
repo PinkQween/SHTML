@@ -1,11 +1,20 @@
-// Universal modifiers that can be applied to any HTML element
-// Similar to SwiftUI's ViewModifier
-
+/// Protocol for HTML elements that support attribute-based modifiers.
+///
+/// Conform to `HTMLModifiable` when your element stores HTML attributes and should
+/// support shared modifiers such as `.id(_)`, `.class(_)`, `.style(_)`, and event handlers.
 public protocol HTMLModifiable: HTML {
+    /// Raw HTML attributes rendered on the element tag.
     var attributes: [String: String] { get set }
 }
 
+/// Protocol for modifiable HTML elements that also own child content.
+///
+/// `HTMLContentModifiable` extends ``HTMLModifiable`` with a required initializer
+/// used by content-replacement helpers like ``HTMLModifiable/with(class:content:)``.
+///
+/// Use this for elements like `Div`, `A`, and `Button` that have both attributes and children.
 public protocol HTMLContentModifiable: HTMLModifiable {
+    /// Creates a new instance with updated attributes and child content.
     init(attributes: [String: String], content: @escaping () -> [any HTML])
 }
 
