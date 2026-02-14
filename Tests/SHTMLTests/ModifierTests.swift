@@ -222,6 +222,18 @@ final class ModifierTests: XCTestCase {
         XCTAssertTrue(div.render().contains("transform: translateY(8px) scale(1.02)"))
     }
 
+    func testCSSBridgeSingleProperty() {
+        let div = Div { "Content" }.css(textDecoration(.none))
+        XCTAssertTrue(div.render().contains("text-decoration: none"))
+    }
+
+    func testCSSBridgePropertyGroup() {
+        let div = Div { "Content" }.css(margin(.horizontal, 12.px))
+        let result = div.render()
+        XCTAssertTrue(result.contains("margin-left: 12px"))
+        XCTAssertTrue(result.contains("margin-right: 12px"))
+    }
+
     // MARK: - Gesture Modifiers
 
     func testOnTapGestureSingleTap() {

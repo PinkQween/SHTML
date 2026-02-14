@@ -60,4 +60,9 @@ public extension HTMLModifiable {
     func animation(_ value: String) -> Self {
         appendingStyle("animation: \(value)")
     }
+    
+    // Image
+    func objectFit(_ value: ObjectFit) -> Self {
+        appendingStyle("object-fit: \(value.rawValue)")
+    }
 }
