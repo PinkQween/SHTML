@@ -15,6 +15,10 @@ public extension HTMLModifiable {
         appendingStyle("font-size: \(size)")
     }
     
+    func fontSize(_ size: CSSLength) -> Self {
+        appendingStyle("font-size: \(size.css)")
+    }
+    
     func fontWeight(_ weight: String) -> Self {
         appendingStyle("font-weight: \(weight)")
     }
