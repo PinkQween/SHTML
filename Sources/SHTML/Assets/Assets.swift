@@ -40,6 +40,77 @@ public struct ImageAsset: Asset {
     }
 }
 
+// MARK: - Video Asset
+
+public struct VideoAsset: Asset {
+    /// Constant.
+    public let name: String
+    /// Constant.
+    public let path: String
+    /// Constant.
+    public let format: VideoFormat
+
+    /// VideoFormat type.
+    public enum VideoFormat: String {
+        case mp4
+        case webm
+        case ogg
+        case mov
+        case m4v
+    }
+
+    /// Creates a new instance.
+    public init(_ name: String, format: VideoFormat = .mp4, path: String? = nil) {
+        self.name = name
+        self.format = format
+        self.path = path ?? "Assets/Videos/\(name).\(format.rawValue)"
+    }
+
+    /// Generate a video element for this asset.
+    public func video() -> Video {
+        Video(src: path)
+    }
+}
+
+/// Type alias.
+public typealias VideoType = VideoAsset.VideoFormat
+
+// MARK: - Audio Asset
+
+public struct AudioAsset: Asset {
+    /// Constant.
+    public let name: String
+    /// Constant.
+    public let path: String
+    /// Constant.
+    public let format: AudioFormat
+
+    /// AudioFormat type.
+    public enum AudioFormat: String {
+        case mp3
+        case wav
+        case ogg
+        case m4a
+        case aac
+        case flac
+    }
+
+    /// Creates a new instance.
+    public init(_ name: String, format: AudioFormat = .mp3, path: String? = nil) {
+        self.name = name
+        self.format = format
+        self.path = path ?? "Assets/Audio/\(name).\(format.rawValue)"
+    }
+
+    /// Generate an audio element for this asset.
+    public func audio() -> Audio {
+        Audio(src: path)
+    }
+}
+
+/// Type alias.
+public typealias AudioType = AudioAsset.AudioFormat
+
 // MARK: - Font Asset
 
 public struct FontAsset: Asset {
@@ -188,6 +259,8 @@ public struct ColorAsset {
 
 public struct AssetCatalog {
     private var images: [String: ImageAsset] = [:]
+    private var videos: [String: VideoAsset] = [:]
+    private var audios: [String: AudioAsset] = [:]
     private var fonts: [String: FontAsset] = [:]
     private var colors: [String: ColorAsset] = [:]
     private var externalFontStylesheets: [String] = []
@@ -204,6 +277,48 @@ public struct AssetCatalog {
     /// image function.
     public func image(_ name: String) -> ImageAsset? {
         images[name]
+    }
+
+    // MARK: Videos
+
+    public mutating func registerVideo(_ name: String, format: VideoAsset.VideoFormat = .mp4, path: String? = nil) {
+        videos[name] = VideoAsset(name, format: format, path: path)
+    }
+
+    /// registerVideo function.
+    public mutating func registerVideo(_ videoName: VideoName, format: VideoAsset.VideoFormat = .mp4, path: String? = nil) {
+        registerVideo(videoName.name, format: format, path: path ?? videoName.path)
+    }
+
+    /// video function.
+    public func video(_ name: String) -> VideoAsset? {
+        videos[name]
+    }
+
+    /// video function.
+    public func video(_ videoName: VideoName) -> VideoAsset? {
+        video(videoName.name)
+    }
+
+    // MARK: Audio
+
+    public mutating func registerAudio(_ name: String, format: AudioAsset.AudioFormat = .mp3, path: String? = nil) {
+        audios[name] = AudioAsset(name, format: format, path: path)
+    }
+
+    /// registerAudio function.
+    public mutating func registerAudio(_ audioName: AudioName, format: AudioAsset.AudioFormat = .mp3, path: String? = nil) {
+        registerAudio(audioName.name, format: format, path: path ?? audioName.path)
+    }
+
+    /// audio function.
+    public func audio(_ name: String) -> AudioAsset? {
+        audios[name]
+    }
+
+    /// audio function.
+    public func audio(_ audioName: AudioName) -> AudioAsset? {
+        audio(audioName.name)
     }
     
     // MARK: Fonts
@@ -335,6 +450,58 @@ public final class AssetManager: @unchecked Sendable {
         defer { lock.unlock() }
         return catalog.image(name)
     }
+
+    /// registerVideo function.
+    public func registerVideo(_ name: String, format: VideoAsset.VideoFormat = .mp4, path: String? = nil) {
+        lock.lock()
+        defer { lock.unlock() }
+        catalog.registerVideo(name, format: format, path: path)
+    }
+
+    /// registerVideo function.
+    public func registerVideo(_ videoName: VideoName, format: VideoAsset.VideoFormat = .mp4, path: String? = nil) {
+        lock.lock()
+        defer { lock.unlock() }
+        catalog.registerVideo(videoName, format: format, path: path)
+    }
+
+    /// video function.
+    public func video(_ name: String) -> VideoAsset? {
+        lock.lock()
+        defer { lock.unlock() }
+        return catalog.video(name)
+    }
+
+    /// video function.
+    public func video(_ videoName: VideoName) -> VideoAsset? {
+        video(videoName.name)
+    }
+
+    /// registerAudio function.
+    public func registerAudio(_ name: String, format: AudioAsset.AudioFormat = .mp3, path: String? = nil) {
+        lock.lock()
+        defer { lock.unlock() }
+        catalog.registerAudio(name, format: format, path: path)
+    }
+
+    /// registerAudio function.
+    public func registerAudio(_ audioName: AudioName, format: AudioAsset.AudioFormat = .mp3, path: String? = nil) {
+        lock.lock()
+        defer { lock.unlock() }
+        catalog.registerAudio(audioName, format: format, path: path)
+    }
+
+    /// audio function.
+    public func audio(_ name: String) -> AudioAsset? {
+        lock.lock()
+        defer { lock.unlock() }
+        return catalog.audio(name)
+    }
+
+    /// audio function.
+    public func audio(_ audioName: AudioName) -> AudioAsset? {
+        audio(audioName.name)
+    }
     
     /// registerFont function.
     public func registerFont(_ name: String, format: FontAsset.FontFormat = .woff2, path: String? = nil) {
@@ -435,6 +602,8 @@ public enum AssetBuilder {
 /// AssetRegistration type.
 public enum AssetRegistration {
     case image(String, path: String?)
+    case video(String, format: VideoAsset.VideoFormat, path: String?)
+    case audio(String, format: AudioAsset.AudioFormat, path: String?)
     case font(String, format: FontAsset.FontFormat, path: String?)
     case externalFont(
         family: String,
@@ -455,6 +624,10 @@ public func configureAssets(@AssetBuilder _ builder: () -> [AssetRegistration]) 
         switch registration {
         case .image(let name, let path):
             AssetManager.shared.registerImage(name, path: path)
+        case .video(let name, let format, let path):
+            AssetManager.shared.registerVideo(name, format: format, path: path)
+        case .audio(let name, let format, let path):
+            AssetManager.shared.registerAudio(name, format: format, path: path)
         case .font(let name, let format, let path):
             AssetManager.shared.registerFont(name, format: format, path: path)
         case .externalFont(let family, let url, let format, let weight, let style, let display):
@@ -480,6 +653,36 @@ public func configureAssets(@AssetBuilder _ builder: () -> [AssetRegistration]) 
 
 public func Font(_ name: String, format: FontAsset.FontFormat = .woff2) -> AssetRegistration {
     .font(name, format: format, path: nil)
+}
+
+/// RegisterVideo function.
+public func RegisterVideo(_ name: String, format: VideoAsset.VideoFormat = .mp4) -> AssetRegistration {
+    .video(name, format: format, path: nil)
+}
+
+/// RegisterVideo function.
+public func RegisterVideo(_ name: VideoName, format: VideoAsset.VideoFormat = .mp4) -> AssetRegistration {
+    .video(name.name, format: format, path: name.path)
+}
+
+/// RegisterVideo function.
+public func RegisterVideo(_ name: String, format: VideoAsset.VideoFormat, path: String) -> AssetRegistration {
+    .video(name, format: format, path: path)
+}
+
+/// RegisterAudio function.
+public func RegisterAudio(_ name: String, format: AudioAsset.AudioFormat = .mp3) -> AssetRegistration {
+    .audio(name, format: format, path: nil)
+}
+
+/// RegisterAudio function.
+public func RegisterAudio(_ name: AudioName, format: AudioAsset.AudioFormat = .mp3) -> AssetRegistration {
+    .audio(name.name, format: format, path: name.path)
+}
+
+/// RegisterAudio function.
+public func RegisterAudio(_ name: String, format: AudioAsset.AudioFormat, path: String) -> AssetRegistration {
+    .audio(name, format: format, path: path)
 }
 
 /// Font function.

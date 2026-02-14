@@ -1,6 +1,6 @@
 # Asset Name Generation
 
-Generate typed `ImageName` and `FontName` symbols from your asset folders so you get dot-autocomplete like `.lily` and `.fascinateInlineRegular`.
+Generate typed `ImageName`, `VideoName`, `AudioName`, and `FontName` symbols from your asset folders so you get dot-autocomplete like `.lily` and `.fascinateInlineRegular`.
 
 ## Why
 
@@ -17,7 +17,7 @@ Attach SHTML's build plugin to your app target:
         .product(name: "SHTML", package: "SHTML")
     ],
     plugins: [
-        .plugin(name: "SHTMLAssetNamePlugin", package: "SHTML")
+        .plugin(name: "SHTMLAssetNamePlugin", package: "shtml")
     ]
 )
 ```
@@ -25,6 +25,8 @@ Attach SHTML's build plugin to your app target:
 On build, the plugin scans:
 
 - `Assets/Images`
+- `Assets/Videos`
+- `Assets/Audio`
 - `Assets/Fonts`
 
 and generates typed members into the plugin output directory.
@@ -36,6 +38,8 @@ import SHTML
 
 try AssetNameGenerator.generate(
     imagesDirectory: "Assets/Images",
+    videosDirectory: "Assets/Videos",
+    audioDirectory: "Assets/Audio",
     fontsDirectory: "Assets/Fonts",
     outputDirectory: "Sources/App/Generated"
 )
@@ -44,12 +48,16 @@ try AssetNameGenerator.generate(
 This writes:
 
 - `Sources/App/Generated/ImageName+Generated.swift`
+- `Sources/App/Generated/VideoName+Generated.swift`
+- `Sources/App/Generated/AudioName+Generated.swift`
 - `Sources/App/Generated/FontName+Generated.swift`
 
 ## Use Generated Names
 
 ```swift
 Image(.lily)
+Video(.intro)
+Audio(.theme)
 
 Text("Sender")
     .fontFamily(.fascinateInlineRegular)

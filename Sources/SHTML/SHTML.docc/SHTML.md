@@ -75,6 +75,8 @@ struct MyPage: HTML {
 - ``p``
 - ``span``
 - ``button``
+- ``audio``
+- ``video``
 - ``body``
 - ``hr``
 - ``label``
