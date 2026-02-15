@@ -150,17 +150,33 @@ public extension HTMLModifiable {
     func border(width: String = "1px", style: String = "solid", color: String = "black") -> Self {
         appendingStyle("border: \(width) \(style) \(color)")
     }
+
+    func border(width: String = "1px", style: String = "solid", color: String = "black", opacity: Double) -> Self {
+        appendingStyle("border: \(width) \(style) \(cssColorWithOpacity(color, opacity: opacity))")
+    }
     
     func border(width: String, style: String = "solid", color: Color) -> Self {
         appendingStyle("border: \(width) \(style) \(color.css)")
+    }
+
+    func border(width: String, style: String = "solid", color: Color, opacity: Double) -> Self {
+        appendingStyle("border: \(width) \(style) \(cssColorWithOpacity(color.css, opacity: opacity))")
     }
 
     func border(width: CSSLength = 1.px, style: BorderStyle = .solid, color: Color = .black) -> Self {
         appendingStyle("border: \(width.css) \(style.rawValue) \(color.css)")
     }
 
+    func border(width: CSSLength = 1.px, style: BorderStyle = .solid, color: Color = .black, opacity: Double) -> Self {
+        appendingStyle("border: \(width.css) \(style.rawValue) \(cssColorWithOpacity(color.css, opacity: opacity))")
+    }
+
     func border(width: CSSLength = 1.px, style: BorderStyle = .solid, color: String) -> Self {
         appendingStyle("border: \(width.css) \(style.rawValue) \(color)")
+    }
+
+    func border(width: CSSLength = 1.px, style: BorderStyle = .solid, color: String, opacity: Double) -> Self {
+        appendingStyle("border: \(width.css) \(style.rawValue) \(cssColorWithOpacity(color, opacity: opacity))")
     }
     
     func borderLeft(width: String, color: String) -> Self {
@@ -175,16 +191,36 @@ public extension HTMLModifiable {
         appendingStyle("border-left: \(width.css) \(style.rawValue) \(color.css)")
     }
 
+    func borderLeft(width: CSSLength, style: BorderStyle = .solid, color: Color, opacity: Double) -> Self {
+        appendingStyle("border-left: \(width.css) \(style.rawValue) \(cssColorWithOpacity(color.css, opacity: opacity))")
+    }
+
     func borderRight(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
         appendingStyle("border-right: \(width.css) \(style.rawValue) \(color.css)")
+    }
+
+    func borderRight(width: CSSLength, style: BorderStyle = .solid, color: Color, opacity: Double) -> Self {
+        appendingStyle("border-right: \(width.css) \(style.rawValue) \(cssColorWithOpacity(color.css, opacity: opacity))")
     }
 
     func borderTop(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
         appendingStyle("border-top: \(width.css) \(style.rawValue) \(color.css)")
     }
 
+    func borderTop(width: CSSLength, style: BorderStyle = .solid, color: Color, opacity: Double) -> Self {
+        appendingStyle("border-top: \(width.css) \(style.rawValue) \(cssColorWithOpacity(color.css, opacity: opacity))")
+    }
+
     func borderBottom(width: CSSLength, style: BorderStyle = .solid, color: Color) -> Self {
         appendingStyle("border-bottom: \(width.css) \(style.rawValue) \(color.css)")
+    }
+
+    func borderBottom(width: CSSLength, style: BorderStyle = .solid, color: Color, opacity: Double) -> Self {
+        appendingStyle("border-bottom: \(width.css) \(style.rawValue) \(cssColorWithOpacity(color.css, opacity: opacity))")
+    }
+
+    func borderOpacity(_ value: Double) -> Self {
+        appendingStyle("border-opacity: \(value)")
     }
     
     // Sizing
@@ -235,4 +271,15 @@ public extension HTMLModifiable {
     func minHeight(_ value: CSSLength) -> Self {
         appendingStyle("min-height: \(value.css)")
     }
+}
+
+private func cssColorWithOpacity(_ color: String, opacity: Double) -> String {
+    let clamped = max(0.0, min(1.0, opacity))
+    let percent = clamped * 100
+    if percent >= 100 {
+        return color
+    }
+
+    // Works with named colors, hex, rgb(), hsl(), and CSS variables.
+    return "color-mix(in srgb, \(color) \(percent)%, transparent)"
 }

@@ -5,6 +5,11 @@ public enum Overflow: String {
     case scroll
     case auto
     case clip
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe display values
@@ -17,6 +22,11 @@ public enum Display: String {
     case grid
     case inlineGrid = "inline-grid"
     case none
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe position values
@@ -26,6 +36,11 @@ public enum Position: String {
     case absolute
     case fixed
     case sticky
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe text alignment
@@ -34,6 +49,11 @@ public enum TextAlign: String {
     case center
     case right
     case justify
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// Type-safe text decoration values.
@@ -42,6 +62,11 @@ public enum TextDecoration: String {
     case underline
     case overline
     case lineThrough = "line-through"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// Type-safe text transform values.
@@ -50,6 +75,11 @@ public enum TextTransform: String {
     case capitalize
     case uppercase
     case lowercase
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// Type-safe white-space values.
@@ -60,6 +90,11 @@ public enum WhiteSpace: String {
     case preWrap = "pre-wrap"
     case preLine = "pre-line"
     case breakSpaces = "break-spaces"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// Type-safe vertical-align values.
@@ -72,6 +107,11 @@ public enum VerticalAlign: String {
     case middle
     case bottom
     case textBottom = "text-bottom"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// Type-safe font-style values.
@@ -79,6 +119,11 @@ public enum FontStyle: String {
     case normal
     case italic
     case oblique
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe font-weight values.
@@ -94,6 +139,11 @@ public enum FontWeight: String {
     case black = "900"
     case bolder
     case lighter
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe border-style values.
@@ -108,6 +158,11 @@ public enum BorderStyle: String {
     case ridge
     case inset
     case outset
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// Type-safe generic font families.
@@ -313,6 +368,11 @@ public enum FlexDirection: String {
     case column
     case rowReverse = "row-reverse"
     case columnReverse = "column-reverse"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe justify content
@@ -323,6 +383,11 @@ public enum JustifyContent: String {
     case spaceBetween = "space-between"
     case spaceAround = "space-around"
     case spaceEvenly = "space-evenly"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe align items
@@ -332,6 +397,11 @@ public enum AlignItems: String {
     case center
     case baseline
     case stretch
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe cursor values
@@ -349,6 +419,11 @@ public enum Cursor: String {
     case crosshair
     case zoomIn = "zoom-in"
     case zoomOut = "zoom-out"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe timing functions
@@ -358,6 +433,11 @@ public enum TimingFunction {
     case easeIn
     case easeOut
     case easeInOut
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer
     case custom(String)
     
     /// Property.
@@ -368,6 +448,11 @@ public enum TimingFunction {
         case .easeIn: return "ease-in"
         case .easeOut: return "ease-out"
         case .easeInOut: return "ease-in-out"
+        case .inherit: return "inherit"
+        case .initial: return "initial"
+        case .unset: return "unset"
+        case .revert: return "revert"
+        case .revertLayer: return "revert-layer"
         case .custom(let value): return value
         }
     }
@@ -494,6 +579,11 @@ public enum TransitionProperty: String {
     case right
     case top
     case bottom
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe transition
@@ -552,12 +642,22 @@ public enum Visibility: String {
     case visible
     case hidden
     case collapse
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe scroll behavior
 public enum ScrollBehavior: String {
     case auto
     case smooth
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe scrollbar width
@@ -565,6 +665,11 @@ public enum ScrollbarWidth: String {
     case auto
     case thin
     case none
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe scrollbar gutter
@@ -572,12 +677,22 @@ public enum ScrollbarGutter: String {
     case auto
     case stable
     case stableBothEdges = "stable both-edges"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 // Type-safe box sizing
 public enum BoxSizing: String {
     case contentBox = "content-box"
     case borderBox = "border-box"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// UserSelcet type.
@@ -586,6 +701,11 @@ public enum UserSelcet: String {
     case none
     case text
     case all
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// ObjectFit type.
@@ -595,6 +715,11 @@ public enum ObjectFit: String {
     case fill
     case `none`
     case scaleDown = "scale-down"
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
 
 /// UserDrag type.
@@ -602,4 +727,9 @@ public enum UserDrag: String {
     case none
     case element
     case auto
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
 }
