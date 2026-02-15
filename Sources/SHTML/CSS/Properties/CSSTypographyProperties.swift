@@ -187,3 +187,7 @@ public func direction(_ value: String) -> CSSProperty {
 public func unicodeBidi(_ value: String) -> CSSProperty {
     CSSProperty("unicode-bidi", value)
 }
+
+public func textOverflow(_ value: TextOverflow) -> CSSProperty {
+    CSSProperty("text-overflow", value.rawValue)
+}
