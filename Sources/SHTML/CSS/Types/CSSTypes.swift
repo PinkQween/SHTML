@@ -114,6 +114,17 @@ public enum VerticalAlign: String {
     case revertLayer = "revert-layer"
 }
 
+public enum TextOverflow: String {
+    case clip
+    case ellipsis
+    case truncate
+    case inherit
+    case initial
+    case unset
+    case revert
+    case revertLayer = "revert-layer"
+}
+
 /// Type-safe font-style values.
 public enum FontStyle: String {
     case normal

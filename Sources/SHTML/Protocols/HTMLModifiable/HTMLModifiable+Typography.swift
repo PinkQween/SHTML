@@ -10,7 +10,7 @@ public extension HTMLModifiable {
         if let family = family { result = result.appendingStyle("font-family: \(family)") }
         return result
     }
-
+    
     func font(size: String? = nil, weight: String? = nil, family: FontFamily? = nil) -> Self {
         var result = self
         if let size = size { result = result.appendingStyle("font-size: \(size)") }
@@ -18,7 +18,7 @@ public extension HTMLModifiable {
         if let family = family { result = result.appendingStyle("font-family: \(family.css)") }
         return result
     }
-
+    
     func font(size: String? = nil, weight: String? = nil, family: FontName? = nil) -> Self {
         var result = self
         if let size = size { result = result.appendingStyle("font-size: \(size)") }
@@ -38,27 +38,27 @@ public extension HTMLModifiable {
     func fontWeight(_ weight: String) -> Self {
         appendingStyle("font-weight: \(weight)")
     }
-
+    
     func fontWeight(_ weight: FontWeight) -> Self {
         appendingStyle("font-weight: \(weight.rawValue)")
     }
-
+    
     func fontFamily(_ family: String) -> Self {
         appendingStyle("font-family: \(family)")
     }
-
+    
     func fontFamily(_ family: FontFamily) -> Self {
         appendingStyle("font-family: \(family.css)")
     }
-
+    
     func fontFamily(_ family: FontName) -> Self {
         appendingStyle("font-family: \(family.family.css)")
     }
-
+    
     func fontStyle(_ style: String) -> Self {
         appendingStyle("font-style: \(style)")
     }
-
+    
     func fontStyle(_ style: FontStyle) -> Self {
         appendingStyle("font-style: \(style.rawValue)")
     }
@@ -70,64 +70,68 @@ public extension HTMLModifiable {
     func textAlign(_ alignment: TextAlign) -> Self {
         appendingStyle("text-align: \(alignment.rawValue)")
     }
-
+    
     func textDecoration(_ value: String) -> Self {
         appendingStyle("text-decoration: \(value)")
     }
-
+    
     func textDecoration(_ value: TextDecoration) -> Self {
         appendingStyle("text-decoration: \(value.rawValue)")
     }
-
+    
     func textTransform(_ value: String) -> Self {
         appendingStyle("text-transform: \(value)")
     }
-
+    
     func textTransform(_ value: TextTransform) -> Self {
         appendingStyle("text-transform: \(value.rawValue)")
     }
-
+    
     func lineHeight(_ value: String) -> Self {
         appendingStyle("line-height: \(value)")
     }
-
+    
     func lineHeight(_ value: CSSLength) -> Self {
         appendingStyle("line-height: \(value.css)")
     }
-
+    
     func letterSpacing(_ value: String) -> Self {
         appendingStyle("letter-spacing: \(value)")
     }
-
+    
     func letterSpacing(_ value: CSSLength) -> Self {
         appendingStyle("letter-spacing: \(value.css)")
     }
-
+    
     func wordSpacing(_ value: String) -> Self {
         appendingStyle("word-spacing: \(value)")
     }
-
+    
     func wordSpacing(_ value: CSSLength) -> Self {
         appendingStyle("word-spacing: \(value.css)")
     }
-
+    
     func whiteSpace(_ value: String) -> Self {
         appendingStyle("white-space: \(value)")
     }
-
+    
     func whiteSpace(_ value: WhiteSpace) -> Self {
         appendingStyle("white-space: \(value.rawValue)")
     }
-
+    
     func textShadow(_ value: String) -> Self {
         appendingStyle("text-shadow: \(value)")
     }
-
+    
     func verticalAlign(_ value: String) -> Self {
         appendingStyle("vertical-align: \(value)")
     }
-
+    
     func verticalAlign(_ value: VerticalAlign) -> Self {
         appendingStyle("vertical-align: \(value.rawValue)")
+    }
+    
+    func textOvevrflow(_ value: TextOverflow) -> Self {
+        appendingStyle("text-overflow: \(value.rawValue)")
     }
 }
