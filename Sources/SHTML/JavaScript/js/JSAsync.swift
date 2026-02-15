@@ -104,17 +104,37 @@ public struct JSConsoleError: JavaScript {
 
 /// JSReturn type.
 public struct JSReturn: JavaScript {
-    private let value: String?
-    
-    /// Creates a new instance.
-    public init(_ value: String? = nil) {
+    private let value: JSArg?
+
+    /// Creates a new instance with no return value.
+    public init() {
+        self.value = nil
+    }
+
+    /// Backward-compatible raw JavaScript return expression.
+    public init(_ value: String?) {
+        self.value = value.map { .raw($0) }
+    }
+
+    /// Type-safe return expression.
+    public init(_ value: any ExpressibleAsJSArg) {
+        self.value = value.jsArg
+    }
+
+    /// Returns any JavaScript-renderable expression as raw JS.
+    public init(_ value: any JavaScript) {
+        self.value = .raw(value.render())
+    }
+
+    /// Direct JSArg initializer.
+    public init(_ value: JSArg?) {
         self.value = value
     }
     
     /// render function.
     public func render() -> String {
         if let value = value {
-            return "return \(value);"
+            return "return \(value.toJS());"
         }
         return "return;"
     }
