@@ -63,3 +63,12 @@ public enum Color: Sendable {
         return "#\(hex)"
     }
 }
+
+public extension Color {
+    /// Returns a CSS color string with the provided opacity applied.
+    func opacity(_ value: Double) -> String {
+        let clamped = max(0.0, min(1.0, value))
+        let percent = clamped * 100
+        return "color-mix(in srgb, \(css) \(percent)%, transparent)"
+    }
+}
