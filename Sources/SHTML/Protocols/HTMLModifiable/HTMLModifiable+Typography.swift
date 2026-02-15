@@ -131,7 +131,7 @@ public extension HTMLModifiable {
         appendingStyle("vertical-align: \(value.rawValue)")
     }
     
-    func textOvevrflow(_ value: TextOverflow) -> Self {
+    func textOverflow(_ value: TextOverflow) -> Self {
         appendingStyle("text-overflow: \(value.rawValue)")
     }
 }
