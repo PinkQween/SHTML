@@ -89,6 +89,46 @@ public struct JSExpr: JavaScript {
     public func divided(by value: any ExpressibleAsJSArg) -> JSExpr {
         JSExpr("(\(code) / \(value.jsArg.toJS()))")
     }
+
+    /// Boolean OR helper.
+    public func or(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) || \(value.jsArg.toJS()))")
+    }
+
+    /// Boolean AND helper.
+    public func and(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) && \(value.jsArg.toJS()))")
+    }
+
+    /// Nullish coalescing helper.
+    public func coalesce(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) ?? \(value.jsArg.toJS()))")
+    }
+
+    /// Strict equality helper.
+    public func equals(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) === \(value.jsArg.toJS()))")
+    }
+
+    /// Strict inequality helper.
+    public func notEquals(_ value: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) !== \(value.jsArg.toJS()))")
+    }
+
+    /// Logical not helper.
+    public var not: JSExpr {
+        JSExpr("(!\(code))")
+    }
+
+    /// Ternary helper.
+    public func ternary(_ whenTrue: any ExpressibleAsJSArg, _ whenFalse: any ExpressibleAsJSArg) -> JSExpr {
+        JSExpr("(\(code) ? \(whenTrue.jsArg.toJS()) : \(whenFalse.jsArg.toJS()))")
+    }
+
+    /// Await helper.
+    public var awaited: JSExpr {
+        JSExpr("await \(code)")
+    }
 }
 
 // Common style properties for safer typed style assignments.
@@ -244,6 +284,17 @@ public extension JS {
     static var `this`: JSExpr { JSExpr("this") }
     static var event: JSExpr { JSExpr("event") }
 
+    /// Reference a symbol by name.
+    static func ident(_ name: String) -> JSExpr {
+        JSExpr(name)
+    }
+
+    /// Build a `new` expression (example: `new Date(value)`).
+    static func new(_ constructor: JSExpr, _ args: any ExpressibleAsJSArg...) -> JSExpr {
+        let argList = args.map { $0.jsArg.toJS() }.joined(separator: ", ")
+        return JSExpr("new \(constructor.render())(\(argList))")
+    }
+
     // Router helpers
     static func routeParam(_ key: String) -> JSExpr {
         JS.window.routeParams[.string(key)]
@@ -396,6 +447,32 @@ public struct JSTemplate: JavaScript, ExpressibleAsJSArg {
             .replacingOccurrences(of: "\\", with: "\\\\")
             .replacingOccurrences(of: "`", with: "\\`")
             .replacingOccurrences(of: "${", with: "\\${")
+    }
+}
+
+/// JSObjectLiteral type.
+public struct JSObjectLiteral: JavaScript, ExpressibleAsJSArg {
+    private let properties: [String: any ExpressibleAsJSArg]
+
+    /// Creates a new instance.
+    public init(_ properties: [String: any ExpressibleAsJSArg]) {
+        self.properties = properties
+    }
+
+    /// render function.
+    public func render() -> String {
+        let body = properties.map { key, value in
+            let escapedKey = key.replacingOccurrences(of: "'", with: "\\'")
+            return "'\(escapedKey)': \(value.jsArg.toJS())"
+        }
+        .sorted()
+        .joined(separator: ", ")
+        return "{ \(body) }"
+    }
+
+    /// Property.
+    public var jsArg: JSArg {
+        .raw(render())
     }
 }
 
@@ -728,6 +805,10 @@ public extension JSExpr {
 public extension JS {
     static func template(_ segments: JSTemplateSegment...) -> JSTemplate {
         JSTemplate(segments)
+    }
+
+    static func object(_ properties: [String: any ExpressibleAsJSArg]) -> JSObjectLiteral {
+        JSObjectLiteral(properties)
     }
 }
 
